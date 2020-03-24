@@ -1,3 +1,9 @@
-<div class="content" role="main">
-  <ckeditor [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>
+<div role="main">
+  <div #toolbar id="toolbar"></div>
+  <p>Header</p>
+  <div class="header" #header id="header"></div>
+  <p>Main content</p>
+  <div class="content" #content id="content" style=" height: 200px;"></div>
+  <p>Footer</p>
+  <div class="footer" #footer id="footer"></div>
 </div>
