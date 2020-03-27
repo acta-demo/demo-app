@@ -1,0 +1,12 @@
+<div>
+  <div #toolbar id="toolbar"></div>
+  <button type="button" class="collapsible" (click)="onHeaderCollapse($event)">Open header <b><span class="rightsign">{{isHeaderCollapsed ? '+' : '-'}}</span></b></button>
+  <div class="header" #header id="header"></div>
+  <div class="paddingbottom"></div>
+  <button type="button" class="collapsible" (click)="onContentCollapse($event)">Open main content <b><span class="rightsign">{{isContentCollapsed ? '+' : '-'}}</span></b></button>
+  <div class="content" #content id="content" style=" height: 200px;"></div>
+  <div class="paddingbottom"></div>
+  <button type="button" class="collapsible" (click)="onFooterCollapse($event)">Open footer <b><span class="rightsign">{{isFooterCollapsed ? '+' : '-'}}</span></b></button>
+  <div class="footer" #footer id="footer"></div>
+  <div class="paddingbottom"></div>
+</div>

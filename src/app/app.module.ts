@@ -3,10 +3,12 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { MultirootEditorComponent } from './multiroot-editor/multiroot-editor.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MultirootEditorComponent
   ],
   imports: [
     BrowserModule,
