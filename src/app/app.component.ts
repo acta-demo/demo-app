@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { faFile, faCubes, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,9 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
 
   public toggleStatus = false;
+  faFile = faFile;
+  faCubes = faCubes;
+  faPlusSquare = faPlusSquare;
   ngOnInit() {
 
   }
