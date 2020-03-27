@@ -53,3 +53,7 @@ body {
 .group-menu[aria-expanded="true"]::after {
 	content: "\f106";
 }
+
+.subitem:hover {
+    text-decoration: underline;
+}
