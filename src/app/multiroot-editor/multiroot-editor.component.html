@@ -1,4 +1,5 @@
-<div>
+<div class="row">
+<div class="col-8">
   <div #toolbar id="toolbar"></div>
   <button type="button" class="collapsible" (click)="onHeaderCollapse($event)">Open header <b><span class="rightsign">{{isHeaderCollapsed ? '+' : '-'}}</span></b></button>
   <div class="header" #header id="header"></div>
@@ -9,4 +10,8 @@
   <button type="button" class="collapsible" (click)="onFooterCollapse($event)">Open footer <b><span class="rightsign">{{isFooterCollapsed ? '+' : '-'}}</span></b></button>
   <div class="footer" #footer id="footer"></div>
   <div class="paddingbottom"></div>
+</div>
+<div class="col-4">
+	<app-editor-sidebar></app-editor-sidebar>
+</div>
 </div>
