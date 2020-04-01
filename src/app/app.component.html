@@ -9,8 +9,13 @@
           data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapse1"><fa-icon [icon]="faFile"></fa-icon> File</a>
         <div class="card collapse" id="collapse1">
           <div class="card-body">
-            <a href="#" class="btn btn-link list-group-item list-group-item-action subitem">Sub-item 1</a>
-            <a href="#" class="btn btn-link list-group-item list-group-item-action subitem">Sub-item 2</a>
+            <div *ngFor="let fileElement of menuFile">
+              <div class="btn btn-link list-group-item list-group-item-action subitem"
+              (click)="onFileElementClick($event, fileElement)">
+                <span *ngIf="fileElement === selectedMenuElement; else isNotBold" class="text-primary font-weight-bold">{{fileElement}}</span>
+                <ng-template #isNotBold>{{fileElement}}</ng-template>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -18,17 +23,16 @@
           data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapse2"><fa-icon [icon]="faCubes"></fa-icon> Predefined BB</a>
         <div class="card collapse" id="collapse2">
           <div class="card-body">
-            <a href="#" class="btn btn-link list-group-item list-group-item-action subitem">Sub-item 1</a>
-            <a href="#" class="btn btn-link list-group-item list-group-item-action subitem">Sub-item 2</a>
-          </div>
-        </div>
-
-        <a href="#collapse3" class="btn btn-link list-group-item list-group-item-action bg-light group-menu"
-          data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapse3"><fa-icon [icon]="faPlusSquare"></fa-icon> New BB</a>
-        <div class="card collapse" id="collapse3">
-          <div class="card-body">
-            <a href="#" class="btn btn-link list-group-item list-group-item-action subitem">Sub-item 1</a>
-            <a href="#" class="btn btn-link list-group-item list-group-item-action subitem">Sub-item 2</a>
+            <div *ngFor="let bbElement of menuBB">
+              <div class="btn btn-link list-group-item list-group-item-action subitem" 
+              (click)="onBBElementClick($event, bbElement)">
+                <span *ngIf="bbElement === selectedMenuElement; else isNotBold" class="text-primary font-weight-bold">{{bbElement}}</span>
+                <ng-template #isNotBold>{{bbElement}}</ng-template>
+              </div>
+              <div *ngIf="searchMenuElements.includes(selectedMenuElement) && bbElement === selectedMenuElement">
+                <app-stword-sidebar></app-stword-sidebar>
+              </div>
+            </div>
           </div>
         </div>
         
@@ -41,7 +45,10 @@
     <div id="page-content-wrapper">
 
       <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-        <button class="btn btn-primary" id="menu-toggle" (click)="onToggle($event)">Toggle Menu</button>
+        <button class="btn btn-info" id="menu-toggle" (click)="onToggle($event)">
+          <span *ngIf="toggleStatus === false; else hideMenu"><fa-icon [icon]="faAngleDoubleLeft"></fa-icon> Hide Menu</span>
+          <ng-template #hideMenu><fa-icon [icon]="faAngleDoubleRight"></fa-icon> Show Menu</ng-template>
+        </button>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +80,6 @@
       </nav>
 
       <div class="container-fluid">
-        <h5 class="mt-4">Multiroot editor</h5>
         <app-multiroot-editor></app-multiroot-editor>
       </div>
     </div>

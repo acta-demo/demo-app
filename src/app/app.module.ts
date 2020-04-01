@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { MultirootEditorComponent } from './multiroot-editor/multiroot-editor.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { EditorSidebarComponent } from './editor-sidebar/editor-sidebar.component';
+import { StwordSidebarComponent } from './stword-sidebar/stword-sidebar.component';
 import { FilterPipe } from './filter.pipe';
 import { FormsModule } from '@angular/forms';
 
@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
   declarations: [
     AppComponent,
     MultirootEditorComponent,
-    EditorSidebarComponent,
+    StwordSidebarComponent,
     FilterPipe
   ],
   imports: [

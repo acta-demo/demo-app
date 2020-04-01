@@ -1,9 +1,0 @@
-.listitem:hover {
-    cursor: pointer;
-}
-
-.listscroll {
-	overflow:scroll;
-	-webkit-overflow-scrolling: touch;
-	max-height: 500px;
-}

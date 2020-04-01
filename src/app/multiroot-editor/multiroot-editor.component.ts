@@ -14,10 +14,12 @@ export class MultirootEditorComponent implements AfterViewInit {
   @ViewChild('content', { static: false }) contentE: ElementRef;
   @ViewChild('footer', { static: false }) footerE: ElementRef;
 
-  public Editor = MultirootEditor;
-  public isHeaderCollapsed = false;
-  public isContentCollapsed = false;
-  public isFooterCollapsed = false;
+  Editor = MultirootEditor;
+  isHeaderCollapsed = false;
+  isContentCollapsed = false;
+  isFooterCollapsed = false;
+  showHeaderFooter = true;
+  contentParentHeight = '300';
 
   ngAfterViewInit() {
 
@@ -28,47 +30,18 @@ export class MultirootEditorComponent implements AfterViewInit {
         footer: this.footerE.nativeElement
       }, MultirootEditor.defaultConfig)
       .then(newEditor => {
+        this.Editor = newEditor;
         this.toolbar.nativeElement.appendChild(newEditor.ui.view.toolbar.element);
         //newEditor.setData({ header: '<p>ffsfsfsdfsdfsdfsdfs</p>'});
         //window.editor = newEditor;
         newEditor.setData({ content: '<p><span class="standardword" data-id="1234">This is a test</span></p>' });
         this.editorDrop(newEditor);
-        CKEditorInspector.attach(newEditor);
+        //CKEditorInspector.attach(newEditor);
       })
       .catch(err => {
         console.error(err.stack);
       });
 
-  }
-
-  onHeaderCollapse($event) {
-    if (this.headerE.nativeElement.style.display === 'block' || this.headerE.nativeElement.style.display === '') {
-      this.headerE.nativeElement.style.display = 'none';
-      this.isHeaderCollapsed = true;
-    } else {
-      this.headerE.nativeElement.style.display = 'block';
-      this.isHeaderCollapsed = false;
-    }
-  }
-
-  onContentCollapse($event) {
-    if (this.contentE.nativeElement.style.display === 'block' || this.contentE.nativeElement.style.display === '') {
-      this.contentE.nativeElement.style.display = 'none';
-      this.isContentCollapsed = true;
-    } else {
-      this.contentE.nativeElement.style.display = 'block';
-      this.isContentCollapsed = false;
-    }
-  }
-
-  onFooterCollapse($event) {
-    if (this.footerE.nativeElement.style.display === 'block' || this.footerE.nativeElement.style.display === '') {
-      this.footerE.nativeElement.style.display = 'none';
-      this.isFooterCollapsed = true;
-    } else {
-      this.footerE.nativeElement.style.display = 'block';
-      this.isFooterCollapsed = false;
-    }
   }
 
   editorDrop(editor) {
@@ -112,6 +85,15 @@ export class MultirootEditorComponent implements AfterViewInit {
 
     });
 
+  }
+
+  onHeaderFooter($event) {
+    this.showHeaderFooter = !this.showHeaderFooter;
+    if(this.showHeaderFooter) {
+      this.contentParentHeight = '300';
+    } else {
+      this.contentParentHeight = '500';
+    }
   }
 
 }
