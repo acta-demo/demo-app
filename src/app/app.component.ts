@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { faFile, faCubes, faAngleDoubleLeft, faAngleDoubleRight } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -7,6 +7,8 @@ import { faFile, faCubes, faAngleDoubleLeft, faAngleDoubleRight } from '@fortawe
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+
+  @ViewChild('myForm', { static: false }) myForm: ElementRef;
 
   toggleStatus = false;
   menuFile: string[] = ['Open document', 'Open template'];
@@ -17,9 +19,28 @@ export class AppComponent implements OnInit {
   faCubes = faCubes;
   faAngleDoubleLeft = faAngleDoubleLeft;
   faAngleDoubleRight = faAngleDoubleRight;
+  closeButton = 'true';
+  receivedStwordMessage: string;
 
+  constructor(
+    private el: ElementRef,
+    private renderer: Renderer2
+  ) { }
   ngOnInit() {
 
+  }
+  getStwordMessage(message: string) {
+    console.log('receivedStwordMessage:', this.receivedStwordMessage);
+    this.receivedStwordMessage = message;
+    this.myForm.nativeElement.style.display = 'none';
+  }
+  openForm() {
+    console.log('myForm:', this.myForm);
+    this.myForm.nativeElement.style.display = "block";
+  }
+
+  closeForm() {
+    this.myForm.nativeElement.style.display = "none";
   }
 
   onFileElementClick($event, element) {

@@ -11,4 +11,6 @@
 .searchsubmenu {
 	font-size: smaller;
 	padding: 8px;
+	opacity: 1.0;
+	background-color: #f8f9fa;
 }

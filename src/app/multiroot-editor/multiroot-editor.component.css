@@ -27,3 +27,8 @@
 .maincontentparent {
   height: 100%;
 }
+
+.button:hover {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}

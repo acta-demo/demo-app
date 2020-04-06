@@ -1,6 +1,6 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 import STANDARD_WORDS from './standard.word';
-
+import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
 
 interface StandardWord {
   dataid: string;
@@ -14,19 +14,30 @@ interface StandardWord {
 })
 export class StwordSidebarComponent implements AfterViewInit {
 
+  @Input() closeButton: string;
+  @Output() messageToEmit = new EventEmitter<string>();
+
+  closeWindowMessage: string = "closeWindow";
+
   stwords: StandardWord[] = STANDARD_WORDS;
   searchText: string;
 
+  faWindowClose = faWindowClose;
   constructor() { }
 
   ngAfterViewInit() {
   }
 
+  sendMessageToParent(message: string) {
+    console.log('sendMessageToParent');
+    this.messageToEmit.emit(message)
+  }
+
   drag(ev, type) {
 
-    var parser = new DOMParser();
-    var html_doc = parser.parseFromString(ev.target.outerHTML, "text/html");
-    var myElement;
+    const parser = new DOMParser();
+    const html_doc = parser.parseFromString(ev.target.outerHTML, "text/html");
+    let myElement;
     if (type === 'span') {
       myElement = html_doc.querySelector("span[data-id]");
     } else {
@@ -45,4 +56,5 @@ export class StwordSidebarComponent implements AfterViewInit {
   onKeyPress($event) {
     const inputValue = $event.target.value;
   }
+
 }

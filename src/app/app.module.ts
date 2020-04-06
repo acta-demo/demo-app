@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
@@ -8,6 +8,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { StwordSidebarComponent } from './stword-sidebar/stword-sidebar.component';
 import { FilterPipe } from './filter.pipe';
 import { FormsModule } from '@angular/forms';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatMenuModule } from '@angular/material';
+
+
 
 @NgModule({
   declarations: [
@@ -20,9 +25,13 @@ import { FormsModule } from '@angular/forms';
     BrowserModule,
     CKEditorModule,
     FontAwesomeModule,
-    FormsModule
+    FormsModule,
+    DragDropModule,
+    BrowserAnimationsModule,
+    MatMenuModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }

@@ -8,15 +8,26 @@
     <div #toolbar id="toolbar"></div>
     <div class="paddingbottom"></div>
 
-    <div class="header" #header id="header" [hidden]="showHeaderFooter === false"></div>
+    <div class="header" #header id="header" [hidden]="showHeaderFooter === false" (contextmenu)="onContextMenu($event, 'header')"></div>
     <div class="paddingbottom"></div>
     <div class="maincontentparent" [style.height.px]="contentParentHeight">
-      <div #content id="content" class="maincontent"></div>
+      <div #content id="content" class="maincontent" (contextmenu)="onContextMenu($event, 'content')"></div>
     </div>
     <div class="paddingbottom"></div>
     
-    <div class="footer" #footer id="footer" [hidden]="showHeaderFooter === false"></div>
+    <div class="footer" #footer id="footer" [hidden]="showHeaderFooter === false" (contextmenu)="onContextMenu($event, 'footer')"></div>
     <div class="paddingbottom"></div>
   </div>
 
 </div>
+<div style="visibility: hidden; position: fixed"
+    [style.left]="contextMenuPosition.x"
+    [style.top]="contextMenuPosition.y"
+    [matMenuTriggerFor]="contextMenu">
+</div>
+
+<mat-menu #contextMenu="matMenu">
+	<ng-template matMenuContent let-item="item">
+		<button mat-menu-item (click)="onContextMenuDelete(item)">Delete</button>
+  </ng-template>
+</mat-menu>

@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import * as MultirootEditor from '../../assets/ckeditor.js';
 import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
+import { MatMenuTrigger } from '@angular/material';
 
 @Component({
   selector: 'app-multiroot-editor',
@@ -13,6 +14,9 @@ export class MultirootEditorComponent implements AfterViewInit {
   @ViewChild('header', { static: false }) headerE: ElementRef;
   @ViewChild('content', { static: false }) contentE: ElementRef;
   @ViewChild('footer', { static: false }) footerE: ElementRef;
+  @ViewChild( MatMenuTrigger, { static: false } ) contextMenu: MatMenuTrigger;
+
+  contextMenuPosition = { x: '0px', y: '0px' };
 
   Editor = MultirootEditor;
   isHeaderCollapsed = false;
@@ -20,6 +24,10 @@ export class MultirootEditorComponent implements AfterViewInit {
   isFooterCollapsed = false;
   showHeaderFooter = true;
   contentParentHeight = '300';
+
+  contextmenu = false;
+  contextmenuX = 0;
+  contextmenuY = 0;
 
   ngAfterViewInit() {
 
@@ -44,6 +52,28 @@ export class MultirootEditorComponent implements AfterViewInit {
 
   }
 
+  onContextMenu(event: MouseEvent, item: string) {
+    event.preventDefault();
+    this.contextMenuPosition.x = event.clientX + 'px';
+    this.contextMenuPosition.y = event.clientY + 'px';
+    this.contextMenu.menuData = { 'item': item };
+    this.contextMenu.menu.focusFirstItem('mouse');
+    this.contextMenu.openMenu();
+  }
+
+  onContextMenuDelete(item: Item) {
+    const keyEvent = new KeyboardEvent("keydown", {key : "Backspace"});
+    this.contentE.nativeElement.dispatchEvent(keyEvent);
+  }
+  onEditorContextMenu($event) {
+    $event.preventDefault();
+    console.log('MOUSE DOWN ON EDITOR');
+    this.contextmenuX = $event.clientX
+    this.contextmenuY = $event.clientY
+    this.contextmenu = true;
+    //const keyEvent = new KeyboardEvent("keydown", {key : "Backspace"});
+    //this.contentE.nativeElement.dispatchEvent(keyEvent);
+  }
   editorDrop(editor) {
     editor.editing.view.document.on('drop', (evt, data) => {
 
@@ -96,4 +126,9 @@ export class MultirootEditorComponent implements AfterViewInit {
     }
   }
 
+}
+
+export interface Item {
+  id: number;
+  name: string;
 }
