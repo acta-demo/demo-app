@@ -44,7 +44,7 @@ showMessage(message: any) {
         //window.editor = newEditor;
         newEditor.setData({ content: '<p><span class="snippet" data-id="4444123" data-viewmode="infoview" data-type="snp">This is a test snippet <span class="standardword" data-id="1234" data-viewmode="infoview" data-type="str">This is a test</span> blah blah</span> kjkjk</p>' });
         this.editorDrop(newEditor);
-        CKEditorInspector.attach(newEditor);
+        //CKEditorInspector.attach(newEditor);
       })
       .catch(err => {
         console.error(err.stack);
