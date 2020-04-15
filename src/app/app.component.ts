@@ -12,8 +12,8 @@ export class AppComponent implements OnInit {
 
   toggleStatus = false;
   menuFile: string[] = ['Open document', 'Open template'];
-  menuBB: string[] = ['Snipets', 'Strings', 'References', 'Variables', 'List of speakers'];
-  searchMenuElements: string[] = ['Strings'];
+  menuBB: string[] = ['Snippets', 'Strings', 'References', 'Variables', 'List of speakers'];
+  searchMenuElements: string[] = ['Strings', 'Snippets'];
   selectedMenuElement: string = '';
   faFile = faFile;
   faCubes = faCubes;

@@ -8,26 +8,41 @@
     <div #toolbar id="toolbar"></div>
     <div class="paddingbottom"></div>
 
-    <div class="header" #header id="header" [hidden]="showHeaderFooter === false" (contextmenu)="onContextMenu($event, 'header')"></div>
+    <div class="header" #header id="header" [hidden]="showHeaderFooter === false" [contextMenu]="basicMenu" [contextMenuSubject]="'Foo'"></div>
     <div class="paddingbottom"></div>
     <div class="maincontentparent" [style.height.px]="contentParentHeight">
-      <div #content id="content" class="maincontent" (contextmenu)="onContextMenu($event, 'content')"></div>
+      <div #content id="content" class="maincontent" [contextMenu]="basicMenu" [contextMenuSubject]="'Test'"></div>
     </div>
     <div class="paddingbottom"></div>
     
-    <div class="footer" #footer id="footer" [hidden]="showHeaderFooter === false" (contextmenu)="onContextMenu($event, 'footer')"></div>
+    <div class="footer" #footer id="footer" [hidden]="showHeaderFooter === false" [contextMenu]="basicMenu" [contextMenuSubject]="'Bar'"></div>
     <div class="paddingbottom"></div>
   </div>
 
 </div>
-<div style="visibility: hidden; position: fixed"
-    [style.left]="contextMenuPosition.x"
-    [style.top]="contextMenuPosition.y"
-    [matMenuTriggerFor]="contextMenu">
-</div>
-
-<mat-menu #contextMenu="matMenu">
-	<ng-template matMenuContent let-item="item">
-		<button mat-menu-item (click)="onContextMenuDelete(item)">Delete</button>
+<context-menu #basicMenu>
+  <ng-template contextMenuItem (execute)="onContextMenuDelete($event)">
+    <a href="#" class="list-group-item list-group-item-action">Delete</a>
   </ng-template>
-</mat-menu>
+  <ng-template contextMenuItem let-item (execute)="showMessage($event.item + ' said: ' + $event.item)">
+    <a href="#" class="list-group-item list-group-item-action">Test 1</a>
+  </ng-template>
+  <ng-template contextMenuItem divider="true"></ng-template>
+  <ng-template contextMenuItem let-item (execute)="showMessage($event.item + ' said: ' + $event.item)">
+    <a href="#" class="list-group-item list-group-item-action">Other</a>
+  </ng-template>
+   <ng-template contextMenuItem [subMenu]="mySubMenu">
+    <a href="#" class="list-group-item list-group-item-action">Add .... <span style="float:right">> </span></a>
+  </ng-template>
+  <context-menu #mySubMenu>
+    <ng-template contextMenuItem let-item (execute)="showMessage($event.item + ' said: ' + $event.item)">
+      <a href="#" class="list-group-item list-group-item-action">Free text</a>
+    </ng-template>
+    <ng-template contextMenuItem let-item (execute)="showMessage($event.item + ' said: ' + $event.item)">
+      <a href="#" class="list-group-item list-group-item-action">Empty string</a>
+    </ng-template>
+  </context-menu>
+  <!-- <ng-template contextMenuItem passive="true">
+    Input something: <input type="text">
+  </ng-template> -->
+</context-menu>

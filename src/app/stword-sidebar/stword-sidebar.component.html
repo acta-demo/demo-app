@@ -8,7 +8,7 @@
 	<div class="list-group listscroll" *ngIf="(stwords | filter: searchText: 'datacontent').length > 0; else noResults">
 		<div class="list-group-item list-group-item-action list-group-item-light listitem" draggable="true"
 			(dragstart)="drag($event, 'span')" *ngFor="let stword of stwords | filter: searchText : 'datacontent'; let i = index">
-			<span class="standardword"   [attr.data-id]="stword.dataid" data-type="str" cdkDrag>{{stword.datacontent}}</span>
+			<span class="standardword" [attr.data-id]="stword.dataid" data-type="str" cdkDrag>{{stword.datacontent}}</span>
 		</div>
 		
 	</div>

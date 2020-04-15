@@ -1,0 +1,17 @@
+<div class="border border-primary rounded-lg searchsubmenu">
+	<fa-icon [icon]="faWindowClose" class="float-right" *ngIf="closeButton" (click)="sendMessageToParent(closeWindowMessage)"></fa-icon>
+	<div class="form-group">
+		<label for="inputsearch">Drag & drop string</label>
+		<input [(ngModel)]="searchText" class="form-control form-control-sm" id="inputsearch" type="text"
+			(keypress)="onKeyPress($event)" placeholder="Search.." />
+	</div>
+	<div class="list-group listscroll" *ngIf="(snippets | filter: searchText: 'datacontent').length > 0; else noResults">
+		<div class="list-group-item list-group-item-action list-group-item-light listitem" draggable="true" 
+			(dragstart)="drag($event, 'span')" *ngFor="let snippet of snippets | filter: searchText : 'datacontent'; let i = index">
+			<span class="snippet"  [attr.data-id]="snippet.dataid" data-type="snp" [innerHTML]="snippet.datacontent | safeHtml" ></span>
+		</div>
+	</div>
+	<ng-template #noResults>
+		<p>No results found for "{{searchText}}".</p>
+	</ng-template>
+</div>

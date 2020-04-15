@@ -11,6 +11,8 @@ import { FormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMenuModule } from '@angular/material';
+import { ContextMenuModule } from 'ngx-contextmenu';
+import { SnippetSidebarComponent, SafeHtmlPipe } from './snippet-sidebar/snippet-sidebar.component';
 
 
 
@@ -19,7 +21,9 @@ import { MatMenuModule } from '@angular/material';
     AppComponent,
     MultirootEditorComponent,
     StwordSidebarComponent,
-    FilterPipe
+    FilterPipe,
+    SnippetSidebarComponent,
+    SafeHtmlPipe
   ],
   imports: [
     BrowserModule,
@@ -28,7 +32,8 @@ import { MatMenuModule } from '@angular/material';
     FormsModule,
     DragDropModule,
     BrowserAnimationsModule,
-    MatMenuModule
+    MatMenuModule,
+    ContextMenuModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent],

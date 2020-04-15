@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angula
 import * as MultirootEditor from '../../assets/ckeditor.js';
 import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 import { MatMenuTrigger } from '@angular/material';
+import { ContextMenuComponent } from 'ngx-contextmenu';
 
 @Component({
   selector: 'app-multiroot-editor',
@@ -14,9 +15,9 @@ export class MultirootEditorComponent implements AfterViewInit {
   @ViewChild('header', { static: false }) headerE: ElementRef;
   @ViewChild('content', { static: false }) contentE: ElementRef;
   @ViewChild('footer', { static: false }) footerE: ElementRef;
-  @ViewChild( MatMenuTrigger, { static: false } ) contextMenu: MatMenuTrigger;
+  @ViewChild(ContextMenuComponent, { static: false }) public basicMenu: ContextMenuComponent;
 
-  contextMenuPosition = { x: '0px', y: '0px' };
+
 
   Editor = MultirootEditor;
   isHeaderCollapsed = false;
@@ -25,10 +26,9 @@ export class MultirootEditorComponent implements AfterViewInit {
   showHeaderFooter = true;
   contentParentHeight = '300';
 
-  contextmenu = false;
-  contextmenuX = 0;
-  contextmenuY = 0;
-
+showMessage(message: any) {
+    console.log(message);
+  }
   ngAfterViewInit() {
 
     MultirootEditor
@@ -42,9 +42,9 @@ export class MultirootEditorComponent implements AfterViewInit {
         this.toolbar.nativeElement.appendChild(newEditor.ui.view.toolbar.element);
         //newEditor.setData({ header: '<p>ffsfsfsdfsdfsdfsdfs</p>'});
         //window.editor = newEditor;
-        newEditor.setData({ content: '<p><span class="standardword" data-id="1234">This is a test</span></p>' });
+        newEditor.setData({ content: '<p><span class="snippet" data-id="4444123" data-viewmode="infoview" data-type="snp">This is a test snippet <span class="standardword" data-id="1234" data-viewmode="infoview" data-type="str">This is a test</span> blah blah</span> kjkjk</p>' });
         this.editorDrop(newEditor);
-        //CKEditorInspector.attach(newEditor);
+        CKEditorInspector.attach(newEditor);
       })
       .catch(err => {
         console.error(err.stack);
@@ -52,46 +52,29 @@ export class MultirootEditorComponent implements AfterViewInit {
 
   }
 
-  onContextMenu(event: MouseEvent, item: string) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.contextMenu.menuData = { 'item': item };
-    this.contextMenu.menu.focusFirstItem('mouse');
-    this.contextMenu.openMenu();
-  }
-
-  onContextMenuDelete(item: Item) {
+  onContextMenuDelete($event) {
     const keyEvent = new KeyboardEvent("keydown", {key : "Backspace"});
     this.contentE.nativeElement.dispatchEvent(keyEvent);
   }
-  onEditorContextMenu($event) {
-    $event.preventDefault();
-    console.log('MOUSE DOWN ON EDITOR');
-    this.contextmenuX = $event.clientX
-    this.contextmenuY = $event.clientY
-    this.contextmenu = true;
-    //const keyEvent = new KeyboardEvent("keydown", {key : "Backspace"});
-    //this.contentE.nativeElement.dispatchEvent(keyEvent);
-  }
+
   editorDrop(editor) {
     editor.editing.view.document.on('drop', (evt, data) => {
 
       evt.stop();
       data.preventDefault();
 
-      var _myData = data.dataTransfer.getData("text/html");
-      var _myDataExtraInfo = data.dataTransfer.getData("text/plain");
+      const _myData = data.dataTransfer.getData("text/html");
+      const _myDataExtraInfo = data.dataTransfer.getData("text/plain");
 
       editor.model.change(function (writer) {
-        var insertPosition2 = data.dropRange.start;
-        var modelPosition = editor.editing.mapper.toModelPosition(insertPosition2);
+        const insertPosition2 = data.dropRange.start;
+        const modelPosition = editor.editing.mapper.toModelPosition(insertPosition2);
 
-        var selection = editor.model.document.selection;
+        const selection = editor.model.document.selection;
 
-        var currentAttributes = selection.getAttributes();
-        var parent = selection.focus.parent;
-        var insertPosition = selection.focus;
+        //var currentAttributes = selection.getAttributes();
+        //var parent = selection.focus.parent;
+        //var insertPosition = selection.focus;
 
         const viewFragment = editor.data.processor.toView(_myData);
         console.log('drop viewFragment:', viewFragment);
