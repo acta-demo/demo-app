@@ -1,0 +1,12 @@
+<div class="modal-header">
+    <h5 class="modal-title">Set date</h5>
+    <fa-icon [icon]="faWindowClose" class="float-right" (click)="closeModal('dismiss')"></fa-icon>
+</div>
+<div class="modal-body">
+    <p>Set the value of time variable.</p>
+    <ngb-timepicker [(ngModel)]="timeSelected"></ngb-timepicker>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal('cancel')">Close</button>
+    <button type="button" class="btn btn-primary" (click)="closeModal('save')">Save changes</button>
+</div>

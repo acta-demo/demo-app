@@ -8,14 +8,19 @@
     <div #toolbar id="toolbar"></div>
     <div class="paddingbottom"></div>
 
-    <div class="header" #header id="header" [hidden]="showHeaderFooter === false" [contextMenu]="basicMenu" [contextMenuSubject]="'Foo'"></div>
+    <div class="header" #header id="header" [hidden]="showHeaderFooter === false" [contextMenu]="basicMenu"></div>
     <div class="paddingbottom"></div>
     <div class="maincontentparent" [style.height.px]="contentParentHeight">
-      <div #content id="content" class="maincontent" [contextMenu]="basicMenu" [contextMenuSubject]="'Test'"></div>
+      <div #content id="content" class="maincontent" [contextMenu]="basicMenu" ></div>
     </div>
+    <div #tooltip id="tooltip" role="tooltip">
+        My tooltip
+        <ngb-datepicker #d></ngb-datepicker>
+        <div id="arrow" data-popper-arrow></div>
+      </div>
     <div class="paddingbottom"></div>
     
-    <div class="footer" #footer id="footer" [hidden]="showHeaderFooter === false" [contextMenu]="basicMenu" [contextMenuSubject]="'Bar'"></div>
+    <div class="footer" #footer id="footer" [hidden]="showHeaderFooter === false" [contextMenu]="basicMenu" ></div>
     <div class="paddingbottom"></div>
   </div>
 
@@ -24,8 +29,8 @@
   <ng-template contextMenuItem (execute)="onContextMenuDelete($event)">
     <a href="#" class="list-group-item list-group-item-action">Delete</a>
   </ng-template>
-  <ng-template contextMenuItem let-item (execute)="showMessage($event.item + ' said: ' + $event.item)">
-    <a href="#" class="list-group-item list-group-item-action">Test 1</a>
+  <ng-template contextMenuItem let-item (execute)="onContextMenuResolve($event)">
+    <a href="#" class="list-group-item list-group-item-action">Resolve</a>
   </ng-template>
   <ng-template contextMenuItem divider="true"></ng-template>
   <ng-template contextMenuItem let-item (execute)="showMessage($event.item + ' said: ' + $event.item)">
