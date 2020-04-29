@@ -59,17 +59,17 @@ export class MultirootEditorComponent implements AfterViewInit {
         const containers = newEditor.ui.view.editables;
         for (const container of containers) {
           if (container && container.element) {
-            container.element.addEventListener('contextmenu', this.onEditorContextMenu);
+            //container.element.addEventListener('contextmenu', this.onEditorContextMenu);
           }
         }
         //////////////////////////
-        /*newEditor.listenTo(newEditor.editing.view.document, 'mousedown', (evt, data) => {
+        newEditor.listenTo(newEditor.editing.view.document, 'mousedown', (evt, data) => {
           const modelElement = newEditor.editing.mapper.toModelElement(data.target);
-          //this.selectedEditorModelElement = modelElement;
+          this.selectedEditorModelElement = modelElement;
           console.log('contextmenu data:', data);
           console.log('contextmenu data.target:', data.target);
           console.log('contextmenu modelElement:', modelElement);
-        });*/
+        });
         //CKEditorInspector.attach(newEditor);
       })
       .catch(err => {
@@ -92,8 +92,9 @@ export class MultirootEditorComponent implements AfterViewInit {
     console.log('#### onEditorContextMenu $event:', $event);
     const domElement = $event.target || $event.srcElement;
     console.log('#### onEditorContextMenu domElement:', domElement);
-    if ( this.Editor ) {
+    if ( this.Editor == null ) {
       this.selectedEditorModelElement = this.Editor.editing.mapper.toModelElement(domElement);
+      console.log('#### onEditorContextMenu this.selectedEditorModelElement:', this.selectedEditorModelElement);
     }
     //const modelElement = this.Editor.editing.mapper.toModelElement(domElement);
     //this.selectedEditorModelElement = modelElement;
@@ -239,14 +240,3 @@ export class MultirootEditorComponent implements AfterViewInit {
 
 }
 
-
-
-export interface ListOfSpeakersContent {
-  id: number;
-  name: string;
-  dataContent: string;
-  hasDisplayFunction: boolean;
-  hasOnBehalfOfGroup: boolean;
-  blueCardStatus: string;
-  blueCardName: string;
-}

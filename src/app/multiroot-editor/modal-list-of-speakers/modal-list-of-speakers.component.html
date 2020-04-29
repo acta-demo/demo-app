@@ -23,7 +23,7 @@
                             *ngFor="let lsp of availableLsp | filter: searchText : 'name'; let i = index">
                             <div class="table-row-column table-row-index"><small>{{lsp.id}}</small>
                             </div>
-                            <div class="table-row-column"><small>{{lsp.name}}</small>
+                            <div class="table-row-column"><small>{{lsp.fullName}}</small>
                             </div>
                             <div *ngIf="lsp.hasOnBehalfOfGroup;else hasOnBehalfOfGroupFalse"
                                 class="table-row-column testt">
@@ -65,7 +65,7 @@
                     <div cdkDropList [cdkDropListData]="selectedLsp" (cdkDropListDropped)="drop($event)">
                         <div class="table-row" *ngFor="let lsp of selectedLsp" cdkDrag>
                             <div class="table-row-column table-row-index"><small>{{lsp.id}}</small></div>
-                            <div class="table-row-column "><small>{{lsp.name}}</small></div>
+                            <div class="table-row-column "><small>{{lsp.fullName}}</small></div>
 
 
                             <div *ngIf="lsp.hasDisplayFunction;else hasDisplayFunctionFalse" class="table-row-column">

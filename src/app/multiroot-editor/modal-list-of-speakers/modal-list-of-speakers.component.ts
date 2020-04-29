@@ -1,14 +1,13 @@
 import { Component, OnInit, Input, Renderer2, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { faWindowClose, faPlusSquare, faMinusCircle, faCheckSquare, faMinusSquare } from '@fortawesome/free-solid-svg-icons';
-import { ListOfSpeakersContent } from '../multiroot-editor.component';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import LIST_OF_SPEAKERS from './list.of.speakers';
 
 
 interface ListOfSpeakers {
   id: number;
-  name: string;
+  fullName: string;
   hasDisplayFunction: boolean;
   hasOnBehalfOfGroup: boolean;
   isBlueCardSpeaker: boolean;
@@ -17,7 +16,7 @@ interface ListOfSpeakers {
   behalfOfGroup: string;
 }
 
-interface LspDataToEditor {
+export interface LspDataToEditor {
   listOfSpeakers: ListOfSpeakers[];
   isAndChecked: boolean;
   textValue: string;
@@ -114,18 +113,18 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
       if (index === size - 1 && this.andChecked) {
         if (value.hasOnBehalfOfGroup) {
           this.fullString = this.fullString + ((this.fullString)
-            ? ' and ' + value.name + ', on behalf of the ' + value.behalfOfGroup + 'Group'
-            : value.name + ', on behalf of the ' + value.behalfOfGroup + 'Group');
+            ? ' and ' + value.fullName + ', on behalf of the ' + value.behalfOfGroup + 'Group'
+            : value.fullName + ', on behalf of the ' + value.behalfOfGroup + 'Group');
         } else {
-          this.fullString = this.fullString + ((this.fullString) ? ' and ' + value.name : value.name);
+          this.fullString = this.fullString + ((this.fullString) ? ' and ' + value.fullName : value.fullName);
         }
       } else {
         if (value.hasOnBehalfOfGroup) {
           this.fullString = this.fullString + ((this.fullString)
-            ? ',' + value.name + ', on behalf of the ' + value.behalfOfGroup + 'Group'
-            : value.name + ', on behalf of the ' + value.behalfOfGroup + 'Group');
+            ? ',' + value.fullName + ', on behalf of the ' + value.behalfOfGroup + 'Group'
+            : value.fullName + ', on behalf of the ' + value.behalfOfGroup + 'Group');
         } else {
-          this.fullString = this.fullString + ((this.fullString) ? ',' + value.name : value.name);
+          this.fullString = this.fullString + ((this.fullString) ? ',' + value.fullName : value.fullName);
         }
       }
       console.log('#### current fullString:', this.fullString);
