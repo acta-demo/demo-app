@@ -8,9 +8,8 @@ describe('ModalTimePickerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ModalTimePickerComponent ]
-    })
-    .compileComponents();
+      declarations: [ModalTimePickerComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

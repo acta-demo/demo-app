@@ -8,9 +8,8 @@ describe('ModalStringPickerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ModalStringPickerComponent ]
-    })
-    .compileComponents();
+      declarations: [ModalStringPickerComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -8,9 +8,8 @@ describe('ModalDatePickerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ModalDatePickerComponent ]
-    })
-    .compileComponents();
+      declarations: [ModalDatePickerComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

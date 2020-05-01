@@ -8,9 +8,8 @@ describe('ModalListOfSpeakersComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ModalListOfSpeakersComponent ]
-    })
-    .compileComponents();
+      declarations: [ModalListOfSpeakersComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

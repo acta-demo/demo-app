@@ -8,9 +8,8 @@ describe('MultirootEditorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MultirootEditorComponent ]
-    })
-    .compileComponents();
+      declarations: [MultirootEditorComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

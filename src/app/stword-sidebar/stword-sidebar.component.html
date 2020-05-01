@@ -3,7 +3,7 @@
 	<div class="form-group">
 		<label for="inputsearch">Drag & drop string</label>
 		<input [(ngModel)]="searchText" class="form-control form-control-sm" id="inputsearch" type="text"
-			(keypress)="onKeyPress($event)" placeholder="Search.." />
+			placeholder="Search.." />
 	</div>
 	<div class="list-group listscroll" *ngIf="(stwords | filter: searchText: 'datacontent').length > 0; else noResults">
 		<div class="list-group-item list-group-item-action list-group-item-light listitem" draggable="true"

@@ -5,10 +5,10 @@ body {
 #sidebar-wrapper {
   min-height: 100vh;
   margin-left: -15rem;
-  -webkit-transition: margin .25s ease-out;
-  -moz-transition: margin .25s ease-out;
-  -o-transition: margin .25s ease-out;
-  transition: margin .25s ease-out;
+  -webkit-transition: margin 0.25s ease-out;
+  -moz-transition: margin 0.25s ease-out;
+  -o-transition: margin 0.25s ease-out;
+  transition: margin 0.25s ease-out;
 }
 
 #sidebar-wrapper .sidebar-heading {
@@ -44,18 +44,18 @@ body {
 }
 
 .group-menu::after {
-	content: "\f107";
-	right: 5px;
-	position: absolute;
-  font-family: "FontAwesome"
+  content: '\f107';
+  right: 5px;
+  position: absolute;
+  font-family: 'FontAwesome';
 }
 
-.group-menu[aria-expanded="true"]::after {
-	content: "\f106";
+.group-menu[aria-expanded='true']::after {
+  content: '\f106';
 }
 
 .subitem:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* FORM POPUP      */
@@ -79,7 +79,8 @@ body {
 }
 
 /* Full-width input fields */
-.form-container input[type=text], .form-container input[type=password] {
+.form-container input[type='text'],
+.form-container input[type='password'] {
   width: 100%;
   padding: 15px;
   margin: 5px 0 22px 0;
@@ -88,20 +89,21 @@ body {
 }
 
 /* When the inputs get focus, do something */
-.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+.form-container input[type='text']:focus,
+.form-container input[type='password']:focus {
   background-color: #ddd;
   outline: none;
 }
 
 /* Set a style for the submit/login button */
 .form-container .btn {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   padding: 16px 20px;
   border: none;
   cursor: pointer;
   width: 100%;
-  margin-bottom:10px;
+  margin-bottom: 10px;
   opacity: 0.8;
 }
 
@@ -111,6 +113,7 @@ body {
 }
 
 /* Add some hover effects to buttons */
-.form-container .btn:hover, .open-button:hover {
+.form-container .btn:hover,
+.open-button:hover {
   opacity: 1;
 }

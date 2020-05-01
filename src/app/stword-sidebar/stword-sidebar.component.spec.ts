@@ -8,9 +8,8 @@ describe('EditorSidebarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditorSidebarComponent ]
-    })
-    .compileComponents();
+      declarations: [EditorSidebarComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
