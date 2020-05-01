@@ -1,119 +1,119 @@
 body {
-  overflow-x: hidden;
+    overflow-x: hidden;
 }
 
 #sidebar-wrapper {
-  min-height: 100vh;
-  margin-left: -15rem;
-  -webkit-transition: margin 0.25s ease-out;
-  -moz-transition: margin 0.25s ease-out;
-  -o-transition: margin 0.25s ease-out;
-  transition: margin 0.25s ease-out;
+    min-height: 100vh;
+    margin-left: -15rem;
+    -webkit-transition: margin 0.25s ease-out;
+    -moz-transition: margin 0.25s ease-out;
+    -o-transition: margin 0.25s ease-out;
+    transition: margin 0.25s ease-out;
 }
 
 #sidebar-wrapper .sidebar-heading {
-  padding: 0.875rem 1.25rem;
-  font-size: 1.2rem;
+    padding: 0.875rem 1.25rem;
+    font-size: 1.2rem;
 }
 
 #sidebar-wrapper .list-group {
-  width: 15rem;
+    width: 15rem;
 }
 
 #page-content-wrapper {
-  min-width: 100vw;
+    min-width: 100vw;
 }
 
 #wrapper.toggled #sidebar-wrapper {
-  margin-left: 0;
+    margin-left: 0;
 }
 
 @media (min-width: 768px) {
-  #sidebar-wrapper {
-    margin-left: 0;
-  }
+    #sidebar-wrapper {
+        margin-left: 0;
+    }
 
-  #page-content-wrapper {
-    min-width: 0;
-    width: 100%;
-  }
+    #page-content-wrapper {
+        min-width: 0;
+        width: 100%;
+    }
 
-  #wrapper.toggled #sidebar-wrapper {
-    margin-left: -15rem;
-  }
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: -15rem;
+    }
 }
 
 .group-menu::after {
-  content: '\f107';
-  right: 5px;
-  position: absolute;
-  font-family: 'FontAwesome';
+    content: '\f107';
+    right: 5px;
+    position: absolute;
+    font-family: 'FontAwesome';
 }
 
 .group-menu[aria-expanded='true']::after {
-  content: '\f106';
+    content: '\f106';
 }
 
 .subitem:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
 /* FORM POPUP      */
 
 /* The popup form - hidden by default */
 .form-popup {
-  display: none;
-  position: fixed;
-  width: 250px;
-  bottom: 0;
-  left: 5px;
-  border: 3px solid #f1f1f1;
-  z-index: 9;
+    display: none;
+    position: fixed;
+    width: 250px;
+    bottom: 0;
+    left: 5px;
+    border: 3px solid #f1f1f1;
+    z-index: 9;
 }
 
 /* Add styles to the form container */
 .form-container {
-  max-width: 300px;
-  padding: 10px;
-  background-color: white;
+    max-width: 300px;
+    padding: 10px;
+    background-color: white;
 }
 
 /* Full-width input fields */
 .form-container input[type='text'],
 .form-container input[type='password'] {
-  width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  border: none;
-  background: #f1f1f1;
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: none;
+    background: #f1f1f1;
 }
 
 /* When the inputs get focus, do something */
 .form-container input[type='text']:focus,
 .form-container input[type='password']:focus {
-  background-color: #ddd;
-  outline: none;
+    background-color: #ddd;
+    outline: none;
 }
 
 /* Set a style for the submit/login button */
 .form-container .btn {
-  background-color: #4caf50;
-  color: white;
-  padding: 16px 20px;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  margin-bottom: 10px;
-  opacity: 0.8;
+    background-color: #4caf50;
+    color: white;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 10px;
+    opacity: 0.8;
 }
 
 /* Add a red background color to the cancel button */
 .form-container .cancel {
-  background-color: red;
+    background-color: red;
 }
 
 /* Add some hover effects to buttons */
 .form-container .btn:hover,
 .open-button:hover {
-  opacity: 1;
+    opacity: 1;
 }

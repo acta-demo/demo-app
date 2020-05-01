@@ -1,80 +1,80 @@
 .header {
-  border: 1px solid #a9a9a9;
-  padding-top: 0px;
-  padding-left: 8px;
-  height: 95px;
+    border: 1px solid #a9a9a9;
+    padding-top: 0px;
+    padding-left: 8px;
+    height: 95px;
 }
 
 .maincontent {
-  border: 1px solid #a9a9a9;
-  padding-top: 0px;
-  padding-left: 8px;
-  height: 100%;
-  overflow: auto;
+    border: 1px solid #a9a9a9;
+    padding-top: 0px;
+    padding-left: 8px;
+    height: 100%;
+    overflow: auto;
 }
 
 .footer {
-  border: 1px solid #a9a9a9;
-  padding-top: 0px;
-  padding-left: 8px;
-  height: 95px;
+    border: 1px solid #a9a9a9;
+    padding-top: 0px;
+    padding-left: 8px;
+    height: 95px;
 }
 
 .paddingbottom {
-  padding-bottom: 10px;
+    padding-bottom: 10px;
 }
 
 .maincontentparent {
-  height: 100%;
+    height: 100%;
 }
 
 .button:hover {
-  background-color: #4caf50; /* Green */
-  color: white;
+    background-color: #4caf50; /* Green */
+    color: white;
 }
 
 /************************************/
 
 #tooltip {
-  background: #333;
-  color: white;
-  font-weight: bold;
-  padding: 4px 8px;
-  font-size: 13px;
-  border-radius: 4px;
-  display: none;
+    background: #333;
+    color: white;
+    font-weight: bold;
+    padding: 4px 8px;
+    font-size: 13px;
+    border-radius: 4px;
+    display: none;
 }
 
 #tooltip[data-show] {
-  display: block;
+    display: block;
 }
 
 #arrow,
 #arrow::before {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  z-index: -1;
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    z-index: -1;
 }
 
 #arrow::before {
-  content: '';
-  transform: rotate(45deg);
-  background: #333;
+    content: '';
+    transform: rotate(45deg);
+    background: #333;
 }
 
 #tooltip[data-popper-placement^='top'] > #arrow {
-  bottom: -4px;
+    bottom: -4px;
 }
 
 #tooltip[data-popper-placement^='bottom'] > #arrow {
-  top: -4px;
+    top: -4px;
 }
 
 #tooltip[data-popper-placement^='left'] > #arrow {
-  right: -4px;
+    right: -4px;
 }
 
 #tooltip[data-popper-placement^='right'] > #arrow {
-  left: -4px;
+    left: -4px;
 }
