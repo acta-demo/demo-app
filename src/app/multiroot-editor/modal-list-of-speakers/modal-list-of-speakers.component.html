@@ -3,96 +3,110 @@
     <fa-icon [icon]="faWindowClose" class="float-right" (click)="closeModal('dismiss')"></fa-icon>
 </div>
 <div class="modal-body">
-    <div class="row" cdkDropListGroup>
-        <div class="col-sm-4 form-group">
+    <div class="row">
+        <div class="col-md-4 form-group">
             <div style="padding-bottom: 10px;">
                 <input [(ngModel)]="searchText" #searchLsp type="text" class="form-control form-control-sm"
                     id="searchLsp" placeholder="Search by name">
             </div>
             <div class="container">
-                <div class="table">
-                    <div class="table-row table-header">
-                        <div class="table-row-column table-row-index"><small><b>#</b></small></div>
-                        <div class="table-row-column"><small><b>Name (PG / Function)</b></small></div>
-                        <div class="table-row-column"><small><b>On behalf of group</b></small></div>
-                        <div class="table-row-column"><small><b>Blue card speaker</b></small></div>
-                        <div class="table-row-column"><small><b>Action</b></small></div>
-                    </div>
-                    <div>
-                        <div class="table-row"
-                            *ngFor="let lsp of availableLsp | filter: searchText : 'name'; let i = index">
-                            <div class="table-row-column table-row-index"><small>{{lsp.id}}</small>
-                            </div>
-                            <div class="table-row-column"><small>{{lsp.fullName}}</small>
-                            </div>
-                            <div *ngIf="lsp.hasOnBehalfOfGroup;else hasOnBehalfOfGroupFalse"
-                                class="table-row-column testt">
-                                <fa-icon [icon]="faCheckSquare"></fa-icon>
-                            </div>
-                            <ng-template #hasOnBehalfOfGroupFalse>
-                                <fa-icon [icon]="faMinusSquare" class="table-row-column testt"></fa-icon>
-                            </ng-template>
-                            <div *ngIf="lsp.isBlueCardSpeaker;else isBlueCardSpeakerFalse" class="table-row-column">
-                                <fa-icon [icon]="faCheckSquare"></fa-icon>
-                            </div>
-                            <ng-template #isBlueCardSpeakerFalse>
-                                <fa-icon [icon]="faMinusSquare" class="table-row-column"></fa-icon>
-                            </ng-template>
-                            <a *ngIf="!lsp.isBlueCardSpeaker;else isBlueCardAction" href="#" class="table-row-column"
-                                (click)="moveToSelected(lsp.id)">
-                                <fa-icon [icon]="faPlusSquare"></fa-icon>
-                            </a>
-                            <ng-template #isBlueCardAction>
-                                <fa-icon [icon]="faPlusSquare" class="table-row-column fa-disabled"></fa-icon>
-                            </ng-template>
-                        </div>
-                    </div>
+                <div class="table-responsive" style="max-height: 350px;min-width: 350px;">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col"><small><b>#</b></small></th>
+                                <th scope="col"><small><b>Name (PG / Function)</b></small></th>
+                                <th scope="col"><small><b>On behalf of group</b></small></th>
+                                <th scope="col"><small><b>Blue card speaker</b></small></th>
+                                <th scope="col"><small><b>Action</b></small></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let lsp of availableLsp | filter: searchText : 'fullName'; let i = index">
+                                <th style="text-align: center;"><small>{{lsp.id}}</small></th>
+                                <td><small>{{lsp.fullName}}</small></td>
+                                <td style="text-align: center;">
+                                    <fa-icon *ngIf="lsp.hasOnBehalfOfGroup;else hasOnBehalfOfGroupFalse"
+                                        [icon]="faCheckSquare"></fa-icon>
+                                    <ng-template #hasOnBehalfOfGroupFalse>
+                                        <fa-icon [icon]="faMinusSquare"></fa-icon>
+                                    </ng-template>
+                                </td>
+                                <td>
+                                    <fa-icon *ngIf="lsp.isBlueCardSpeaker;else isBlueCardSpeakerFalse"
+                                         [icon]="faCheckSquare"></fa-icon>
+                                    <ng-template #isBlueCardSpeakerFalse>
+                                        <fa-icon [icon]="faMinusSquare"></fa-icon>
+                                    </ng-template>
+                                </td>
+                                <td>
+                                    <a *ngIf="!lsp.isBlueCardSpeaker;else isBlueCardAction" href="#"
+                                        class="table-row-column" (click)="moveToSelected(lsp.id)">
+                                        <fa-icon [icon]="faPlusSquare"></fa-icon>
+                                    </a>
+                                    <ng-template #isBlueCardAction>
+                                        <fa-icon [icon]="faPlusSquare" class="table-row-column fa-disabled"></fa-icon>
+                                    </ng-template>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-        <div class="col-sm-8">
+        <div class="col-md-8">
             <div class="container">
-                <div class="table">
-                    <div class="table-row table-header">
-                        <div class="table-row-column table-row-index"><small><b>#</b></small></div>
-                        <div class="table-row-column"><small><b>Name (PG / Function)</b></small></div>
-                        <div class="table-row-column"><small><b>Display function</b></small></div>
-                        <div class="table-row-column"><small><b>On behalf of group</b></small></div>
-                        <div class="table-row-column"><small><b>Blue card status</b></small></div>
-                        <div class="table-row-column"><small><b>Blue card name</b></small></div>
-                        <div class="table-row-column"><small><b>Action</b></small></div>
-                    </div>
-                    <div cdkDropList [cdkDropListData]="selectedLsp" (cdkDropListDropped)="drop($event)">
-                        <div class="table-row" *ngFor="let lsp of selectedLsp" cdkDrag>
-                            <div class="table-row-column table-row-index"><small>{{lsp.id}}</small></div>
-                            <div class="table-row-column "><small>{{lsp.fullName}}</small></div>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th style="width:5%" scope="col"><small><b>#</b></small></th>
+                                <th style="width:30%" scope="col"><small><b>Name (PG / Function)</b></small></th>
+                                <th style="width:5%" scope="col"><small><b>Display function</b></small></th>
+                                <th style="width:10%" scope="col"><small><b>On behalf of group</b></small></th>
+                                <th style="width:20%" scope="col"><small><b>Blue card status</b></small></th>
+                                <th style="width:25%" scope="col"><small><b>Blue card name</b></small></th>
+                                <th style="width:5%" scope="col"><small><b>Action</b></small></th>
+                            </tr>
+                        </thead>
+                        <tbody cdkDropList [cdkDropListData]="selectedLsp" (cdkDropListDropped)="drop($event)">
+                            <tr *ngFor="let lsp of selectedLsp" cdkDrag>
+                                <th><small>{{lsp.id}}</small></th>
+                                <td><small>{{lsp.fullName}}</small></td>
+                                <td>
+                                    <fa-icon *ngIf="lsp.hasDisplayFunction;else hasDisplayFunctionFalse"
+                                        [icon]="faCheckSquare"></fa-icon>
+                                    <ng-template #hasDisplayFunctionFalse>
+                                        <fa-icon [icon]="faMinusSquare"></fa-icon>
+                                    </ng-template>
+                                </td>
+                                <td>
+                                    <fa-icon *ngIf="lsp.hasOnBehalfOfGroup;else hasOnBehalfOfGroupFalse"
+                                        [icon]="faCheckSquare"></fa-icon>
+                                    <ng-template #hasOnBehalfOfGroupFalse>
+                                        <fa-icon [icon]="faMinusSquare"></fa-icon>
+                                    </ng-template>
 
+                                </td>
 
-                            <div *ngIf="lsp.hasDisplayFunction;else hasDisplayFunctionFalse" class="table-row-column">
-                                <fa-icon [icon]="faCheckSquare"></fa-icon>
-                            </div>
-                            <ng-template #hasDisplayFunctionFalse>
-                                <fa-icon [icon]="faMinusSquare" class="table-row-column"></fa-icon>
-                            </ng-template>
-
-                            <div *ngIf="lsp.hasOnBehalfOfGroup;else hasOnBehalfOfGroupFalse" class="table-row-column">
-                                <fa-icon [icon]="faCheckSquare"></fa-icon>
-                            </div>
-                            <ng-template #hasOnBehalfOfGroupFalse>
-                                <fa-icon [icon]="faMinusSquare" class="table-row-column"></fa-icon>
-                            </ng-template>
-
-                            <div class="table-row-column"><small>{{lsp.blueCardStatus}}</small></div>
-                            <div class="table-row-column"><small>{{lsp.blueCardName}}</small></div>
-                            <a href="#" class="table-row-column" (click)="moveToAvailable(lsp.id)">
-                                <fa-icon [icon]="faMinusSquare" class="float-right"></fa-icon>
-                            </a>
-                        </div>
-                    </div>
-                    <!--div *ngIf="selectedLsp.length == 0" (dragover)="allowDrop($event)" (drop)="drop($event)"
-                        style="height:40px; border: 1px solid #aaaaaa;">
-
-                    </div-->
+                                <td>
+                                    <select class="form-control-sm" [(ngModel)]="lsp.blueCardStatus">
+                                        <option *ngFor="let c of blueCardStatuses" [ngValue]="c">{{c}}</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control-sm" [(ngModel)]="lsp.blueCardName">
+                                        <option *ngFor="let c of blueCardLsp" [ngValue]="c.fullName">{{c.fullName}}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td><a href="#" (click)="moveToAvailable(lsp.id)">
+                                        <fa-icon [icon]="faMinusSquare"></fa-icon>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -107,7 +121,8 @@
         </div>
         <div class="col-2">
             <div class="checkbox">
-                <label>Use "and" <input class="ml-1" type="checkbox" [checked]="andChecked" (change)="onAndChange($event)"></label>
+                <label>Use "and" <input class="ml-1" type="checkbox" [checked]="andChecked"
+                        (change)="onAndChange($event)"></label>
             </div>
         </div>
         <div class="col-2">

@@ -35,6 +35,8 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
   searchText: string;
 
   selectedLsp: ListOfSpeakers[] = [];
+  blueCardLsp: ListOfSpeakers[] = [];
+  blueCardStatuses: string[] = ['accepted', 'declined'];
   fullString: string;
   andChecked = false;
   lspDataToEditor: LspDataToEditor = { listOfSpeakers: [], isAndChecked: false, textValue: '' };
@@ -60,10 +62,13 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
         console.log('#### this.availableLsp:', this.availableLsp);
         console.log('#### this.selectedLsp:', this.selectedLsp);
         this.availableLsp = this.availableLsp.filter(value => !this.selectedLsp.some(e => e.id === value.id));
+        this.blueCardLsp = this.availableLsp.concat(this.selectedLsp).filter(value => value.isBlueCardSpeaker === true);
         //console.log('#### availableNonIntersection:', availableNonIntersection);
         //this.availableLsp = availableNonIntersection;
       });
       //this.availableLsp = this.availableLsp.filter(value => !dataFromEditor.listOfSpeakers.includes(value));
+    } else {
+      this.blueCardLsp = this.availableLsp.concat(this.selectedLsp).filter(value => value.isBlueCardSpeaker === true);
     }
   }
 
@@ -113,19 +118,26 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
       if (index === size - 1 && this.andChecked) {
         if (value.hasOnBehalfOfGroup) {
           this.fullString = this.fullString + ((this.fullString)
-            ? ' and ' + value.fullName + ', on behalf of the ' + value.behalfOfGroup + 'Group'
-            : value.fullName + ', on behalf of the ' + value.behalfOfGroup + 'Group');
+            ? ' and ' + value.fullName + ', on behalf of the ' + value.behalfOfGroup + ' Group'
+            : value.fullName + ', on behalf of the ' + value.behalfOfGroup + ' Group');
         } else {
           this.fullString = this.fullString + ((this.fullString) ? ' and ' + value.fullName : value.fullName);
         }
       } else {
         if (value.hasOnBehalfOfGroup) {
           this.fullString = this.fullString + ((this.fullString)
-            ? ',' + value.fullName + ', on behalf of the ' + value.behalfOfGroup + 'Group'
-            : value.fullName + ', on behalf of the ' + value.behalfOfGroup + 'Group');
+            ? ',' + value.fullName + ', on behalf of the ' + value.behalfOfGroup + ' Group'
+            : value.fullName + ', on behalf of the ' + value.behalfOfGroup + ' Group');
         } else {
           this.fullString = this.fullString + ((this.fullString) ? ',' + value.fullName : value.fullName);
         }
+      }
+      if (value.blueCardStatus === 'accepted') {
+        this.fullString = this.fullString + ',  who also replied to a blue-card question by ' + value.blueCardName;
+      } else if (value.blueCardStatus === 'declined') {
+        this.fullString = this.fullString + ',  who also declined to take a blue-card question by ' + value.blueCardName;
+      } else if (value.blueCardStatus === 'accepted-two') {
+        this.fullString = this.fullString + ',  who also replied to a blue-card question by ' + value.blueCardName;
       }
       console.log('#### current fullString:', this.fullString);
     }
