@@ -83,6 +83,6 @@
     "src/**/*.html": [
       "bin/html-beautify-check"
     ],
-    "src/**/*.{ts,css,less,js}": ["./node_modules/.bin/eslint — fix", "prettier --config .prettierrc -l", "git add"]
+    "src/**/*.{ts,css,less,js}": ["./node_modules/.bin/eslint --fix", "prettier --config .prettierrc -l", "git add"]
   }
 }
