@@ -1,125 +1,139 @@
 <div role="main">
-  <div class="d-flex" id="wrapper" [ngClass]="toggleStatus ? 'toggled' : ''">
-    <!-- Sidebar -->
-    <div class="bg-light border-right" id="sidebar-wrapper">
-      <div class="sidebar-heading">ACTA </div>
-      <!-- Accordion start -->
-      <div class="list-group list-group-flush">
-        <a href="#collapse1" class="btn btn-link list-group-item list-group-item-action bg-light group-menu"
+    <div class="d-flex" id="wrapper" [ngClass]="toggleStatus ? 'toggled' : ''">
+        <!-- Sidebar -->
+        <div class="bg-light border-right" id="sidebar-wrapper">
+            <div class="sidebar-heading">ACTA </div>
+            <!-- Accordion start -->
+            <div class="list-group list-group-flush">
+                <a href="#collapse1" class="btn btn-link list-group-item list-group-item-action bg-light group-menu"
           data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapse1">
           <fa-icon [icon]="faFile"></fa-icon> File
         </a>
-        <div class="card collapse" id="collapse1">
-          <div class="card-body">
-            <div *ngFor="let fileElement of menuFile">
-              <div class="btn btn-link list-group-item list-group-item-action subitem"
-                (click)="onFileElementClick($event, fileElement)">
-                <span *ngIf="fileElement === selectedMenuElement; else isNotBold"
-                  class="text-primary font-weight-bold">{{fileElement}}</span>
-                <ng-template #isNotBold>{{fileElement}}</ng-template>
-              </div>
-            </div>
-          </div>
-        </div>
+                <div class="card collapse" id="collapse1">
+                    <div class="card-body">
+                        <div *ngFor="let fileElement of menuFile">
+                            <div class="btn btn-link list-group-item list-group-item-action subitem"
+                                (click)="onFileElementClick($event, fileElement)">
+                                <span
+                                    *ngIf="fileElement === selectedMenuElement; else isNotBold"
+                                    class="text-primary font-weight-bold">{{fileElement}}</span>
+                                <ng-template #isNotBold>{{fileElement}}
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        <a href="#collapse2" class="btn btn-link list-group-item list-group-item-action bg-light group-menu"
+                <a href="#collapse2" class="btn btn-link list-group-item list-group-item-action bg-light group-menu"
           data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapse2">
           <fa-icon [icon]="faCubes"></fa-icon> Predefined BB
         </a>
-        <div class="card collapse" id="collapse2">
-          <div class="card-body">
-            <div *ngFor="let bbElement of menuBB">
-              <div class="btn btn-link list-group-item list-group-item-action subitem"
-                (click)="onBBElementClick($event, bbElement)">
-                <span *ngIf="bbElement === selectedMenuElement; else isNotBold"
-                  class="text-primary font-weight-bold">{{bbElement}}</span>
-                <ng-template #isNotBold>{{bbElement}}</ng-template>
-              </div>
-              <div *ngIf="searchMenuElements.includes(selectedMenuElement) && bbElement === selectedMenuElement && bbElement === 'Strings'">
-                <app-stword-sidebar></app-stword-sidebar>
-              </div>
-              <div *ngIf="searchMenuElements.includes(selectedMenuElement) && bbElement === selectedMenuElement && bbElement === 'Snippets'">
-                <app-snippet-sidebar></app-snippet-sidebar>
-              </div>
-            </div>
-          </div>
-        </div>
+                <div class="card collapse" id="collapse2">
+                    <div class="card-body">
+                        <div *ngFor="let bbElement of menuBB">
+                            <div class="btn btn-link list-group-item list-group-item-action subitem"
+                                (click)="onBBElementClick($event, bbElement)">
+                                <span
+                                    *ngIf="bbElement === selectedMenuElement; else isNotBold"
+                                    class="text-primary font-weight-bold">{{bbElement}}</span>
+                                <ng-template #isNotBold>{{bbElement}}
+                                </ng-template>
+                            </div>
+                            <div
+                                *ngIf="searchMenuElements.includes(selectedMenuElement) && bbElement === selectedMenuElement && bbElement === 'Strings'">
+                                <app-stword-sidebar></app-stword-sidebar>
+                            </div>
+                            <div
+                                *ngIf="searchMenuElements.includes(selectedMenuElement) && bbElement === selectedMenuElement && bbElement === 'Snippets'">
+                                <app-snippet-sidebar></app-snippet-sidebar>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        <a href="#collapse3" class="btn btn-link list-group-item list-group-item-action bg-light group-menu"
+                <a href="#collapse3" class="btn btn-link list-group-item list-group-item-action bg-light group-menu"
           data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapse3">
           <fa-icon [icon]="faFile"></fa-icon> Test menu
         </a>
-        <div class="card collapse" id="collapse3">
-          <div class="card-body">
-            <div>
-              <div class="btn btn-link list-group-item list-group-item-action subitem">
-                <span class="text-primary font-weight-bold" (click)="openForm()">Test strings</span>
-                <div #myForm class="form-popup" id="myForm">
-                  
-  
-<app-stword-sidebar [closeButton]="true" (messageToEmit)="getStwordMessage($event)"></app-stword-sidebar>
+                <div class="card collapse" id="collapse3">
+                    <div class="card-body">
+                        <div>
+                            <div
+                                class="btn btn-link list-group-item list-group-item-action subitem">
+                                <span class="text-primary font-weight-bold"
+                                    (click)="openForm()">Test strings</span>
+                                <div #myForm class="form-popup" id="myForm">
 
+                                    <app-stword-sidebar [closeButton]="true"
+                                        (messageToEmit)="getStwordMessage($event)">
+                                    </app-stword-sidebar>
 
+                                </div>
 
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
-              </div>
+
             </div>
-          </div>
+            <!-- Accordion end -->
         </div>
+        <!-- /#sidebar-wrapper -->
 
-      </div>
-      <!-- Accordion end -->
-    </div>
-    <!-- /#sidebar-wrapper -->
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
 
-    <!-- Page Content -->
-    <div id="page-content-wrapper">
+            <nav
+                class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <button class="btn btn-info" id="menu-toggle"
+                    (click)="onToggle($event)">
+                    <span *ngIf="toggleStatus === false; else hideMenu">
+                        <fa-icon [icon]="faAngleDoubleLeft"></fa-icon> Hide Menu
+                    </span>
+                    <ng-template #hideMenu>
+                        <fa-icon [icon]="faAngleDoubleRight"></fa-icon> Show
+                        Menu
+                    </ng-template>
+                </button>
 
-      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-        <button class="btn btn-info" id="menu-toggle" (click)="onToggle($event)">
-          <span *ngIf="toggleStatus === false; else hideMenu">
-            <fa-icon [icon]="faAngleDoubleLeft"></fa-icon> Hide Menu
-          </span>
-          <ng-template #hideMenu>
-            <fa-icon [icon]="faAngleDoubleRight"></fa-icon> Show Menu
-          </ng-template>
-        </button>
+                <button class="navbar-toggler" type="button"
+                    data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                <div class="collapse navbar-collapse"
+                    id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Link</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 Dropdown
               </a>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-            </li>
-          </ul>
+                            <div class="dropdown-menu dropdown-menu-right"
+                                aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="container-fluid">
+                <app-multiroot-editor></app-multiroot-editor>
+            </div>
         </div>
-      </nav>
+        <!-- /#page-content-wrapper -->
 
-      <div class="container-fluid">
-        <app-multiroot-editor></app-multiroot-editor>
-      </div>
     </div>
-    <!-- /#page-content-wrapper -->
-
-  </div>
 </div>
