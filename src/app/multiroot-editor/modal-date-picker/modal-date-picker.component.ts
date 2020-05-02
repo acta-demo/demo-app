@@ -12,6 +12,7 @@ export class ModalDatePickerComponent implements OnInit {
     @Input() fromParent: any;
 
     dateSelected: NgbDate | null = null;
+
     faWindowClose = faWindowClose;
 
     constructor(public activeModal: NgbActiveModal, private calendar: NgbCalendar) {}
