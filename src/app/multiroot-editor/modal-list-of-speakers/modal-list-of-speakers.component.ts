@@ -49,7 +49,7 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
         textValue: '',
     };
 
-    @Input() fromParent;
+    @Input() fromParent: LspDataToEditor;
     faWindowClose = faWindowClose;
     faPlusSquare = faPlusSquare;
     faMinusCircle = faMinusCircle;
@@ -61,7 +61,7 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
     ngAfterViewInit() {
         if (this.fromParent) {
             console.log('#### this.fromParent:', this.fromParent);
-            const dataFromEditor: LspDataToEditor = JSON.parse(this.fromParent);
+            const dataFromEditor: LspDataToEditor = this.fromParent;
 
             setTimeout(() => {
                 this.selectedLsp = dataFromEditor.listOfSpeakers;
