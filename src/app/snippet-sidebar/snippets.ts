@@ -26,19 +26,19 @@ const SNIPPETS = [
     {
         dataid: '183',
         datacontent:
-            '<span class="lsp" data-id="162" data-viewmode="infoview" data-type="var_sp" data-json="{}">UNRESOLVED</span> made the statements',
+            '<span class="lsp" data-id="162" data-viewmode="infoview" data-type="var_sp" data-json="">UNRESOLVED</span> made the statements',
         datadesc: 'Made statements',
     },
     {
         dataid: '184',
         datacontent:
-            '<span class="lsp" data-id="161" data-viewmode="infoview" data-type="var_sp" data-json="{}">UNRESOLVED</span> introduced the report',
+            '<span class="lsp" data-id="161" data-viewmode="infoview" data-type="var_sp" data-json="">UNRESOLVED</span> introduced the report',
         datadesc: 'Intro report',
     },
     {
         dataid: '185',
         datacontent:
-            'The following spoke: <span class="lsp" data-id="161" data-viewmode="infoview" data-type="var_sp" data-json="{}">UNRESOLVED</span>',
+            'The following spoke: <span class="lsp" data-id="161" data-viewmode="infoview" data-type="var_sp" data-json="">UNRESOLVED</span>',
         datadesc: 'Following spoke',
     },
 ];
