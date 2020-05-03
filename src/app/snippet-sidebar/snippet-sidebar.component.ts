@@ -6,6 +6,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 interface Snippet {
     dataid: string;
     datacontent: string;
+    datadesc: string;
 }
 
 @Pipe({ name: 'safeHtml' })
@@ -45,8 +46,20 @@ export class SnippetSidebarComponent {
         } else {
             myElement = htmlDoc.querySelector('p');
         }
-        console.log('#### drag myElement.outerHTML:', myElement.outerHTML);
-        ev.dataTransfer.setData('text/html', myElement.outerHTML);
+        let dataContent = '';
+        const snpElement = this.snippets.filter(
+            snp => snp.dataid == myElement.getAttribute('data-id'),
+        );
+        if (snpElement && snpElement.length > 0) {
+            dataContent =
+                '<span class="snippet" data-id="' +
+                snpElement[0].dataid +
+                '" data-type="snp">' +
+                snpElement[0].datacontent +
+                '</span>';
+        }
+        console.log('#### drag dataContent:', dataContent);
+        ev.dataTransfer.setData('text/html', dataContent);
         if (type == 'span') {
             ev.dataTransfer.setData('text/plain', 'span');
         } else {
