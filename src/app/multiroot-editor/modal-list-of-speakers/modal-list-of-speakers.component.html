@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h5 class="modal-title">Set list of speakers</h5>
-    <fa-icon [icon]="faWindowClose" class="float-right"
+    <fa-icon [icon]="faWindowClose" class="float-right" style="cursor: pointer;"
         (click)="closeModal('dismiss')"></fa-icon>
 </div>
 <div class="modal-body">
@@ -73,7 +73,8 @@
         </div>
         <div class="col-md-8">
             <div class="container">
-                <div class="table-responsive">
+                <div class="table-responsive"
+                    style="max-height: 350px;min-width: 350px;">
                     <table class="table table-hover">
                         <thead>
                             <tr>
