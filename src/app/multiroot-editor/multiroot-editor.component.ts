@@ -55,7 +55,7 @@ export class MultirootEditorComponent implements AfterViewInit {
                 // window.editor = newEditor;
                 newEditor.setData({
                     content:
-                        '<p><span class="snippet" data-id="4444123" data-viewmode="infoview" data-type="snp">This is a test snippet <span class="standardword" data-id="1234" data-viewmode="infoview" data-type="str">This is a test</span> blah <span class="variable" data-id="9937" data-viewmode="infoview" data-type="var_date">UNRESOLVED</span> blah</span> kjkjk <span class="variable" data-id="9934" data-viewmode="infoview" data-type="var_date">UNRESOLVED</span> gdfgdd <span class="lsp" data-id="34343" data-viewmode="infoview" data-type="var_sp" data-json="{}">UNRESOLVED</span> gdgi</p>',
+                        '<p><span class="snippet" data-id="4444123" data-viewmode="infoview" data-type="snp">This is a test snippet <span class="standardword" data-id="1234" data-viewmode="infoview" data-type="str">This is a test</span> blah <span class="variable" data-id="9937" data-viewmode="infoview" data-type="var_date">UNRESOLVED</span> blah</span> kjkjk <span class="variable" data-id="9934" data-viewmode="infoview" data-type="var_date">UNRESOLVED</span> gdfgdd <span class="lsp" data-id="34343" data-viewmode="infoview" data-type="var_sp" data-json="">UNRESOLVED</span> gdgi</p>',
                 });
                 this.editorDrop(newEditor);
                 /// ///////////////////////
@@ -178,10 +178,6 @@ export class MultirootEditorComponent implements AfterViewInit {
             modalRef.result.then(result => {
                 if (result) {
                     console.log('#### EDITOR MODAL result:', result);
-                    console.log(
-                        '#### EDITOR MODAL result string:',
-                        result.hour + ':' + result.minute,
-                    );
                     this.Editor.model.change(writer => {
                         console.log(
                             '#### EDITOR MODAL result string:',
@@ -220,7 +216,11 @@ export class MultirootEditorComponent implements AfterViewInit {
             const modalRef = this.modalService.open(ModalListOfSpeakersComponent, {
                 size: 'xl',
             });
-            const dataToModal = modelElement.getAttribute('data-json');
+            const dataToModal: LspDataToEditor =
+                modelElement.getAttribute('data-json') &&
+                modelElement.getAttribute('data-json') !== ''
+                    ? JSON.parse(modelElement.getAttribute('data-json'))
+                    : { listOfSpeakers: [], isAndChecked: false, textValue: '' };
             console.log('dataToModal:', dataToModal);
             modalRef.componentInstance.fromParent = dataToModal;
             modalRef.result.then((result: LspDataToEditor) => {
