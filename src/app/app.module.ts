@@ -12,12 +12,14 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMenuModule } from '@angular/material';
 import { ContextMenuModule } from 'ngx-contextmenu';
-import { SnippetSidebarComponent, SafeHtmlPipe } from './snippet-sidebar/snippet-sidebar.component';
+import { SnippetSidebarComponent } from './snippet-sidebar/snippet-sidebar.component';
+import { SafeHtmlPipe } from './safe.html.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalDatePickerComponent } from './multiroot-editor/modal-date-picker/modal-date-picker.component';
 import { ModalTimePickerComponent } from './multiroot-editor/modal-time-picker/modal-time-picker.component';
 import { ModalStringPickerComponent } from './multiroot-editor/modal-string-picker/modal-string-picker.component';
 import { ModalListOfSpeakersComponent } from './multiroot-editor/modal-list-of-speakers/modal-list-of-speakers.component';
+import { ModalShowDiffComponent } from './multiroot-editor/modal-show-diff/modal-show-diff.component';
 
 @NgModule({
     declarations: [
@@ -31,6 +33,7 @@ import { ModalListOfSpeakersComponent } from './multiroot-editor/modal-list-of-s
         ModalTimePickerComponent,
         ModalStringPickerComponent,
         ModalListOfSpeakersComponent,
+        ModalShowDiffComponent,
     ],
     imports: [
         BrowserModule,
@@ -51,6 +54,7 @@ import { ModalListOfSpeakersComponent } from './multiroot-editor/modal-list-of-s
         ModalTimePickerComponent,
         ModalStringPickerComponent,
         ModalListOfSpeakersComponent,
+        ModalShowDiffComponent,
     ],
 })
 export class AppModule {}

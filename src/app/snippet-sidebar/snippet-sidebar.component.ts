@@ -1,20 +1,12 @@
 import { Component, Input, Output, EventEmitter, Pipe, PipeTransform } from '@angular/core';
 import SNIPPETS from './snippets';
 import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
-import { DomSanitizer } from '@angular/platform-browser';
+import { SafeHtmlPipe } from '../safe.html.pipe';
 
 interface Snippet {
     dataid: string;
     datacontent: string;
     datadesc: string;
-}
-
-@Pipe({ name: 'safeHtml' })
-export class SafeHtmlPipe implements PipeTransform {
-    constructor(private sanitized: DomSanitizer) {}
-    transform(value) {
-        return this.sanitized.bypassSecurityTrustHtml(value);
-    }
 }
 
 @Component({

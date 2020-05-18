@@ -1,6 +1,7 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import * as MultirootEditor from '../../assets/ckeditor.js';
-import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
+import { isMultirootEditorText, isMultirootEditorElement } from '../../assets/ckeditor.js';
+//mport CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 import { ContextMenuComponent } from 'ngx-contextmenu';
 import { ModalDatePickerComponent } from './modal-date-picker/modal-date-picker.component';
 import { ModalTimePickerComponent } from './modal-time-picker/modal-time-picker.component';
@@ -9,7 +10,9 @@ import {
     ModalListOfSpeakersComponent,
     LspDataToEditor,
 } from './modal-list-of-speakers/modal-list-of-speakers.component';
+import { ModalShowDiffComponent } from './modal-show-diff/modal-show-diff.component';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import * as MergeXML from 'mergexml';
 
 @Component({
     selector: 'app-multiroot-editor',
@@ -53,10 +56,10 @@ export class MultirootEditorComponent implements AfterViewInit {
                 this.toolbar.nativeElement.appendChild(newEditor.ui.view.toolbar.element);
                 // newEditor.setData({ header: '<p>ffsfsfsdfsdfsdfsdfs</p>'});
                 // window.editor = newEditor;
-                newEditor.setData({
+                /*newEditor.setData({
                     content:
                         '<p><span class="snippet" data-id="4444123" data-viewmode="infoview" data-type="snp">This is a test snippet <span class="standardword" data-id="1234" data-viewmode="infoview" data-type="str">This is a test</span> blah <span class="variable" data-id="9937" data-viewmode="infoview" data-type="var_date">UNRESOLVED</span> blah</span> kjkjk <span class="variable" data-id="9934" data-viewmode="infoview" data-type="var_date">UNRESOLVED</span> gdfgdd <span class="lsp" data-id="34343" data-viewmode="infoview" data-type="var_sp" data-json="">UNRESOLVED</span> gdgi</p>',
-                });
+                });*/
                 this.editorDrop(newEditor);
                 /// ///////////////////////
                 console.log('newEditor.ui.view:', newEditor.ui.view);
@@ -74,11 +77,175 @@ export class MultirootEditorComponent implements AfterViewInit {
                     console.log('contextmenu data.target:', data.target);
                     console.log('contextmenu modelElement:', modelElement);
                 });
-                // CKEditorInspector.attach(newEditor);
+                //CKEditorInspector.attach(newEditor);
             })
             .catch(err => {
                 console.error(err.stack);
             });
+    }
+
+    replaceNbsps(str: string) {
+        const re = new RegExp(String.fromCharCode(160), 'g');
+        return str.replace(re, ' ');
+    }
+    mergeHeaderAndFooter() {
+        /*const oMX = new MergeXML(  );
+        console.log('#### MergeXML initiated');
+        console.log('#### this.Editor.getData(header):', this.Editor.getData( { rootName: 'header' } ));
+        console.log('#### this.Editor.getData(footer):', this.Editor.getData( { rootName: 'footer' } ));
+        oMX.AddSource(this.Editor.getData( { rootName: 'header' } ));
+        oMX.AddSource(this.Editor.getData( { rootName: 'footer' } ));
+        console.log('#### oMX.Get(2):', oMX.Get(2));
+        console.log('#### oMX.count:', oMX.count);
+        */
+        console.log(
+            '#### this.Editor.getData( { rootName: header } ):',
+            this.Editor.getData({ rootName: 'header' }),
+        );
+        console.log(
+            '#### this.Editor.getData( { rootName: footer } ):',
+            this.Editor.getData({ rootName: 'footer' }),
+        );
+        const docHeader = new DOMParser().parseFromString(
+            '<div>' +
+                this.Editor.getData({ rootName: 'header' }).replace(/&nbsp;/gi, ' ') +
+                '</div>',
+            'text/xml',
+        );
+        const docFooter = new DOMParser().parseFromString(
+            '<div>' +
+                this.Editor.getData({ rootName: 'footer' }).replace(/&nbsp;/gi, ' ') +
+                '</div>',
+            'text/xml',
+        );
+
+        let footerNodesByParagraph: any = [];
+        // first loop footer to store all nodes
+        docFooter.querySelectorAll('p').forEach((valueFooter, indexFooter) => {
+            const posFooter = indexFooter;
+            console.log('#### mergeHeaderAndFooter footer value:', valueFooter);
+            const childrenNodes: any = valueFooter.childNodes;
+            console.log('#### mergeHeaderAndFooter footer childrenNodes:', childrenNodes);
+            childrenNodes.forEach((node, index) => {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    //Text
+                    const obj = {
+                        paragraph: posFooter,
+                        index: index,
+                        type: Node.TEXT_NODE,
+                        value: node.textContent,
+                        dataId: -1,
+                    };
+                    footerNodesByParagraph.push(obj);
+                } else if (node.nodeType === Node.ELEMENT_NODE) {
+                    const obj = {
+                        paragraph: posFooter,
+                        index: index,
+                        type: Node.ELEMENT_NODE,
+                        value: node.outerHTML,
+                        dataId: node.getAttribute('data-id'),
+                    };
+                    footerNodesByParagraph.push(obj);
+                }
+                console.log('#### mergeHeaderAndFooter inner node:', node);
+            });
+        });
+        console.log('#### mergeHeaderAndFooter footerNodesByParagraph:', footerNodesByParagraph);
+
+        const finalHtmlString: any = [];
+        docHeader.querySelectorAll('p').forEach((valueHeader, indexHeader) => {
+            const posHeader = indexHeader;
+            console.log(
+                '#### mergeHeaderAndFooter header value.childNodes:',
+                valueHeader.childNodes,
+            );
+            const footerPNodes = footerNodesByParagraph.filter(function (elem) {
+                //paragraph footer elements
+                return elem.paragraph == posHeader;
+            });
+            console.log('#### footerPNodes:', footerPNodes);
+            //remove current paragraph elements from footer list
+            footerNodesByParagraph = footerNodesByParagraph.filter(function (elem) {
+                return elem.paragraph != posHeader;
+            });
+            finalHtmlString.push('<p>');
+            const childenNodes: any = valueHeader.childNodes;
+            childenNodes.forEach(node => {
+                if (node.nodeType == Node.TEXT_NODE) {
+                    //Text
+                    finalHtmlString.push(node.textContent);
+                    const nodeFromFooter = footerPNodes.length > 0 ? footerPNodes[0] : undefined;
+                    //if there is also a Text node in footer ignore it. we asume header text is more updated
+                    if (nodeFromFooter && nodeFromFooter.type == Node.TEXT_NODE) {
+                        footerPNodes.shift();
+                    }
+                } else if (node.nodeType == Node.ELEMENT_NODE) {
+                    //Element
+                    console.log('#### HEADER ELEMENT_NODE node.outerHTML:', node.outerHTML);
+                    finalHtmlString.push(node.outerHTML);
+                    const nodeFromFooter = footerPNodes[0] ? footerPNodes[0] : undefined;
+                    if (
+                        nodeFromFooter &&
+                        nodeFromFooter.type == Node.ELEMENT_NODE &&
+                        node.getAttribute('data-id') != nodeFromFooter.dataId
+                    ) {
+                        finalHtmlString.push(nodeFromFooter.value);
+                        footerPNodes.shift();
+                    } else if (
+                        nodeFromFooter &&
+                        nodeFromFooter.type == Node.ELEMENT_NODE &&
+                        node.getAttribute('data-id') == nodeFromFooter.dataId
+                    ) {
+                        footerPNodes.shift();
+                    }
+                    //console.log('#### mergeHeaderAndFooter node.getAttribute(data-id):', node.getAttribute('data-id'));
+                }
+                console.log('#### mergeHeaderAndFooter finalHtmlString before:', finalHtmlString);
+                console.log('#### mergeHeaderAndFooter inner node:', node);
+            });
+            console.log('#### mergeHeaderAndFooter footerPNodes:', footerPNodes);
+            //if same paragraph in footer contains more nodes add them
+            if (footerPNodes && footerPNodes.length > 0) {
+                footerPNodes.forEach(node => {
+                    finalHtmlString.push(node.value);
+                });
+            }
+            finalHtmlString.push('</p>');
+            // remove from footer nodes this paragraph since it has been merged
+            footerNodesByParagraph = footerNodesByParagraph.filter(function (elem) {
+                //paragraph footer elements
+                return elem.paragraph != posHeader;
+            });
+        });
+        console.log(
+            '#### mergeHeaderAndFooter finalHtmlString before extra paragraphs:',
+            finalHtmlString,
+        );
+        // if footer contains more paragraphs include them to the final merged document
+        console.log('#### footerNodesByParagraph:', footerNodesByParagraph);
+        if (footerNodesByParagraph && footerNodesByParagraph.length > 0) {
+            const uniqueParagraphs = [
+                ...new Set(footerNodesByParagraph.map(item => item.paragraph)),
+            ];
+            console.log('#### uniqueParagraphs:', uniqueParagraphs);
+            uniqueParagraphs.forEach(paragraph => {
+                finalHtmlString.push('<p>');
+                const currentParagraphElements = footerNodesByParagraph.filter(function (elem) {
+                    //paragraph footer elements
+                    return elem.paragraph == paragraph;
+                });
+                currentParagraphElements.forEach(node => {
+                    finalHtmlString.push(node.value);
+                });
+                finalHtmlString.push('<p>');
+                footerNodesByParagraph = footerNodesByParagraph.filter(function (elem) {
+                    //paragraph footer elements
+                    return elem.paragraph != paragraph;
+                });
+            });
+        }
+        console.log('#### mergeHeaderAndFooter finalHtmlString:', finalHtmlString);
+        this.Editor.setData({ content: finalHtmlString.join('') });
     }
 
     private getDismissReason(reason: any): string {
@@ -109,6 +276,32 @@ export class MultirootEditorComponent implements AfterViewInit {
         console.log('#### onContextMenuDelete $event:', $event);
         const keyEvent = new KeyboardEvent('keydown', { key: 'Backspace' });
         this.contentE.nativeElement.dispatchEvent(keyEvent);
+    }
+
+    showDiff(diffType: string) {
+        const modalRef = this.modalService.open(ModalShowDiffComponent, {
+            size: 'xl',
+        });
+        const dataToModal = { footer: '', header: '', diffType: diffType };
+        const footerParagraphs = this.footerE.nativeElement.querySelectorAll('p');
+        const headerParagraphs = this.headerE.nativeElement.querySelectorAll('p');
+        for (const p of footerParagraphs) {
+            dataToModal.footer += p.textContent.concat('\r\n');
+        }
+        for (const p of headerParagraphs) {
+            dataToModal.header += p.textContent.concat('\r\n');
+        }
+        console.log('dataToModal:', dataToModal);
+        modalRef.componentInstance.fromParent = dataToModal;
+        modalRef.result.then(result => {
+            if (result) {
+                console.log('#### EDITOR MODAL result:', result);
+                console.log(
+                    '#### EDITOR MODAL result string:',
+                    result.year + '/' + result.month + '/' + result.day,
+                );
+            }
+        });
     }
 
     onContextMenuResolve($event) {
@@ -283,6 +476,105 @@ export class MultirootEditorComponent implements AfterViewInit {
             this.contentParentHeight = '300';
         } else {
             this.contentParentHeight = '500';
+        }
+    }
+
+    hasMakeAllText() {
+        const modelElement = this.selectedEditorModelElement;
+        if (
+            modelElement &&
+            modelElement.parent &&
+            modelElement.parent.name &&
+            modelElement.parent.name === 'paragraph'
+        ) {
+            return true;
+        }
+        return false;
+    }
+
+    hasMakeTextNoVars() {
+        const modelElement = this.selectedEditorModelElement;
+        if (
+            modelElement &&
+            modelElement.name === 'snp' &&
+            modelElement.parent &&
+            modelElement.parent.name &&
+            modelElement.parent.name === 'paragraph'
+        ) {
+            return true;
+        }
+        return false;
+    }
+
+    makeAllText() {
+        const modelElement = this.selectedEditorModelElement;
+        console.log(
+            '#### makeFreeText this.selectedEditorModelElement:',
+            this.selectedEditorModelElement,
+        );
+        console.log('#### makeFreeText modelElement:', modelElement);
+        if (
+            modelElement &&
+            modelElement.parent &&
+            modelElement.parent.name &&
+            modelElement.parent.name === 'paragraph'
+        ) {
+            console.log('#### makeFreeText modelElement.parent.name:', modelElement.parent.name);
+            const viewElement = this.Editor.editing.mapper.toViewElement(modelElement);
+            const doc = new DOMParser().parseFromString('', 'text/html');
+            console.log('#### makeFreeText doc:', doc);
+            const node = this.Editor.editing.view.domConverter.viewToDom(
+                viewElement,
+                doc,
+                false,
+                true,
+            );
+            const textContent = node.textContent;
+            console.log('#### makeFreeText node:', node);
+            console.log('#### makeFreeText node.textContent:', node.textContent);
+            const finalText = textContent.replace(
+                /(({var_time:[^:]*:)|(})|({var_date:[^:]*:)|(})|({var_str:[^:]*:)|(})|({str:[^:]*:)|(}))/g,
+                '',
+            );
+            console.log('#### makeFreeText finalText:', finalText);
+            this.Editor.model.change(writer => {
+                writer.remove(modelElement);
+                const insertPosition = this.Editor.model.document.selection.getFirstPosition();
+                writer.insertText(finalText, {}, insertPosition);
+            });
+        }
+    }
+
+    makeTextWithVariables() {
+        const modelElement = this.selectedEditorModelElement;
+        if (
+            modelElement &&
+            MultirootEditor.isElement(modelElement) &&
+            modelElement.parent &&
+            modelElement.parent.name &&
+            modelElement.parent.name === 'paragraph'
+        ) {
+            this.Editor.model.change(writer => {
+                writer.remove(modelElement);
+            });
+
+            const childs = modelElement.getChildren();
+            for (const element of childs) {
+                console.log('#### makeFreeText modelElement child element:', element);
+                if (MultirootEditor.isElement(element)) {
+                    console.log('#### makeFreeText modelElement child is ELEMENT:');
+                    this.Editor.model.change(writer => {
+                        const insertPosition = this.Editor.model.document.selection.getFirstPosition();
+                        writer.insert(element, insertPosition);
+                    });
+                } else if (MultirootEditor.isText(element)) {
+                    console.log('#### makeFreeText modelElement child is TEXT:');
+                    this.Editor.model.change(writer => {
+                        const insertPosition = this.Editor.model.document.selection.getFirstPosition();
+                        writer.insertText(element.data, {}, insertPosition);
+                    });
+                }
+            }
         }
     }
 }

@@ -1,0 +1,29 @@
+<div class="modal-header">
+    <h5 class="modal-title">Differences example</h5>
+    <fa-icon [icon]="faWindowClose" class="float-right" style="cursor: pointer;"
+        (click)="closeModal('dismiss')"></fa-icon>
+</div>
+<div class="modal-body">
+    <label for="typeahead-basic">Show differences between header/footer</label>
+    <div class="row">
+        <div class="col">
+            <b>Header</b>
+        </div>
+        <div class="col text-left">
+            <b>Footer</b>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div [innerHTML]="html_diffs_reverse | safeHtml"></div>
+        </div>
+        <div class="col text-left">
+            <div [innerHTML]="html_diffs | safeHtml"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+        (click)="closeModal('cancel')">Close</button>
+</div>

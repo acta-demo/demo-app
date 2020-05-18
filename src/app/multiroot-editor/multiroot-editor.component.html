@@ -5,9 +5,16 @@
                 *ngIf="showHeaderFooter === false; else hideHeaderFooter"
                 (click)="onHeaderFooter($event)">Show header / footer</button>
             <ng-template #hideHeaderFooter><button type="button"
-                    class="btn btn-secondary"
+                    class="btn btn-secondary mr-1"
                     (click)="onHeaderFooter($event)">Hide header
                     / footer</button></ng-template>
+            <button type="button" class="btn btn-info mr-1"
+                (click)="showDiff('word')">Diff by word (header/footer)</button>
+            <button type="button" class="btn btn-info mr-1"
+                (click)="showDiff('efficiency')">Diff with efficiency
+                (header/footer)</button>
+            <button type="button" class="btn btn-info mr-1"
+                (click)="mergeHeaderAndFooter()">Merge (header/footer)</button>
         </div>
         <div #toolbar id="toolbar"></div>
         <div class="paddingbottom"></div>
@@ -42,6 +49,14 @@
     <ng-template contextMenuItem let-item
         (execute)="onContextMenuResolve($event)">
         <a href="#" class="list-group-item list-group-item-action">Resolve</a>
+    </ng-template>
+    <ng-template contextMenuItem let-item *ngIf="hasMakeAllText()"
+        (execute)="makeAllText()">
+        <a href="#" class="list-group-item list-group-item-action" [ngClass]="{'isLinkDisabled':hasMakeAllText() === false}">Make all text</a>
+    </ng-template>
+    <ng-template contextMenuItem let-item *ngIf="hasMakeTextNoVars()"
+        (execute)="makeTextWithVariables()">
+        <a href="#" class="list-group-item list-group-item-action" [ngClass]="{'isLinkDisabled':hasMakeTextNoVars() === false}">Make text with variables</a>
     </ng-template>
     <ng-template contextMenuItem divider="true"></ng-template>
     <ng-template contextMenuItem let-item

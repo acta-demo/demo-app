@@ -32,7 +32,10 @@
     "@ng-bootstrap/ng-bootstrap": "^5.3.1",
     "@popperjs/core": "^2.3.3",
     "bootstrap": "^4.4.1",
+    "diff-match-patch": "^1.0.4",
+    "diff-match-patch-line-and-word": "^0.1.2",
     "jquery": "^3.4.1",
+    "mergexml": "^1.2.1",
     "ngx-contextmenu": "^5.4.0",
     "popper.js": "^1.16.1",
     "rxjs": "~6.4.0",
@@ -83,6 +86,10 @@
     "src/**/*.html": [
       "bin/html-beautify-check"
     ],
-    "src/**/*.{ts,css,less,js}": ["./node_modules/.bin/eslint --ignore-pattern **/*.spec.ts --fix", "prettier --config .prettierrc -l", "git add"]
+    "src/**/*.{ts,css,less,js}": [
+      "./node_modules/.bin/eslint --ignore-pattern **/*.spec.ts --fix",
+      "prettier --config .prettierrc -l",
+      "git add"
+    ]
   }
 }
