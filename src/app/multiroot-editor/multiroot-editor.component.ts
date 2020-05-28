@@ -1,6 +1,5 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import * as MultirootEditor from '../../assets/ckeditor.js';
-import { isMultirootEditorText, isMultirootEditorElement } from '../../assets/ckeditor.js';
 //mport CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 import { ContextMenuComponent } from 'ngx-contextmenu';
 import { ModalDatePickerComponent } from './modal-date-picker/modal-date-picker.component';
@@ -10,9 +9,9 @@ import {
     ModalListOfSpeakersComponent,
     LspDataToEditor,
 } from './modal-list-of-speakers/modal-list-of-speakers.component';
+import { ModalTitlesComponent, TitleToEditor } from './modal-titles/modal-titles.component';
 import { ModalShowDiffComponent } from './modal-show-diff/modal-show-diff.component';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import * as MergeXML from 'mergexml';
 
 @Component({
     selector: 'app-multiroot-editor',
@@ -37,6 +36,10 @@ export class MultirootEditorComponent implements AfterViewInit {
     closeResult = '';
     selectedEditorModelElement: any;
 
+    enableInput;
+    enableDelete;
+    enableForwardDelete;
+
     constructor(private modalService: NgbModal) {}
 
     showMessage(message: any) {
@@ -60,6 +63,11 @@ export class MultirootEditorComponent implements AfterViewInit {
                     content:
                         '<p><span class="snippet" data-id="4444123" data-viewmode="infoview" data-type="snp">This is a test snippet <span class="standardword" data-id="1234" data-viewmode="infoview" data-type="str">This is a test</span> blah <span class="variable" data-id="9937" data-viewmode="infoview" data-type="var_date">UNRESOLVED</span> blah</span> kjkjk <span class="variable" data-id="9934" data-viewmode="infoview" data-type="var_date">UNRESOLVED</span> gdfgdd <span class="lsp" data-id="34343" data-viewmode="infoview" data-type="var_sp" data-json="">UNRESOLVED</span> gdgi</p>',
                 });*/
+                newEditor.setData({
+                    content:
+                        '<p><span class="title" data-id="34343" data-viewmode="infoview" data-type="title" data-json="">UNRESOLVED</span> gdgi</p>',
+                });
+
                 this.editorDrop(newEditor);
                 /// ///////////////////////
                 console.log('newEditor.ui.view:', newEditor.ui.view);
@@ -77,6 +85,49 @@ export class MultirootEditorComponent implements AfterViewInit {
                     console.log('contextmenu data.target:', data.target);
                     console.log('contextmenu modelElement:', modelElement);
                 });
+
+                newEditor.listenTo(newEditor.editing.view.document, 'click', (evt, data) => {
+                    const modelElement = newEditor.editing.mapper.toModelElement(data.target);
+                    this.selectedEditorModelElement = modelElement;
+                    console.log('click data:', data);
+                    console.log('click data.target:', data.target);
+                    console.log('click modelElement:', modelElement);
+                    if (
+                        modelElement &&
+                        modelElement.parent &&
+                        modelElement.parent.name &&
+                        modelElement.parent.name === 'snp'
+                    ) {
+                        setTimeout(() => {
+                            this.enableInput = MultirootEditor.disableInput(this.Editor);
+                            this.enableDelete = MultirootEditor.disableDelete(this.Editor);
+                            this.enableForwardDelete = MultirootEditor.disableForwardDelete(
+                                this.Editor,
+                            );
+                        });
+                    } else if (
+                        this.enableInput &&
+                        typeof this.enableInput === 'function' &&
+                        this.enableDelete &&
+                        typeof this.enableDelete === 'function' &&
+                        this.enableForwardDelete &&
+                        typeof this.enableForwardDelete === 'function'
+                    ) {
+                        setTimeout(() => {
+                            this.enableInput();
+                            this.enableDelete();
+                            this.enableForwardDelete();
+                        });
+                    }
+                });
+                console.log('#### newEditor.commands:', newEditor.commands);
+                for (const command of newEditor.commands.commands()) {
+                    // Will become `command.enable( 'id' );`.
+                    //command.off('set:isEnabled', forceDisable);
+                    console.log('#### command:', command);
+                    command.isEnabled = false;
+                    command.refresh();
+                }
                 //CKEditorInspector.attach(newEditor);
             })
             .catch(err => {
@@ -417,6 +468,30 @@ export class MultirootEditorComponent implements AfterViewInit {
             console.log('dataToModal:', dataToModal);
             modalRef.componentInstance.fromParent = dataToModal;
             modalRef.result.then((result: LspDataToEditor) => {
+                if (result) {
+                    console.log('#### EDITOR MODAL result:', result);
+                    console.log('#### EDITOR MODAL result string:', result.textValue);
+                    this.Editor.model.change(writer => {
+                        writer.setAttribute('data-content', result.textValue, modelElement);
+                        writer.setAttribute('data-json', JSON.stringify(result), modelElement);
+                    });
+                }
+            });
+        } else if (
+            viewElement.name === 'span' &&
+            viewElement.getAttribute('data-type') === 'title'
+        ) {
+            const modalRef = this.modalService.open(ModalTitlesComponent, {
+                size: 'xl',
+            });
+            const dataToModal: TitleToEditor =
+                modelElement.getAttribute('data-json') &&
+                modelElement.getAttribute('data-json') !== ''
+                    ? JSON.parse(modelElement.getAttribute('data-json'))
+                    : { titleId: 0, isOverridden: false, templateId: 1, textValue: '' };
+            console.log('dataToModal:', dataToModal);
+            modalRef.componentInstance.fromParent = dataToModal;
+            modalRef.result.then((result: TitleToEditor) => {
                 if (result) {
                     console.log('#### EDITOR MODAL result:', result);
                     console.log('#### EDITOR MODAL result string:', result.textValue);

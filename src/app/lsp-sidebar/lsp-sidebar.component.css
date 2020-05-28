@@ -1,0 +1,17 @@
+.listitem:hover {
+    cursor: pointer;
+}
+
+.listscroll {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    max-height: 200px;
+}
+
+.searchsubmenu {
+    font-size: smaller;
+    padding: 4px;
+    opacity: 1;
+    background-color: #f8f9fa;
+}

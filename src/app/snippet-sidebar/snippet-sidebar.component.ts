@@ -1,7 +1,6 @@
-import { Component, Input, Output, EventEmitter, Pipe, PipeTransform } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import SNIPPETS from './snippets';
 import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
-import { SafeHtmlPipe } from '../safe.html.pipe';
 
 interface Snippet {
     dataid: string;

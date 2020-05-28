@@ -20,6 +20,9 @@ import { ModalTimePickerComponent } from './multiroot-editor/modal-time-picker/m
 import { ModalStringPickerComponent } from './multiroot-editor/modal-string-picker/modal-string-picker.component';
 import { ModalListOfSpeakersComponent } from './multiroot-editor/modal-list-of-speakers/modal-list-of-speakers.component';
 import { ModalShowDiffComponent } from './multiroot-editor/modal-show-diff/modal-show-diff.component';
+import { LspSidebarComponent } from './lsp-sidebar/lsp-sidebar.component';
+import { VariableSidebarComponent } from './variable-sidebar/variable-sidebar.component';
+import { ModalTitlesComponent } from './multiroot-editor/modal-titles/modal-titles.component';
 
 @NgModule({
     declarations: [
@@ -34,6 +37,9 @@ import { ModalShowDiffComponent } from './multiroot-editor/modal-show-diff/modal
         ModalStringPickerComponent,
         ModalListOfSpeakersComponent,
         ModalShowDiffComponent,
+        LspSidebarComponent,
+        VariableSidebarComponent,
+        ModalTitlesComponent,
     ],
     imports: [
         BrowserModule,
@@ -55,6 +61,7 @@ import { ModalShowDiffComponent } from './multiroot-editor/modal-show-diff/modal
         ModalStringPickerComponent,
         ModalListOfSpeakersComponent,
         ModalShowDiffComponent,
+        ModalTitlesComponent,
     ],
 })
 export class AppModule {}

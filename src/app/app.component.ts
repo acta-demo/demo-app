@@ -16,8 +16,8 @@ export class AppComponent {
 
     toggleStatus = false;
     menuFile: string[] = ['Open document', 'Open template'];
-    menuBB: string[] = ['Snippets', 'Strings', 'References', 'Variables', 'List of speakers'];
-    searchMenuElements: string[] = ['Strings', 'Snippets'];
+    menuBB: string[] = ['List of speakers', 'Snippets', 'Strings', 'Variables'];
+    searchMenuElements: string[] = ['Strings', 'Snippets', 'Variables', 'List of speakers'];
     selectedMenuElement = '';
     faFile = faFile;
     faCubes = faCubes;
@@ -51,18 +51,19 @@ export class AppComponent {
     }
 
     onBBElementClick($event, element) {
-        this.menuBB.sort(function (x, y) {
+        /*this.menuBB.sort(function (x, y) {
             return x === element ? -1 : y === element ? 1 : 0;
-        });
+        });*/
         this.selectedMenuElement = element;
         console.log('this.menuBB:', this.menuBB);
-        const intersection: string[] = this.menuBB.filter(value =>
+        /*const intersection: string[] = this.menuBB.filter(value =>
             this.searchMenuElements.includes(value),
         );
         if (intersection.length > 0) {
             console.log('INTERSECTION');
-        }
+        }*/
     }
+
     onToggle($event) {
         $event.preventDefault();
         this.toggleStatus = !this.toggleStatus;

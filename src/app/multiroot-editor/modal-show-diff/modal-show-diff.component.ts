@@ -3,7 +3,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
 import DiffMatchPatch from 'diff-match-patch';
 //import 'diff-match-patch-line-and-word';
-import { SafeHtmlPipe } from '../../safe.html.pipe';
 
 @Component({
     selector: 'app-modal-show-diff',

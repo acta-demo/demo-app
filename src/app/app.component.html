@@ -1,7 +1,9 @@
 <div role="main">
     <div class="d-flex" id="wrapper" [ngClass]="toggleStatus ? 'toggled' : ''">
         <!-- Sidebar -->
-        <div class="bg-light border-right" id="sidebar-wrapper">
+        <div class="bg-light border-right" id="sidebar-wrapper"
+            *ngIf="toggleStatus === false; else showRightOpenSign">
+            <a (click)="onToggle($event)" style="cursor:pointer;float:right;"><fa-icon class="fa-lg" [icon]="faAngleDoubleLeft"></fa-icon></a>
             <div class="sidebar-heading">ACTA </div>
             <!-- Accordion start -->
             <div class="list-group list-group-flush">
@@ -26,7 +28,7 @@
 
                 <a href="#collapse2" class="btn btn-link list-group-item list-group-item-action bg-light group-menu"
           data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapse2">
-          <fa-icon [icon]="faCubes"></fa-icon> Predefined BB
+          <fa-icon [icon]="faCubes"></fa-icon> Building blocks
         </a>
                 <div class="card collapse" id="collapse2">
                     <div class="card-body">
@@ -46,6 +48,14 @@
                             <div
                                 *ngIf="searchMenuElements.includes(selectedMenuElement) && bbElement === selectedMenuElement && bbElement === 'Snippets'">
                                 <app-snippet-sidebar></app-snippet-sidebar>
+                            </div>
+                            <div
+                                *ngIf="searchMenuElements.includes(selectedMenuElement) && bbElement === selectedMenuElement && bbElement === 'Variables'">
+                                <app-variable-sidebar></app-variable-sidebar>
+                            </div>
+                            <div
+                                *ngIf="searchMenuElements.includes(selectedMenuElement) && bbElement === selectedMenuElement && bbElement === 'List of speakers'">
+                                <app-lsp-sidebar></app-lsp-sidebar>
                             </div>
                         </div>
                     </div>
@@ -78,6 +88,9 @@
             </div>
             <!-- Accordion end -->
         </div>
+        <ng-template #showRightOpenSign>
+            <a (click)="onToggle($event)" style="cursor:pointer"><fa-icon class="fa-lg" [icon]="faAngleDoubleRight"></fa-icon></a>
+        </ng-template>
         <!-- /#sidebar-wrapper -->
 
         <!-- Page Content -->
@@ -85,7 +98,7 @@
 
             <nav
                 class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-                <button class="btn btn-info" id="menu-toggle"
+                <!--button class="btn btn-info" id="menu-toggle"
                     (click)="onToggle($event)">
                     <span *ngIf="toggleStatus === false; else hideMenu">
                         <fa-icon [icon]="faAngleDoubleLeft"></fa-icon> Hide Menu
@@ -94,7 +107,7 @@
                         <fa-icon [icon]="faAngleDoubleRight"></fa-icon> Show
                         Menu
                     </ng-template>
-                </button>
+                </button-->
 
                 <button class="navbar-toggler" type="button"
                     data-toggle="collapse" data-target="#navbarSupportedContent"

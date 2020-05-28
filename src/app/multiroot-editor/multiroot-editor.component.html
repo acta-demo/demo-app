@@ -43,26 +43,27 @@
 
 </div>
 <context-menu #basicMenu>
-    <ng-template contextMenuItem (execute)="onContextMenuDelete($event)">
+    <!--ng-template contextMenuItem (execute)="onContextMenuDelete($event)">
         <a href="#" class="list-group-item list-group-item-action">Delete</a>
-    </ng-template>
+    </ng-template-->
     <ng-template contextMenuItem let-item
         (execute)="onContextMenuResolve($event)">
         <a href="#" class="list-group-item list-group-item-action">Resolve</a>
     </ng-template>
     <ng-template contextMenuItem let-item *ngIf="hasMakeAllText()"
         (execute)="makeAllText()">
-        <a href="#" class="list-group-item list-group-item-action" [ngClass]="{'isLinkDisabled':hasMakeAllText() === false}">Make all text</a>
+        <a href="#" class="list-group-item list-group-item-action" [ngClass]="{'isLinkDisabled':hasMakeAllText() === false}">Unlock all</a>
     </ng-template>
     <ng-template contextMenuItem let-item *ngIf="hasMakeTextNoVars()"
         (execute)="makeTextWithVariables()">
-        <a href="#" class="list-group-item list-group-item-action" [ngClass]="{'isLinkDisabled':hasMakeTextNoVars() === false}">Make text with variables</a>
+        <a href="#" class="list-group-item list-group-item-action" [ngClass]="{'isLinkDisabled':hasMakeTextNoVars() === false}">Unlock</a>
     </ng-template>
-    <ng-template contextMenuItem divider="true"></ng-template>
+    <!--ng-template contextMenuItem divider="true"></ng-template>
     <ng-template contextMenuItem let-item
         (execute)="showMessage($event.item + ' said: ' + $event.item)">
         <a href="#" class="list-group-item list-group-item-action">Other</a>
-    </ng-template>
+    </ng-template-->
+    <!--
     <ng-template contextMenuItem [subMenu]="mySubMenu">
         <a href="#" class="list-group-item list-group-item-action">Add .... <span style="float:right">> </span></a>
     </ng-template>
@@ -76,6 +77,7 @@
             <a href="#" class="list-group-item list-group-item-action">Empty string</a>
         </ng-template>
     </context-menu>
+    -->
     <!-- <ng-template contextMenuItem passive="true">
     Input something: <input type="text">
   </ng-template> -->

@@ -1,0 +1,84 @@
+<div class="modal-header">
+    <h5 class="modal-title">Set title</h5>
+    <fa-icon [icon]="faWindowClose" class="float-right" style="cursor: pointer;"
+        (click)="closeModal('dismiss')"></fa-icon>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12 form-group">
+            <div class="container">
+                <div class="table-responsive"
+                    style="max-height: 350px;min-width: 350px;">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col"><small><b>#</b></small></th>
+                                <th scope="col">
+                                    <small><b>No</b></small>
+                                </th>
+                                <th scope="col">
+                                    <small><b>Body</b></small>
+                                </th>
+                                <th scope="col">
+                                    <small><b>Doc ref</b></small></th>
+                                <th scope="col"><small><b>Rapporteur</b></small>
+                                </th>
+                                <th scope="col"><small><b>Title</b></small>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let title of availableTitles; let i = index"
+                                (click)="selectRow(title)"
+                                [ngClass]="{'alert-primary':titleToEditor && title.id === titleToEditor.titleId}">
+                                <th style="text-align: center;">
+                                    <small>{{title.id}}</small></th>
+                                <td><small>{{title.no}}</small></td>
+                                <td><small>{{title.body}}</small></td>
+                                <td><small>{{title.docRef}}</small></td>
+                                <td><small>{{title.reporter}}</small></td>
+                                <td><small>{{title.title}}</small></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <hr />
+    <div class="form-inline row">
+        <div class="col-8">
+            <label for="dropdownTemplate" style="margin-right: 10px">Template
+                <select class="form-control-sm input-sm" id="dropdownTemplate"
+                    style="margin-left: 10px"
+                    [(ngModel)]="titleToEditor.templateId"
+                    (change)="onTemplateChange()">
+                    <option *ngFor="let option of templateOptions"
+                        [value]="option.id">{{option.text}}</option>
+                </select></label>
+        </div>
+        <div class="col-4">
+            <div class="checkbox">
+                <label>Override <input class="ml-1" type="checkbox"
+                        [checked]="titleToEditor.isOverridden"
+                        (click)="onTitleIsOverridden($event)"></label>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding-top: 10px;">
+        <div class="col-12">
+            <textarea class="form-control" #resultstring id="resultstring"
+                [(ngModel)]="selectedTitleText" rows="3"
+                [readonly]="!titleToEditor.isOverridden"
+                style="padding-left:15px"
+                (change)="updateTitleToEditor()"></textarea>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+            (click)="closeModal('cancel')">Close</button>
+        <button type="button" class="btn btn-primary"
+            (click)="closeModal('save')">Save changes</button>
+    </div>
