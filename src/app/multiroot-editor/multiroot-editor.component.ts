@@ -1,6 +1,6 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit, OnDestroy  } from '@angular/core';
 import * as MultirootEditor from '../../assets/ckeditor.js';
-//mport CKEditorInspector from '@ckeditor/ckeditor5-inspector';
+import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 import { ContextMenuComponent } from 'ngx-contextmenu';
 import { ModalDatePickerComponent } from './modal-date-picker/modal-date-picker.component';
 import { ModalTimePickerComponent } from './modal-time-picker/modal-time-picker.component';
@@ -12,13 +12,22 @@ import {
 import { ModalTitlesComponent, TitleToEditor } from './modal-titles/modal-titles.component';
 import { ModalShowDiffComponent } from './modal-show-diff/modal-show-diff.component';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { LoadDataService, LoadData } from '../services/load.data.service';
+import { ChangeLanguageService } from '../services/change.language.service';
+import { Subscription } from 'rxjs';
+import {
+    faNotEqual, faObjectGroup,
+
+} from '@fortawesome/free-solid-svg-icons';
+import DOCUMENT_DATA from '../document.data';
+import { GlobalVariables } from '../common/global.varibles';
 
 @Component({
     selector: 'app-multiroot-editor',
     templateUrl: './multiroot-editor.component.html',
     styleUrls: ['./multiroot-editor.component.css'],
 })
-export class MultirootEditorComponent implements AfterViewInit {
+export class MultirootEditorComponent implements AfterViewInit, OnDestroy  {
     @ViewChild('toolbar', { static: false }) toolbar: ElementRef;
     @ViewChild('header', { static: false }) headerE: ElementRef;
     @ViewChild('content', { static: false }) contentE: ElementRef;
@@ -31,19 +40,74 @@ export class MultirootEditorComponent implements AfterViewInit {
     isHeaderCollapsed = false;
     isContentCollapsed = false;
     isFooterCollapsed = false;
-    showHeaderFooter = true;
-    contentParentHeight = '300';
+    showHeaderFooter = false;
+    contentParentHeight = '500';
     closeResult = '';
     selectedEditorModelElement: any;
+    getDataHtml: string;
+    documentInfoMetadata: string = 'Document info/metadata';
 
-    enableInput;
-    enableDelete;
-    enableForwardDelete;
+    messages: any[] = [];
+    subscription: Subscription;
+    subscriptionLanguage: Subscription;
 
-    constructor(private modalService: NgbModal) {}
+    documents: any[] = [...DOCUMENT_DATA];
+    faNotEqual = faNotEqual;
+    faObjectGroup = faObjectGroup;
+
+    constructor(private modalService: NgbModal,
+        private loadDataService: LoadDataService,
+        private changeLanguageService: ChangeLanguageService) {
+        // subscribe to home component messages
+        this.subscription = this.loadDataService.getMessage().subscribe(message => {
+            if (message) {
+                console.log('#### subscription message:', message);
+                this.loadData(message);
+                this.messages.push(message);
+            } else {
+                // clear messages when empty message received
+                this.messages = [];
+            }
+        });
+
+        this.subscriptionLanguage = this.changeLanguageService.getMessage().subscribe(message => {
+            if (message) {
+                console.log('#### subscriptionLanguage message:', message);
+                this.changeLanguage(message);
+                this.messages.push(message);
+            } else {
+                // clear messages when empty message received
+                this.messages = [];
+            }
+        });
+    }
+
+    loadData(loaddata: LoadData): void {
+        console.log('#### documents:', this.documents);
+        console.log('#### loaddata:', loaddata);
+        const document = this.documents.find(doc => doc.language == loaddata.language && doc.type == loaddata.type);
+        this.Editor.setData({
+                    content:
+                        unescape(document.datacontent),
+                });
+        this.documentInfoMetadata = document.metadata;
+    }
+
+    changeLanguage(language: string): void {
+        GlobalVariables.docLanguage = language;
+        this.Editor.set('docLanguage', language);
+        this.Editor.setData({
+                    content: '',
+                });
+    }
 
     showMessage(message: any) {
         console.log(message);
+    }
+
+    ngOnDestroy() {
+        // unsubscribe to ensure no memory leaks
+        this.subscription.unsubscribe();
     }
     ngAfterViewInit() {
         MultirootEditor.create(
@@ -56,17 +120,19 @@ export class MultirootEditorComponent implements AfterViewInit {
         )
             .then(newEditor => {
                 this.Editor = newEditor;
+                newEditor.set('docLanguage', 'en');
+                //newEditor.model.schema.extend( 'tableCell', { allowContentOf: ['$root', '$block', '$text', 'paragraph', 'str', 'snp'] } );
                 this.toolbar.nativeElement.appendChild(newEditor.ui.view.toolbar.element);
                 // newEditor.setData({ header: '<p>ffsfsfsdfsdfsdfsdfs</p>'});
                 // window.editor = newEditor;
                 /*newEditor.setData({
                     content:
-                        '<p><span class="snippet" data-id="4444123" data-viewmode="infoview" data-type="snp">This is a test snippet <span class="standardword" data-id="1234" data-viewmode="infoview" data-type="str">This is a test</span> blah <span class="variable" data-id="9937" data-viewmode="infoview" data-type="var_date">UNRESOLVED</span> blah</span> kjkjk <span class="variable" data-id="9934" data-viewmode="infoview" data-type="var_date">UNRESOLVED</span> gdfgdd <span class="lsp" data-id="34343" data-viewmode="infoview" data-type="var_sp" data-json="">UNRESOLVED</span> gdgi</p>',
+                        '<p><span class="title" data-id="34343" data-type="title" data-json="" data-content="UNRESOLVED">UNRESOLVED</span>&nbsp;gdgi</p><p><span class="snippet" data-id="179" data-type="snp"><span class="standardword" data-id="153" data-type="str">Minutes</span>&nbsp;of the sitting of&nbsp;<span class="variable" data-id="197" data-type="var_date" data-content="2020/1/14">2020/1/14</span></span></p><p><span class="standardword" data-id="156" data-type="str">Opening of sitting</span></p><p><span class="snippet" data-id="180" data-type="snp">The sitting opened at&nbsp;<span class="variable" data-id="157" data-type="var_time" data-content="9:11">9:11</span></span></p><p><span class="title" data-id="34343" data-type="title" data-json="{&quot;titleId&quot;:6001,&quot;isOverridden&quot;:false,&quot;templateId&quot;:&quot;1&quot;,&quot;textValue&quot;:&quot;Presentation of the programme of activities of the Croatian Presidency&quot;}" data-content="Presentation of the programme of activities of the Croatian Presidency">Presentation of the programme of activities of the Croatian Presidency</span><span class="standardword" data-id="159" data-type="str">(debate)</span></p><p><span class="snippet" data-id="186" data-type="snp"><span class="standardword" data-id="1004" data-type="str">Council and Commission statements:</span><span class="title" data-id="34343" data-type="title" data-json="{&quot;titleId&quot;:6001,&quot;isOverridden&quot;:false,&quot;templateId&quot;:&quot;2&quot;,&quot;textValue&quot;:&quot;Presentation of the programme of activities of the Croatian Presidency (2019/2959(RSP))&quot;}" data-content="Presentation of the programme of activities of the Croatian Presidency (2019/2959(RSP))">Presentation of the programme of activities of the Croatian Presidency (2019/2959(RSP))</span></span></p><p><span class="snippet" data-id="183" data-type="snp"><span class="lsp" data-id="162" data-type="var_sp" data-json="{&quot;listOfSpeakers&quot;:[{&quot;id&quot;:6,&quot;fullName&quot;:&quot;Andreij Plenkovic (President-in-Office of the Council)&quot;,&quot;hasDisplayFunction&quot;:true,&quot;hasOnBehalfOfGroup&quot;:false,&quot;isBlueCardSpeaker&quot;:false,&quot;blueCardStatus&quot;:&quot;&quot;,&quot;blueCardName&quot;:&quot;&quot;,&quot;behalfOfGroup&quot;:&quot;&quot;},{&quot;id&quot;:1,&quot;fullName&quot;:&quot;Ursula von der Leyen (President of the Cpmmission)&quot;,&quot;hasDisplayFunction&quot;:true,&quot;hasOnBehalfOfGroup&quot;:false,&quot;isBlueCardSpeaker&quot;:false,&quot;blueCardStatus&quot;:&quot;&quot;,&quot;blueCardName&quot;:&quot;&quot;,&quot;behalfOfGroup&quot;:&quot;&quot;}],&quot;isAndChecked&quot;:true,&quot;textValue&quot;:&quot;Andreij Plenkovic (President-in-Office of the Council) and Ursula von der Leyen (President of the Cpmmission)&quot;}" data-content="Andreij Plenkovic (President-in-Office of the Council) and Ursula von der Leyen (President of the Cpmmission)">Andreij Plenkovic (President-in-Office of the Council) and Ursula von der Leyen (President of the Cpmmission)</span>&nbsp;<span class="standardword" data-id="1006" data-type="str">made the statements</span></span></p><p>&nbsp;</p>',
                 });*/
-                newEditor.setData({
+                /*newEditor.setData({
                     content:
                         '<p><span class="title" data-id="34343" data-viewmode="infoview" data-type="title" data-json="">UNRESOLVED</span> gdgi</p>',
-                });
+                });*/
 
                 this.editorDrop(newEditor);
                 /// ///////////////////////
@@ -86,6 +152,26 @@ export class MultirootEditorComponent implements AfterViewInit {
                     console.log('contextmenu modelElement:', modelElement);
                 });
 
+                newEditor.listenTo(newEditor.editing.view.document, 'dblclick', (evt, data) => {
+                    const modelElement = newEditor.editing.mapper.toModelElement(data.target);
+                    this.selectedEditorModelElement = modelElement;
+                    console.log('dblclick data:', data);
+                    console.log('dblclick data.target:', data.target);
+                    console.log('dblclick modelElement:', modelElement);
+                    if (
+                        modelElement &&
+                        modelElement.parent &&
+                        modelElement.parent.name &&
+                        modelElement.parent.name === 'snp'
+                    ) {
+                        console.log('#### dblclick if snp');
+                        MultirootEditor.disableAllKeyboard(this.Editor);
+                    } else {
+                        console.log('#### dblclick else');
+                        MultirootEditor.enableAllKeyboard(this.Editor);
+                    }
+                });
+
                 newEditor.listenTo(newEditor.editing.view.document, 'click', (evt, data) => {
                     const modelElement = newEditor.editing.mapper.toModelElement(data.target);
                     this.selectedEditorModelElement = modelElement;
@@ -98,37 +184,20 @@ export class MultirootEditorComponent implements AfterViewInit {
                         modelElement.parent.name &&
                         modelElement.parent.name === 'snp'
                     ) {
-                        setTimeout(() => {
-                            this.enableInput = MultirootEditor.disableInput(this.Editor);
-                            this.enableDelete = MultirootEditor.disableDelete(this.Editor);
-                            this.enableForwardDelete = MultirootEditor.disableForwardDelete(
-                                this.Editor,
-                            );
-                        });
-                    } else if (
-                        this.enableInput &&
-                        typeof this.enableInput === 'function' &&
-                        this.enableDelete &&
-                        typeof this.enableDelete === 'function' &&
-                        this.enableForwardDelete &&
-                        typeof this.enableForwardDelete === 'function'
-                    ) {
-                        setTimeout(() => {
-                            this.enableInput();
-                            this.enableDelete();
-                            this.enableForwardDelete();
-                        });
+                        console.log('#### dblclick if snp');
+                        MultirootEditor.disableAllKeyboard(this.Editor);
+                    } else {
+                        console.log('#### dblclick else');
+                        MultirootEditor.enableAllKeyboard(this.Editor);
                     }
                 });
+
+                newEditor.listenTo( newEditor, 'change:docLanguage', ( evt, propertyName, newValue, oldValue ) => {
+                    // Do something when the data is ready.
+                    newEditor.set('docLanguage', newValue);
+		        } );
                 console.log('#### newEditor.commands:', newEditor.commands);
-                for (const command of newEditor.commands.commands()) {
-                    // Will become `command.enable( 'id' );`.
-                    //command.off('set:isEnabled', forceDisable);
-                    console.log('#### command:', command);
-                    command.isEnabled = false;
-                    command.refresh();
-                }
-                //CKEditorInspector.attach(newEditor);
+                CKEditorInspector.attach(newEditor);
             })
             .catch(err => {
                 console.error(err.stack);
@@ -511,28 +580,56 @@ export class MultirootEditorComponent implements AfterViewInit {
 
             const _myData = data.dataTransfer.getData('text/html');
             const _myDataExtraInfo = data.dataTransfer.getData('text/plain');
+            const dataTargetName = data.target.name;
+            console.log('#### editorDrop _myDataExtraInfo:', _myDataExtraInfo);
+            console.log('#### editorDrop dataTargetName:', dataTargetName);
+            console.log('#### editorDrop data:', data);
 
             editor.model.change(writer => {
-                const insertPosition2 = data.dropRange.start;
-                const modelPosition = editor.editing.mapper.toModelPosition(insertPosition2);
+                let parentPosition;
+                if(dataTargetName === 'td' && !data.dropRange) {
+                    console.log('#### dataTargetName td');
+                    const tdElement = data.target;
+                    const tdModelElement = editor.editing.mapper.toModelElement(tdElement);
+                    parentPosition = writer.createPositionAt(tdModelElement, 0);
+                    console.log('#### editorDrop parentPosition:', parentPosition);
+                    //const paragraph = writer.createElement( 'paragraph' );
+                    //const position = writer.createPositionAt(paragraph, 'before');
+                }
+                //console.log('#### editorDrop data.dropRange.start:', data.dropRange.start);
+                const insertPosition2 = (data.dropRange && data.dropRange.start) ? data.dropRange.start : parentPosition;
+                console.log('#### editorDrop insertPosition2:', insertPosition2);
+                const modelPosition = (dataTargetName === 'td' && !data.dropRange) ? parentPosition : editor.editing.mapper.toModelPosition(insertPosition2);
 
                 //const selection = editor.model.document.selection;
 
                 // var currentAttributes = selection.getAttributes();
                 // var parent = selection.focus.parent;
                 // var insertPosition = selection.focus;
-
-                const viewFragment = editor.data.processor.toView(_myData);
-                console.log('drop viewFragment:', viewFragment);
+                console.log('#### editorDrop modelPosition:', modelPosition);
+                //const viewFragment = editor.data.processor.toView(_myData);
+                //console.log('drop viewFragment:', viewFragment);
 
                 let viewFragment2;
-                if (_myDataExtraInfo === 'span') {
+                if( dataTargetName === 'td' ) {
+                    console.log('#### IS TD');
+                    viewFragment2 = editor.data.processor.toView( '<p>' + _myData + '</p>' );
+                } else if (_myDataExtraInfo === 'span') {
                     viewFragment2 = editor.data.processor.toView('<p>' + _myData + '</p>');
                 } else {
                     viewFragment2 = editor.data.processor.toView(_myData);
                 }
 
                 const modelFragment = editor.data.toModel(viewFragment2);
+                console.log('#### editorDrop modelFragment:', modelFragment);
+                if( dataTargetName === 'td' ) {
+                    /*const paragraph = writer.createElement( 'paragraph' );
+                    const pos = writer.createPositionAt(paragraph, 0);
+
+                    writer.insert(modelFragment, pos);
+                    writer.insert(paragraph, modelPosition);*/
+                    editor.model.insertContent(modelFragment, modelPosition);
+                } else 
                 if (_myDataExtraInfo === 'span') {
                     editor.model.insertContent(
                         modelFragment.getChild(0).getChild(0),
@@ -620,6 +717,9 @@ export class MultirootEditorComponent implements AfterViewInit {
         }
     }
 
+    ondragstart($event) {
+        console.log('#### ondragstart $event:', $event);
+    }
     makeTextWithVariables() {
         const modelElement = this.selectedEditorModelElement;
         if (
@@ -651,5 +751,9 @@ export class MultirootEditorComponent implements AfterViewInit {
                 }
             }
         }
+    }
+    getDocData() {
+        console.log('#### getDocData:', escape(this.Editor.getData({ rootName: 'content' })));
+        this.getDataHtml = this.Editor.getData({ rootName: 'content' });
     }
 }

@@ -67,6 +67,10 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
                 this.selectedLsp = dataFromEditor.listOfSpeakers;
                 this.andChecked = dataFromEditor.isAndChecked;
                 this.resultstringE.nativeElement.innerHTML = dataFromEditor.textValue;
+                //set initial values for modal to editor as well 
+                this.lspDataToEditor.listOfSpeakers = [...this.selectedLsp];
+                this.lspDataToEditor.isAndChecked = this.andChecked;
+                this.lspDataToEditor.textValue = dataFromEditor.textValue;
                 console.log('#### this.availableLsp:', this.availableLsp);
                 console.log('#### this.selectedLsp:', this.selectedLsp);
                 this.availableLsp = this.availableLsp.filter(
@@ -89,6 +93,7 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
     closeModal(sendStatus) {
         // console.log('#### dateSelected:', this.dateSelected);
         const sendDataToEditor = sendStatus === 'save' ? this.lspDataToEditor : undefined;
+        console.log('#### lsp sendDataToEditor:', sendDataToEditor);
         this.activeModal.close(sendDataToEditor);
     }
 
@@ -182,6 +187,9 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
                     this.fullString +
                     ',  who also replied to a blue-card question by ' +
                     value.blueCardName;
+            } else if (value.blueCardStatus === '') {
+                this.fullString =
+                    this.fullString;
             }
             console.log('#### current fullString:', this.fullString);
         }

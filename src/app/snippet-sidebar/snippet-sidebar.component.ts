@@ -1,11 +1,13 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import SNIPPETS from './snippets';
 import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
+import { GlobalVariables } from '../common/global.varibles';
 
 interface Snippet {
     dataid: string;
     datacontent: string;
     datadesc: string;
+    language: string;
 }
 
 @Component({
@@ -13,16 +15,22 @@ interface Snippet {
     templateUrl: './snippet-sidebar.component.html',
     styleUrls: ['./snippet-sidebar.component.css'],
 })
-export class SnippetSidebarComponent {
+export class SnippetSidebarComponent implements OnInit {
     @Input() closeButton: string;
     @Output() messageToEmit = new EventEmitter<string>();
 
     closeWindowMessage = 'closeWindow';
     snippets: Snippet[] = SNIPPETS;
+    snippetsToDisplay: Snippet[];
     searchText: string;
 
     faWindowClose = faWindowClose;
 
+    ngOnInit(): void {
+        this.snippetsToDisplay = this.snippets.filter(
+            snp => snp.language == 'en',
+        );
+    } 
     sendMessageToParent(message: string) {
         console.log('sendMessageToParent');
         this.messageToEmit.emit(message);
@@ -37,9 +45,10 @@ export class SnippetSidebarComponent {
         } else {
             myElement = htmlDoc.querySelector('p');
         }
+        console.log('#### myElement.innerHTML:', myElement.innerHTML);
         let dataContent = '';
         const snpElement = this.snippets.filter(
-            snp => snp.dataid == myElement.getAttribute('data-id'),
+            snp => snp.dataid == myElement.getAttribute('data-id') && snp.language == GlobalVariables.docLanguage,
         );
         if (snpElement && snpElement.length > 0) {
             dataContent =

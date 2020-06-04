@@ -1,62 +1,62 @@
 <div class="row">
     <div class="col-12">
-        <div class="paddingbottom">
-            <button type="button" class="btn btn-secondary"
-                *ngIf="showHeaderFooter === false; else hideHeaderFooter"
-                (click)="onHeaderFooter($event)">Show header / footer</button>
-            <ng-template #hideHeaderFooter><button type="button"
-                    class="btn btn-secondary mr-1"
-                    (click)="onHeaderFooter($event)">Hide header
-                    / footer</button></ng-template>
-            <button type="button" class="btn btn-info mr-1"
-                (click)="showDiff('word')">Diff by word (header/footer)</button>
-            <button type="button" class="btn btn-info mr-1"
-                (click)="showDiff('efficiency')">Diff with efficiency
-                (header/footer)</button>
-            <button type="button" class="btn btn-info mr-1"
-                (click)="mergeHeaderAndFooter()">Merge (header/footer)</button>
+        <div class="paddingbottom input-group justify-content-end">
+            <button type="button" class="btn btn-light mr-1" *ngIf="showHeaderFooter === false; else hideHeaderFooter"
+                (click)="onHeaderFooter($event)"><img style="width:25px;height: 32px;;" src="./assets/images/headerfooter.png" /></button>
+            <ng-template #hideHeaderFooter><button type="button" class="btn btn-secondary mr-1"
+                    (click)="onHeaderFooter($event)"><img style="width:25px;height: 32px;;" src="./assets/images/headerfooter.png" />
+                    </button></ng-template>
+            <button type="button" class="btn btn-warning mr-1" (click)="showDiff('word')">
+                <fa-icon [icon]="faNotEqual"></fa-icon></button>
+            <button type="button" class="btn btn-info mr-1" (click)="showDiff('efficiency')">
+                <fa-icon [icon]="faNotEqual"></fa-icon></button>
+            <button type="button" class="btn btn-info mr-1" (click)="mergeHeaderAndFooter()">
+                <fa-icon [icon]="faObjectGroup"></fa-icon></button>
+            <button type="button" class="btn btn-info mr-1" (click)="getDocData()">GetData
+                </button>    
         </div>
-        <div #toolbar id="toolbar"></div>
-        <div class="paddingbottom"></div>
+        <div class="panel panel-info">
+            <!--div class="p-3 mb-2 bg-info text-white">{{documentInfoMetadata}}</div-->
+            <div class="panel-body">
+                <div #toolbar id="toolbar"></div>
+                <div class="paddingbottom"></div>
 
-        <div class="header" #header id="header"
-            [hidden]="showHeaderFooter === false" [contextMenu]="basicMenu">
-        </div>
-        <div class="paddingbottom"></div>
-        <div class="maincontentparent" [style.height.px]="contentParentHeight">
-            <div #content id="content" class="maincontent"
-                [contextMenu]="basicMenu">
+                <div class="header" #header id="header" [hidden]="showHeaderFooter === false" [contextMenu]="basicMenu">
+                </div>
+                <div class="paddingbottom"></div>
+                <div class="maincontentparent" [style.height.px]="contentParentHeight">
+                    <div #content id="content" class="maincontent" [contextMenu]="basicMenu">
+                    </div>
+                </div>
+                <div #tooltip id="tooltip" role="tooltip">
+                    My tooltip
+                    <ngb-datepicker #d></ngb-datepicker>
+                    <div id="arrow" data-popper-arrow></div>
+                </div>
+                <div class="paddingbottom"></div>
+
+                <div class="footer" #footer id="footer" [hidden]="showHeaderFooter === false" [contextMenu]="basicMenu">
+                </div>
+                <div class="paddingbottom"></div>
+
             </div>
         </div>
-        <div #tooltip id="tooltip" role="tooltip">
-            My tooltip
-            <ngb-datepicker #d></ngb-datepicker>
-            <div id="arrow" data-popper-arrow></div>
-        </div>
-        <div class="paddingbottom"></div>
-
-        <div class="footer" #footer id="footer"
-            [hidden]="showHeaderFooter === false" [contextMenu]="basicMenu">
-        </div>
-        <div class="paddingbottom"></div>
     </div>
-
 </div>
 <context-menu #basicMenu>
     <!--ng-template contextMenuItem (execute)="onContextMenuDelete($event)">
         <a href="#" class="list-group-item list-group-item-action">Delete</a>
     </ng-template-->
-    <ng-template contextMenuItem let-item
-        (execute)="onContextMenuResolve($event)">
+    <ng-template contextMenuItem let-item (execute)="onContextMenuResolve($event)">
         <a href="#" class="list-group-item list-group-item-action">Resolve</a>
     </ng-template>
-    <ng-template contextMenuItem let-item *ngIf="hasMakeAllText()"
-        (execute)="makeAllText()">
-        <a href="#" class="list-group-item list-group-item-action" [ngClass]="{'isLinkDisabled':hasMakeAllText() === false}">Unlock all</a>
+    <ng-template contextMenuItem let-item *ngIf="hasMakeAllText()" (execute)="makeAllText()">
+        <a href="#" class="list-group-item list-group-item-action"
+            [ngClass]="{'isLinkDisabled':hasMakeAllText() === false}">Unlock all</a>
     </ng-template>
-    <ng-template contextMenuItem let-item *ngIf="hasMakeTextNoVars()"
-        (execute)="makeTextWithVariables()">
-        <a href="#" class="list-group-item list-group-item-action" [ngClass]="{'isLinkDisabled':hasMakeTextNoVars() === false}">Unlock</a>
+    <ng-template contextMenuItem let-item *ngIf="hasMakeTextNoVars()" (execute)="makeTextWithVariables()">
+        <a href="#" class="list-group-item list-group-item-action"
+            [ngClass]="{'isLinkDisabled':hasMakeTextNoVars() === false}">Unlock</a>
     </ng-template>
     <!--ng-template contextMenuItem divider="true"></ng-template>
     <ng-template contextMenuItem let-item

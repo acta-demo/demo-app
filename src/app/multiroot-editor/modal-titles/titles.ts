@@ -51,5 +51,14 @@ const TITLES = [
         title:
             'Report on the Council position on the draft general budget of the European Union for the financial year 2020',
     },
+        {
+        id: 6006,
+        no: '',
+        body: 'BUDG',
+        docRef: '',
+        reporter: 'Monika Hohlmeier , Eider Gardiazabal Rubial',
+        title:
+            'Proposal for a regulation of the European Parliament and of the Council establishing the Just Transition Fund',
+    },
 ];
 export default TITLES;

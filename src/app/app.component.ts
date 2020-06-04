@@ -4,7 +4,14 @@ import {
     faCubes,
     faAngleDoubleLeft,
     faAngleDoubleRight,
+    faFileAlt,
+    faFileArchive,
 } from '@fortawesome/free-solid-svg-icons';
+import { LoadDataService, LoadData } from './services/load.data.service';
+import { ChangeLanguageService } from './services/change.language.service';
+import DOCUMENT_DATA from './document.data';
+import { GlobalVariables } from './common/global.varibles';
+
 
 @Component({
     selector: 'app-root',
@@ -23,10 +30,32 @@ export class AppComponent {
     faCubes = faCubes;
     faAngleDoubleLeft = faAngleDoubleLeft;
     faAngleDoubleRight = faAngleDoubleRight;
+    faFileAlt = faFileAlt;
+    faFileArchive = faFileArchive;
     closeButton = 'true';
     receivedStwordMessage: string;
+    docLanguage: string = 'en';
 
-    constructor(private el: ElementRef, private renderer: Renderer2) {}
+    documents: any[] = [...DOCUMENT_DATA];
+    documentInfoMetadata: string = '';
+
+    constructor(private el: ElementRef, private renderer: Renderer2,
+        private loaddataService: LoadDataService,
+        private changeLanguageService: ChangeLanguageService) {}
+
+    loadData(language: string, type: string): void {  
+        const document = this.documents.find(doc => doc.language == language && doc.type == type);
+        this.documentInfoMetadata = document.metadata;
+        const data: LoadData = {language: language, type: type};
+        this.loaddataService.clearMessages();
+        this.loaddataService.loadData(data);
+    }
+
+    setDocumentLanguage(language: string): void {
+        this.docLanguage = language;
+        GlobalVariables.docLanguage = this.docLanguage;
+        this.changeLanguageService.changeLanguage(this.docLanguage);
+    }
 
     getStwordMessage(message: string) {
         console.log('receivedStwordMessage:', this.receivedStwordMessage);

@@ -7,10 +7,10 @@
             id="inputsearch" type="text" placeholder="Search.." />
     </div>
     <div class="list-group listscroll"
-        *ngIf="(snippets | filter: searchText: 'datadesc').length > 0; else noResults">
+        *ngIf="(snippetsToDisplay | filter: searchText: 'datadesc').length > 0; else noResults">
         <div class="list-group-item list-group-item-action list-group-item-light listitem"
             draggable="true" (dragstart)="drag($event, 'span')"
-            *ngFor="let snippet of snippets | filter: searchText : 'datadesc'; let i = index">
+            *ngFor="let snippet of snippetsToDisplay | filter: searchText : 'datadesc'; let i = index">
             <span class="snippet" [attr.data-id]="snippet.dataid"
                 data-type="snp"
                 [innerHTML]="snippet.datadesc | safeHtml"></span>

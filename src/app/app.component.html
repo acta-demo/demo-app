@@ -1,13 +1,14 @@
 <div role="main">
     <div class="d-flex" id="wrapper" [ngClass]="toggleStatus ? 'toggled' : ''">
         <!-- Sidebar -->
-        <div class="bg-light border-right" id="sidebar-wrapper"
-            *ngIf="toggleStatus === false; else showRightOpenSign">
-            <a (click)="onToggle($event)" style="cursor:pointer;float:right;"><fa-icon class="fa-lg" [icon]="faAngleDoubleLeft"></fa-icon></a>
+        <div class="bg-light border-right" id="sidebar-wrapper" *ngIf="toggleStatus === false; else showRightOpenSign">
+            <a (click)="onToggle($event)" style="cursor:pointer;float:right;padding-top: 16px;">
+                <fa-icon class="fa-lg" [icon]="faAngleDoubleLeft"></fa-icon>
+            </a>
             <div class="sidebar-heading">ACTA </div>
             <!-- Accordion start -->
             <div class="list-group list-group-flush">
-                <a href="#collapse1" class="btn btn-link list-group-item list-group-item-action bg-light group-menu"
+                <!--a href="#collapse1" class="btn btn-link list-group-item list-group-item-action bg-light group-menu"
           data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapse1">
           <fa-icon [icon]="faFile"></fa-icon> File
         </a>
@@ -24,19 +25,19 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div-->
 
-                <a href="#collapse2" class="btn btn-link list-group-item list-group-item-action bg-light group-menu"
-          data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapse2">
-          <fa-icon [icon]="faCubes"></fa-icon> Building blocks
-        </a>
-                <div class="card collapse" id="collapse2">
+                <a href="#collapse2"
+                    class="btn btn-link list-group-item list-group-item-action bg-light group-menu show"
+                    data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapse2">
+                    <fa-icon [icon]="faCubes"></fa-icon> Building blocks
+                </a>
+                <div class="card collapse show" id="collapse2">
                     <div class="card-body">
                         <div *ngFor="let bbElement of menuBB">
                             <div class="btn btn-link list-group-item list-group-item-action subitem"
                                 (click)="onBBElementClick($event, bbElement)">
-                                <span
-                                    *ngIf="bbElement === selectedMenuElement; else isNotBold"
+                                <span *ngIf="bbElement === selectedMenuElement; else isNotBold"
                                     class="text-primary font-weight-bold">{{bbElement}}</span>
                                 <ng-template #isNotBold>{{bbElement}}
                                 </ng-template>
@@ -89,15 +90,18 @@
             <!-- Accordion end -->
         </div>
         <ng-template #showRightOpenSign>
-            <a (click)="onToggle($event)" style="cursor:pointer"><fa-icon class="fa-lg" [icon]="faAngleDoubleRight"></fa-icon></a>
+            <div style="padding-top: 16px;background-color: #f8f9fa;border-right: 1px solid grey;">
+                <a (click)="onToggle($event)" style="cursor:pointer;padding-top: 16px;">
+                    <fa-icon class="fa-lg" [icon]="faAngleDoubleRight"></fa-icon>
+                </a><span></span>
+            </div>
         </ng-template>
         <!-- /#sidebar-wrapper -->
 
         <!-- Page Content -->
         <div id="page-content-wrapper">
 
-            <nav
-                class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
                 <!--button class="btn btn-info" id="menu-toggle"
                     (click)="onToggle($event)">
                     <span *ngIf="toggleStatus === false; else hideMenu">
@@ -109,23 +113,29 @@
                     </ng-template>
                 </button-->
 
-                <button class="navbar-toggler" type="button"
-                    data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false"
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse"
-                    id="navbarSupportedContent">
-                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                <div class="collapse navbar-collapse order-1 order-md-0 dual-collapse2" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" (click)="loadData('en', 'document')">
+                                Open document<span class="sr-only">(current)</span>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
+                            <a class="nav-link" href="#" (click)="loadData('en', 'template')">
+                                Open template <span class="sr-only">(current)</span></a>
                         </li>
-                        <li class="nav-item dropdown">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" (click)="loadData('en', 'empty')">
+                                Open blank document <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <!--li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 Dropdown
@@ -137,9 +147,27 @@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#">Something else here</a>
                             </div>
-                        </li>
+                        </li-->
                     </ul>
                 </div>
+                <div class="p-1 mb-0 text-dark" *ngIf="documentInfoMetadata">{{documentInfoMetadata}}</div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn active" 
+                        [ngClass]="{'btn-success': docLanguage === 'en', 'btn-secondary': docLanguage !== 'en'}">
+                        <input type="radio" 
+                             [(ngModel)]="docLanguage" value="en" (click)="setDocumentLanguage('en')"> EN
+                    </label>
+                    <label class="btn"
+                        [ngClass]="{'btn-success': docLanguage === 'de', 'btn-secondary': docLanguage !== 'de'}">
+                        <input type="radio" 
+                        [(ngModel)]="docLanguage" value="de" (click)="setDocumentLanguage('de')"> DE
+                    </label>
+                </div>
+                <!--select class="form-control mr-1" style="width:auto;" [(ngModel)]="docLanguage"
+                    (change)="setDocumentLanguage()">
+                    <option value="en" selected>EN</option>
+                    <option value="de">DE</option>
+                </select-->
             </nav>
 
             <div class="container-fluid">
