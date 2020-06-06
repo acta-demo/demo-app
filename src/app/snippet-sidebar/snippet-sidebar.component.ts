@@ -27,10 +27,8 @@ export class SnippetSidebarComponent implements OnInit {
     faWindowClose = faWindowClose;
 
     ngOnInit(): void {
-        this.snippetsToDisplay = this.snippets.filter(
-            snp => snp.language == 'en',
-        );
-    } 
+        this.snippetsToDisplay = this.snippets.filter(snp => snp.language == 'en');
+    }
     sendMessageToParent(message: string) {
         console.log('sendMessageToParent');
         this.messageToEmit.emit(message);
@@ -48,7 +46,9 @@ export class SnippetSidebarComponent implements OnInit {
         console.log('#### myElement.innerHTML:', myElement.innerHTML);
         let dataContent = '';
         const snpElement = this.snippets.filter(
-            snp => snp.dataid == myElement.getAttribute('data-id') && snp.language == GlobalVariables.docLanguage,
+            snp =>
+                snp.dataid == myElement.getAttribute('data-id') &&
+                snp.language == GlobalVariables.docLanguage
         );
         if (snpElement && snpElement.length > 0) {
             dataContent =

@@ -51,7 +51,7 @@ const TITLES = [
         title:
             'Report on the Council position on the draft general budget of the European Union for the financial year 2020',
     },
-        {
+    {
         id: 6006,
         no: '',
         body: 'BUDG',

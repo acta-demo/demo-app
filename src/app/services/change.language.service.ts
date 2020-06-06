@@ -6,7 +6,7 @@ export class ChangeLanguageService {
     private subject = new Subject<any>();
 
     changeLanguage(language: string) {
-        this.subject.next( language );
+        this.subject.next(language);
     }
 
     clearMessages() {

@@ -20,7 +20,11 @@ const STANDARD_WORDS = [
     { dataid: '187', datacontent: 'referred to responsible', language: 'en' },
     { dataid: '188', datacontent: 'opinion', language: 'en' },
     { dataid: '189', datacontent: 'on', language: 'en' },
-    { dataid: '190', datacontent: 'The agenda of the next day\'s sitting had been established', language: 'en' },
+    {
+        dataid: '190',
+        datacontent: "The agenda of the next day's sitting had been established",
+        language: 'en',
+    },
     { dataid: '191', datacontent: 'The following documents had been received', language: 'en' },
     { dataid: '192', datacontent: 'from other institutions', language: 'en' },
     { dataid: '193', datacontent: 'The President would consult the', language: 'en' },

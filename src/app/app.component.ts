@@ -12,7 +12,6 @@ import { ChangeLanguageService } from './services/change.language.service';
 import DOCUMENT_DATA from './document.data';
 import { GlobalVariables } from './common/global.varibles';
 
-
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
@@ -39,14 +38,19 @@ export class AppComponent {
     documents: any[] = [...DOCUMENT_DATA];
     documentInfoMetadata: string = '';
 
-    constructor(private el: ElementRef, private renderer: Renderer2,
+    constructor(
+        private el: ElementRef,
+        private renderer: Renderer2,
         private loaddataService: LoadDataService,
-        private changeLanguageService: ChangeLanguageService) {}
+        private changeLanguageService: ChangeLanguageService
+    ) {}
 
-    loadData(language: string, type: string): void {  
-        const document = this.documents.find(doc => doc.language == language && doc.type == type);
+    loadData(type: string): void {
+        const document = this.documents.find(
+            doc => doc.language == GlobalVariables.docLanguage && doc.type == type
+        );
         this.documentInfoMetadata = document.metadata;
-        const data: LoadData = {language: language, type: type};
+        const data: LoadData = { language: GlobalVariables.docLanguage, type: type };
         this.loaddataService.clearMessages();
         this.loaddataService.loadData(data);
     }

@@ -21,7 +21,11 @@
 }
 
 .paddingbottom {
-    padding-bottom: 10px;
+    padding-bottom: 5px;
+}
+
+.paddingbottomactions {
+    padding-bottom: 2px;
 }
 
 .maincontentparent {

@@ -1,4 +1,4 @@
-<div class="border border-primary rounded-lg searchsubmenu">
+<div class="border border-light rounded-lg searchsubmenu">
     <fa-icon [icon]="faWindowClose" class="float-right" *ngIf="closeButton"
         (click)="sendMessageToParent(closeWindowMessage)"></fa-icon>
     <div class="form-group">
@@ -8,7 +8,7 @@
     </div>
     <div class="list-group listscroll"
         *ngIf="(stwordsToDisplay | filter: searchText: 'datacontent').length > 0; else noResults">
-        <div class="list-group-item list-group-item-action list-group-item-light listitem"
+        <div class="list-group-item list-group-item-action list-group-item-light listitem py-2"
             draggable="true" (dragstart)="drag($event, 'span')"
             *ngFor="let stword of stwordsToDisplay | filter: searchText : 'datacontent'; let i = index">
             <span class="standardword" [attr.data-id]="stword.dataid"

@@ -67,14 +67,14 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
                 this.selectedLsp = dataFromEditor.listOfSpeakers;
                 this.andChecked = dataFromEditor.isAndChecked;
                 this.resultstringE.nativeElement.innerHTML = dataFromEditor.textValue;
-                //set initial values for modal to editor as well 
+                //set initial values for modal to editor as well
                 this.lspDataToEditor.listOfSpeakers = [...this.selectedLsp];
                 this.lspDataToEditor.isAndChecked = this.andChecked;
                 this.lspDataToEditor.textValue = dataFromEditor.textValue;
                 console.log('#### this.availableLsp:', this.availableLsp);
                 console.log('#### this.selectedLsp:', this.selectedLsp);
                 this.availableLsp = this.availableLsp.filter(
-                    value => !this.selectedLsp.some(e => e.id === value.id),
+                    value => !this.selectedLsp.some(e => e.id === value.id)
                 );
                 this.blueCardLsp = this.availableLsp
                     .concat(this.selectedLsp)
@@ -188,8 +188,7 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
                     ',  who also replied to a blue-card question by ' +
                     value.blueCardName;
             } else if (value.blueCardStatus === '') {
-                this.fullString =
-                    this.fullString;
+                this.fullString = this.fullString;
             }
             console.log('#### current fullString:', this.fullString);
         }
@@ -239,7 +238,7 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
                 event.previousContainer.data,
                 event.container.data,
                 event.previousIndex,
-                event.currentIndex,
+                event.currentIndex
             );
         } else {
             moveItemInArray(this.selectedLsp, event.previousIndex, event.currentIndex);

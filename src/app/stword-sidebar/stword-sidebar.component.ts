@@ -27,9 +27,7 @@ export class StwordSidebarComponent implements OnInit {
     faWindowClose = faWindowClose;
 
     ngOnInit(): void {
-        this.stwordsToDisplay = this.stwords.filter(
-            str => str.language == 'en',
-        );
+        this.stwordsToDisplay = this.stwords.filter(str => str.language == 'en');
     }
 
     sendMessageToParent(message: string) {
@@ -38,7 +36,10 @@ export class StwordSidebarComponent implements OnInit {
     }
 
     drag(ev, type) {
-        console.log('#### StwordSidebarComponent GlobalVariables.docLanguage:', GlobalVariables.docLanguage);
+        console.log(
+            '#### StwordSidebarComponent GlobalVariables.docLanguage:',
+            GlobalVariables.docLanguage
+        );
         const parser = new DOMParser();
         const html_doc = parser.parseFromString(ev.target.outerHTML, 'text/html');
         let myElement;
@@ -50,7 +51,9 @@ export class StwordSidebarComponent implements OnInit {
         console.log('#### myElement data-id:', myElement.getAttribute('data-id'));
 
         const str = this.stwords.find(
-            str => str.dataid == myElement.getAttribute('data-id') && str.language == GlobalVariables.docLanguage,
+            str =>
+                str.dataid == myElement.getAttribute('data-id') &&
+                str.language == GlobalVariables.docLanguage
         );
         myElement.innerHTML = str.datacontent;
 

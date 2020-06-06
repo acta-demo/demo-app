@@ -15,8 +15,7 @@ const DOCUMENT_DATA = [
     },
     {
         language: 'en',
-        datacontent:
-            '',
+        datacontent: '',
         metadata: 'EMPTY_EN',
         type: 'empty',
     },
@@ -36,8 +35,7 @@ const DOCUMENT_DATA = [
     },
     {
         language: 'de',
-        datacontent:
-            '',
+        datacontent: '',
         metadata: 'EMPTY_DE',
         type: 'empty',
     },

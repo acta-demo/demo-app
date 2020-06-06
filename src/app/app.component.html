@@ -1,8 +1,9 @@
 <div role="main">
     <div class="d-flex" id="wrapper" [ngClass]="toggleStatus ? 'toggled' : ''">
         <!-- Sidebar -->
-        <div class="bg-light border-right" id="sidebar-wrapper" *ngIf="toggleStatus === false; else showRightOpenSign">
-            <a (click)="onToggle($event)" style="cursor:pointer;float:right;padding-top: 16px;">
+        <div class="bg-light border-right" id="sidebar-wrapper"
+            *ngIf="toggleStatus === false; else showRightOpenSign">
+            <a (click)="onToggle($event)" style="cursor:pointer;float:right;padding-top: 17px;">
                 <fa-icon class="fa-lg" [icon]="faAngleDoubleLeft"></fa-icon>
             </a>
             <div class="sidebar-heading">ACTA </div>
@@ -33,12 +34,15 @@
                     <fa-icon [icon]="faCubes"></fa-icon> Building blocks
                 </a>
                 <div class="card collapse show" id="collapse2">
-                    <div class="card-body">
+                    <!--div class="card-body"-->
+                    <div class="">
                         <div *ngFor="let bbElement of menuBB">
                             <div class="btn btn-link list-group-item list-group-item-action subitem"
-                                (click)="onBBElementClick($event, bbElement)">
-                                <span *ngIf="bbElement === selectedMenuElement; else isNotBold"
-                                    class="text-primary font-weight-bold">{{bbElement}}</span>
+                                (click)="onBBElementClick($event, bbElement)"
+                                [ngStyle]="{'text-decoration':bbElement === selectedMenuElement ? 'none' : '' }">
+                                <span
+                                    *ngIf="bbElement === selectedMenuElement; else isNotBold"
+                                    class="text-info font-weight-bold">{{bbElement}}</span>
                                 <ng-template #isNotBold>{{bbElement}}
                                 </ng-template>
                             </div>
@@ -90,8 +94,9 @@
             <!-- Accordion end -->
         </div>
         <ng-template #showRightOpenSign>
-            <div style="padding-top: 16px;background-color: #f8f9fa;border-right: 1px solid grey;">
-                <a (click)="onToggle($event)" style="cursor:pointer;padding-top: 16px;">
+            <div id="toggled-sidebar"
+                style="padding-top: 16px;background-color: #f8f9fa;border-right: 1px solid;border-right-color: lightgrey;">
+                <a (click)="onToggle($event)" style="cursor:pointer;padding-top: 17px;">
                     <fa-icon class="fa-lg" [icon]="faAngleDoubleRight"></fa-icon>
                 </a><span></span>
             </div>
@@ -101,7 +106,8 @@
         <!-- Page Content -->
         <div id="page-content-wrapper">
 
-            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+            <nav
+                class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
                 <!--button class="btn btn-info" id="menu-toggle"
                     (click)="onToggle($event)">
                     <span *ngIf="toggleStatus === false; else hideMenu">
@@ -113,25 +119,27 @@
                     </ng-template>
                 </button-->
 
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
-                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                <button class="navbar-toggler" type="button"
+                    data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse order-1 order-md-0 dual-collapse2" id="navbarSupportedContent">
+                <div class="collapse navbar-collapse order-1 order-md-0 dual-collapse2"
+                    id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="#" (click)="loadData('en', 'document')">
+                            <a class="nav-link" href="#" (click)="loadData('document')">
                                 Open document<span class="sr-only">(current)</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" (click)="loadData('en', 'template')">
+                            <a class="nav-link" href="#" (click)="loadData('template')">
                                 Open template <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" (click)="loadData('en', 'empty')">
+                            <a class="nav-link" href="#" (click)="loadData('empty')">
                                 Open blank document <span class="sr-only">(current)</span>
                             </a>
                         </li>
@@ -150,17 +158,18 @@
                         </li-->
                     </ul>
                 </div>
-                <div class="p-1 mb-0 text-dark" *ngIf="documentInfoMetadata">{{documentInfoMetadata}}</div>
+                <div class="p-1 mb-0 text-dark" *ngIf="documentInfoMetadata">
+                    {{documentInfoMetadata}}</div>
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn active" 
+                    <label class="btn active"
                         [ngClass]="{'btn-success': docLanguage === 'en', 'btn-secondary': docLanguage !== 'en'}">
-                        <input type="radio" 
-                             [(ngModel)]="docLanguage" value="en" (click)="setDocumentLanguage('en')"> EN
+                        <input type="radio" [(ngModel)]="docLanguage" value="en"
+                            (click)="setDocumentLanguage('en')"> EN
                     </label>
                     <label class="btn"
                         [ngClass]="{'btn-success': docLanguage === 'de', 'btn-secondary': docLanguage !== 'de'}">
-                        <input type="radio" 
-                        [(ngModel)]="docLanguage" value="de" (click)="setDocumentLanguage('de')"> DE
+                        <input type="radio" [(ngModel)]="docLanguage" value="de"
+                            (click)="setDocumentLanguage('de')"> DE
                     </label>
                 </div>
                 <!--select class="form-control mr-1" style="width:auto;" [(ngModel)]="docLanguage"

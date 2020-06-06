@@ -104,13 +104,13 @@ export class ModalTitlesComponent implements AfterViewInit {
         console.log('#### this.titleToEditor.templateId:', this.titleToEditor.templateId);
         if (this.titleToEditor.titleId > 0 && this.titleToEditor.templateId == 1) {
             const selectedTitle = this.availableTitles.find(
-                x => x.id === this.titleToEditor.titleId,
+                x => x.id === this.titleToEditor.titleId
             );
             this.selectedTitleText = selectedTitle.title;
             this.titleToEditor.textValue = selectedTitle.title;
         } else if (this.titleToEditor.titleId > 0 && this.titleToEditor.templateId == 2) {
             const selectedTitle = this.availableTitles.find(
-                x => x.id === this.titleToEditor.titleId,
+                x => x.id === this.titleToEditor.titleId
             );
             this.selectedTitleText = selectedTitle.title + ' (' + selectedTitle.docRef + ')';
             this.titleToEditor.textValue = selectedTitle.title + ' (' + selectedTitle.docRef + ')';

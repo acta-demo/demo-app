@@ -81,7 +81,7 @@ const LIST_OF_SPEAKERS = [
     },
     {
         id: 9,
-        fullName: 'Guy Verhofstadt, Parliament\'s Brexit coordinator',
+        fullName: "Guy Verhofstadt, Parliament's Brexit coordinator",
         hasDisplayFunction: true,
         hasOnBehalfOfGroup: false,
         isBlueCardSpeaker: false,

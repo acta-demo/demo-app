@@ -25,7 +25,7 @@ describe('AppComponent', () => {
         fixture.detectChanges();
         const compiled = fixture.debugElement.nativeElement;
         expect(compiled.querySelector('.content span').textContent).toContain(
-            'test-ed app is running!',
+            'test-ed app is running!'
         );
     });
 });

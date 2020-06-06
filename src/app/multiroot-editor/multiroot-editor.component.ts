@@ -1,6 +1,6 @@
-import { Component, ViewChild, ElementRef, AfterViewInit, OnDestroy  } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import * as MultirootEditor from '../../assets/ckeditor.js';
-import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
+//import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 import { ContextMenuComponent } from 'ngx-contextmenu';
 import { ModalDatePickerComponent } from './modal-date-picker/modal-date-picker.component';
 import { ModalTimePickerComponent } from './modal-time-picker/modal-time-picker.component';
@@ -15,10 +15,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { LoadDataService, LoadData } from '../services/load.data.service';
 import { ChangeLanguageService } from '../services/change.language.service';
 import { Subscription } from 'rxjs';
-import {
-    faNotEqual, faObjectGroup,
-
-} from '@fortawesome/free-solid-svg-icons';
+import { faNotEqual, faObjectGroup } from '@fortawesome/free-solid-svg-icons';
 import DOCUMENT_DATA from '../document.data';
 import { GlobalVariables } from '../common/global.varibles';
 
@@ -27,7 +24,7 @@ import { GlobalVariables } from '../common/global.varibles';
     templateUrl: './multiroot-editor.component.html',
     styleUrls: ['./multiroot-editor.component.css'],
 })
-export class MultirootEditorComponent implements AfterViewInit, OnDestroy  {
+export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
     @ViewChild('toolbar', { static: false }) toolbar: ElementRef;
     @ViewChild('header', { static: false }) headerE: ElementRef;
     @ViewChild('content', { static: false }) contentE: ElementRef;
@@ -41,7 +38,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy  {
     isContentCollapsed = false;
     isFooterCollapsed = false;
     showHeaderFooter = false;
-    contentParentHeight = '500';
+    contentParentHeight = '590';
     closeResult = '';
     selectedEditorModelElement: any;
     getDataHtml: string;
@@ -55,9 +52,11 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy  {
     faNotEqual = faNotEqual;
     faObjectGroup = faObjectGroup;
 
-    constructor(private modalService: NgbModal,
+    constructor(
+        private modalService: NgbModal,
         private loadDataService: LoadDataService,
-        private changeLanguageService: ChangeLanguageService) {
+        private changeLanguageService: ChangeLanguageService
+    ) {
         // subscribe to home component messages
         this.subscription = this.loadDataService.getMessage().subscribe(message => {
             if (message) {
@@ -85,11 +84,12 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy  {
     loadData(loaddata: LoadData): void {
         console.log('#### documents:', this.documents);
         console.log('#### loaddata:', loaddata);
-        const document = this.documents.find(doc => doc.language == loaddata.language && doc.type == loaddata.type);
+        const document = this.documents.find(
+            doc => doc.language == loaddata.language && doc.type == loaddata.type
+        );
         this.Editor.setData({
-                    content:
-                        unescape(document.datacontent),
-                });
+            content: unescape(document.datacontent),
+        });
         this.documentInfoMetadata = document.metadata;
     }
 
@@ -97,8 +97,8 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy  {
         GlobalVariables.docLanguage = language;
         this.Editor.set('docLanguage', language);
         this.Editor.setData({
-                    content: '',
-                });
+            content: '',
+        });
     }
 
     showMessage(message: any) {
@@ -116,7 +116,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy  {
                 content: this.contentE.nativeElement,
                 footer: this.footerE.nativeElement,
             },
-            MultirootEditor.defaultConfig,
+            MultirootEditor.defaultConfig
         )
             .then(newEditor => {
                 this.Editor = newEditor;
@@ -192,12 +192,16 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy  {
                     }
                 });
 
-                newEditor.listenTo( newEditor, 'change:docLanguage', ( evt, propertyName, newValue, oldValue ) => {
-                    // Do something when the data is ready.
-                    newEditor.set('docLanguage', newValue);
-		        } );
+                newEditor.listenTo(
+                    newEditor,
+                    'change:docLanguage',
+                    (evt, propertyName, newValue, oldValue) => {
+                        // Do something when the data is ready.
+                        newEditor.set('docLanguage', newValue);
+                    }
+                );
                 console.log('#### newEditor.commands:', newEditor.commands);
-                CKEditorInspector.attach(newEditor);
+                //CKEditorInspector.attach(newEditor);
             })
             .catch(err => {
                 console.error(err.stack);
@@ -220,23 +224,23 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy  {
         */
         console.log(
             '#### this.Editor.getData( { rootName: header } ):',
-            this.Editor.getData({ rootName: 'header' }),
+            this.Editor.getData({ rootName: 'header' })
         );
         console.log(
             '#### this.Editor.getData( { rootName: footer } ):',
-            this.Editor.getData({ rootName: 'footer' }),
+            this.Editor.getData({ rootName: 'footer' })
         );
         const docHeader = new DOMParser().parseFromString(
             '<div>' +
                 this.Editor.getData({ rootName: 'header' }).replace(/&nbsp;/gi, ' ') +
                 '</div>',
-            'text/xml',
+            'text/xml'
         );
         const docFooter = new DOMParser().parseFromString(
             '<div>' +
                 this.Editor.getData({ rootName: 'footer' }).replace(/&nbsp;/gi, ' ') +
                 '</div>',
-            'text/xml',
+            'text/xml'
         );
 
         let footerNodesByParagraph: any = [];
@@ -277,7 +281,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy  {
             const posHeader = indexHeader;
             console.log(
                 '#### mergeHeaderAndFooter header value.childNodes:',
-                valueHeader.childNodes,
+                valueHeader.childNodes
             );
             const footerPNodes = footerNodesByParagraph.filter(function (elem) {
                 //paragraph footer elements
@@ -339,7 +343,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy  {
         });
         console.log(
             '#### mergeHeaderAndFooter finalHtmlString before extra paragraphs:',
-            finalHtmlString,
+            finalHtmlString
         );
         // if footer contains more paragraphs include them to the final merged document
         console.log('#### footerNodesByParagraph:', footerNodesByParagraph);
@@ -386,7 +390,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy  {
             this.selectedEditorModelElement = this.Editor.editing.mapper.toModelElement(domElement);
             console.log(
                 '#### onEditorContextMenu this.selectedEditorModelElement:',
-                this.selectedEditorModelElement,
+                this.selectedEditorModelElement
             );
         }
         // const modelElement = this.Editor.editing.mapper.toModelElement(domElement);
@@ -418,7 +422,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy  {
                 console.log('#### EDITOR MODAL result:', result);
                 console.log(
                     '#### EDITOR MODAL result string:',
-                    result.year + '/' + result.month + '/' + result.day,
+                    result.year + '/' + result.month + '/' + result.day
                 );
             }
         });
@@ -429,7 +433,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy  {
         console.log('#### onContextMenuResolve $event.data:', $event.data);
         console.log(
             '#### onContextMenuResolve this.Editor.model.document.selection:',
-            this.Editor.model.document.selection,
+            this.Editor.model.document.selection
         );
 
         let modelElement;
@@ -441,15 +445,15 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy  {
         // let modelElement = this.Editor.model.document.selection.getSelectedElement();
         console.log(
             '#### newEditor.model.document.selection.getSelectedElement():',
-            this.Editor.model.document.selection.getSelectedElement(),
+            this.Editor.model.document.selection.getSelectedElement()
         );
         console.log(
             '#### newEditor.view.documentselection.getSelectedElement():',
-            this.Editor.model.document.selection.getSelectedElement(),
+            this.Editor.model.document.selection.getSelectedElement()
         );
         console.log(
             '#### newEditor.model.document.selection.getFirstPosition():',
-            this.Editor.model.document.selection.getFirstPosition(),
+            this.Editor.model.document.selection.getFirstPosition()
         );
 
         const viewElement = this.Editor.editing.mapper.toViewElement(modelElement);
@@ -465,17 +469,17 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy  {
                     console.log('#### EDITOR MODAL result:', result);
                     console.log(
                         '#### EDITOR MODAL result string:',
-                        result.year + '/' + result.month + '/' + result.day,
+                        result.year + '/' + result.month + '/' + result.day
                     );
                     this.Editor.model.change(writer => {
                         console.log(
                             '#### EDITOR MODAL result string:',
-                            result.year + '/' + result.month + '/' + result.day,
+                            result.year + '/' + result.month + '/' + result.day
                         );
                         writer.setAttribute(
                             'data-content',
                             result.year + '/' + result.month + '/' + result.day,
-                            modelElement,
+                            modelElement
                         );
                     });
                 }
@@ -494,12 +498,12 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy  {
                     this.Editor.model.change(writer => {
                         console.log(
                             '#### EDITOR MODAL result string:',
-                            '"' + result.hour + ':' + result.minute + '"',
+                            '"' + result.hour + ':' + result.minute + '"'
                         );
                         writer.setAttribute(
                             'data-content',
                             result.hour + ':' + result.minute,
-                            modelElement,
+                            modelElement
                         );
                     });
                 }
@@ -587,7 +591,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy  {
 
             editor.model.change(writer => {
                 let parentPosition;
-                if(dataTargetName === 'td' && !data.dropRange) {
+                if (dataTargetName === 'td' && !data.dropRange) {
                     console.log('#### dataTargetName td');
                     const tdElement = data.target;
                     const tdModelElement = editor.editing.mapper.toModelElement(tdElement);
@@ -597,9 +601,13 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy  {
                     //const position = writer.createPositionAt(paragraph, 'before');
                 }
                 //console.log('#### editorDrop data.dropRange.start:', data.dropRange.start);
-                const insertPosition2 = (data.dropRange && data.dropRange.start) ? data.dropRange.start : parentPosition;
+                const insertPosition2 =
+                    data.dropRange && data.dropRange.start ? data.dropRange.start : parentPosition;
                 console.log('#### editorDrop insertPosition2:', insertPosition2);
-                const modelPosition = (dataTargetName === 'td' && !data.dropRange) ? parentPosition : editor.editing.mapper.toModelPosition(insertPosition2);
+                const modelPosition =
+                    dataTargetName === 'td' && !data.dropRange
+                        ? parentPosition
+                        : editor.editing.mapper.toModelPosition(insertPosition2);
 
                 //const selection = editor.model.document.selection;
 
@@ -611,9 +619,9 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy  {
                 //console.log('drop viewFragment:', viewFragment);
 
                 let viewFragment2;
-                if( dataTargetName === 'td' ) {
+                if (dataTargetName === 'td') {
                     console.log('#### IS TD');
-                    viewFragment2 = editor.data.processor.toView( '<p>' + _myData + '</p>' );
+                    viewFragment2 = editor.data.processor.toView('<p>' + _myData + '</p>');
                 } else if (_myDataExtraInfo === 'span') {
                     viewFragment2 = editor.data.processor.toView('<p>' + _myData + '</p>');
                 } else {
@@ -622,18 +630,17 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy  {
 
                 const modelFragment = editor.data.toModel(viewFragment2);
                 console.log('#### editorDrop modelFragment:', modelFragment);
-                if( dataTargetName === 'td' ) {
+                if (dataTargetName === 'td') {
                     /*const paragraph = writer.createElement( 'paragraph' );
                     const pos = writer.createPositionAt(paragraph, 0);
 
                     writer.insert(modelFragment, pos);
                     writer.insert(paragraph, modelPosition);*/
                     editor.model.insertContent(modelFragment, modelPosition);
-                } else 
-                if (_myDataExtraInfo === 'span') {
+                } else if (_myDataExtraInfo === 'span') {
                     editor.model.insertContent(
                         modelFragment.getChild(0).getChild(0),
-                        modelPosition,
+                        modelPosition
                     );
                 } else {
                     editor.model.insertContent(modelFragment, modelPosition);
@@ -645,9 +652,9 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy  {
     onHeaderFooter($event) {
         this.showHeaderFooter = !this.showHeaderFooter;
         if (this.showHeaderFooter) {
-            this.contentParentHeight = '300';
+            this.contentParentHeight = '390';
         } else {
-            this.contentParentHeight = '500';
+            this.contentParentHeight = '590';
         }
     }
 
@@ -682,7 +689,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy  {
         const modelElement = this.selectedEditorModelElement;
         console.log(
             '#### makeFreeText this.selectedEditorModelElement:',
-            this.selectedEditorModelElement,
+            this.selectedEditorModelElement
         );
         console.log('#### makeFreeText modelElement:', modelElement);
         if (
@@ -699,14 +706,14 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy  {
                 viewElement,
                 doc,
                 false,
-                true,
+                true
             );
             const textContent = node.textContent;
             console.log('#### makeFreeText node:', node);
             console.log('#### makeFreeText node.textContent:', node.textContent);
             const finalText = textContent.replace(
                 /(({var_time:[^:]*:)|(})|({var_date:[^:]*:)|(})|({var_str:[^:]*:)|(})|({str:[^:]*:)|(}))/g,
-                '',
+                ''
             );
             console.log('#### makeFreeText finalText:', finalText);
             this.Editor.model.change(writer => {
