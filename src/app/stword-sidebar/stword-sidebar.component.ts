@@ -48,6 +48,8 @@ export class StwordSidebarComponent implements OnInit {
         } else {
             myElement = html_doc.querySelector('p');
         }
+        myElement.setAttribute('class', 'standardword');
+        myElement.setAttribute('data-language', GlobalVariables.docLanguage);
         console.log('#### myElement data-id:', myElement.getAttribute('data-id'));
 
         const str = this.stwords.find(

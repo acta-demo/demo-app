@@ -8,6 +8,7 @@ const LIST_OF_SPEAKERS = [
         blueCardStatus: '',
         blueCardName: '',
         behalfOfGroup: '',
+        gender: 'female',
     },
     {
         id: 2,
@@ -18,6 +19,7 @@ const LIST_OF_SPEAKERS = [
         blueCardStatus: 'declined',
         blueCardName: 'fdf',
         behalfOfGroup: '',
+        gender: 'female',
     },
     {
         id: 3,
@@ -28,6 +30,7 @@ const LIST_OF_SPEAKERS = [
         blueCardStatus: '',
         blueCardName: '',
         behalfOfGroup: '',
+        gender: 'female',
     },
     {
         id: 4,
@@ -38,6 +41,7 @@ const LIST_OF_SPEAKERS = [
         blueCardStatus: 'declined',
         blueCardName: 'fdf',
         behalfOfGroup: '',
+        gender: 'male',
     },
     {
         id: 5,
@@ -48,16 +52,18 @@ const LIST_OF_SPEAKERS = [
         blueCardStatus: 'accepted',
         blueCardName: 'fdf',
         behalfOfGroup: '',
+        gender: 'male',
     },
     {
         id: 6,
-        fullName: 'Andreij Plenkovic (President-in-Office of the Council)',
+        fullName: 'Andrej Plenković (President-in-Office of the Council)',
         hasDisplayFunction: true,
         hasOnBehalfOfGroup: false,
         isBlueCardSpeaker: false,
         blueCardStatus: '',
         blueCardName: '',
         behalfOfGroup: '',
+        gender: 'male',
     },
     {
         id: 7,
@@ -68,6 +74,7 @@ const LIST_OF_SPEAKERS = [
         blueCardStatus: '',
         blueCardName: '',
         behalfOfGroup: '',
+        gender: 'male',
     },
     {
         id: 8,
@@ -78,6 +85,7 @@ const LIST_OF_SPEAKERS = [
         blueCardStatus: 'declined',
         blueCardName: 'fdf',
         behalfOfGroup: '',
+        gender: 'male',
     },
     {
         id: 9,
@@ -88,6 +96,7 @@ const LIST_OF_SPEAKERS = [
         blueCardStatus: '',
         blueCardName: '',
         behalfOfGroup: '',
+        gender: 'male',
     },
     {
         id: 11,
@@ -98,26 +107,29 @@ const LIST_OF_SPEAKERS = [
         blueCardStatus: '',
         blueCardName: '',
         behalfOfGroup: '',
+        gender: 'male',
     },
     {
         id: 12,
-        fullName: 'Iratxe Garcia Perez, President of the S&D Group',
+        fullName: 'Iratxe García Pérez, President of the S&D Group',
         hasDisplayFunction: true,
         hasOnBehalfOfGroup: false,
         isBlueCardSpeaker: false,
         blueCardStatus: '',
         blueCardName: '',
         behalfOfGroup: '',
+        gender: 'female',
     },
     {
         id: 13,
-        fullName: 'Dacian Ciolo?, President of the Renew Group',
+        fullName: 'Dacian Cioloş, President of the Renew Group',
         hasDisplayFunction: true,
         hasOnBehalfOfGroup: false,
         isBlueCardSpeaker: false,
         blueCardStatus: '',
         blueCardName: '',
         behalfOfGroup: '',
+        gender: 'male',
     },
     {
         id: 14,
@@ -128,6 +140,7 @@ const LIST_OF_SPEAKERS = [
         blueCardStatus: '',
         blueCardName: '',
         behalfOfGroup: '',
+        gender: 'male',
     },
     {
         id: 15,
@@ -138,6 +151,7 @@ const LIST_OF_SPEAKERS = [
         blueCardStatus: '',
         blueCardName: '',
         behalfOfGroup: '',
+        gender: 'female',
     },
     {
         id: 16,
@@ -148,6 +162,7 @@ const LIST_OF_SPEAKERS = [
         blueCardStatus: '',
         blueCardName: '',
         behalfOfGroup: '',
+        gender: 'female',
     },
 ];
 export default LIST_OF_SPEAKERS;

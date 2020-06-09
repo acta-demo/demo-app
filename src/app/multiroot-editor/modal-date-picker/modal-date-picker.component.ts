@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbCalendar, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
@@ -15,23 +15,25 @@ export class ModalDatePickerComponent implements OnInit {
 
     faWindowClose = faWindowClose;
 
-    constructor(public activeModal: NgbActiveModal, private calendar: NgbCalendar) {}
+    constructor(public activeModal: NgbActiveModal, private calendar: NgbCalendar) { }
 
     ngOnInit() {
-        console.log(this.fromParent);
-        const value = this.fromParent;
-        if (value === 'UNRESOLVED') {
-            this.dateSelected = this.calendar.getToday();
-        } else {
-            const spl = value.split('/');
-            console.log('spl:', spl);
-            this.dateSelected = NgbDate.from({
-                year: parseInt(spl[0]),
-                month: parseInt(spl[1]),
-                day: parseInt(spl[2]),
-            });
-            console.log('this.dateSelected:', this.dateSelected);
-        }
+        setTimeout(() => {
+            console.log(this.fromParent);
+            const value = this.fromParent;
+            if (value === 'UNRESOLVED') {
+                this.dateSelected = this.calendar.getToday();
+            } else {
+                const spl = value.split('/');
+                console.log('spl:', spl);
+                this.dateSelected = NgbDate.from({
+                    year: parseInt(spl[0]),
+                    month: parseInt(spl[1]),
+                    day: parseInt(spl[2]),
+                });
+                console.log('this.dateSelected:', this.dateSelected);
+            }
+        });
     }
 
     closeModal(sendStatus) {

@@ -16,14 +16,16 @@ export class ModalShowDiffComponent implements OnInit {
     dmp: DiffMatchPatch = new DiffMatchPatch();
     html_diffs: any;
     html_diffs_reverse: any;
+    differenceType: string;
 
     constructor(public activeModal: NgbActiveModal) {}
 
     ngOnInit() {
         console.log(this.fromParent);
-        const valueFooter: string = this.fromParent.footer;
-        const valueHeader: string = this.fromParent.header;
+        const valueFooter: string = this.fromParent.original;
+        const valueHeader: string = this.fromParent.updated;
         const diffType: string = this.fromParent.diffType;
+        this.differenceType = diffType;
         console.log('#### valueFooter:', valueFooter);
         if (valueFooter && valueHeader) {
             if (diffType === 'word') {

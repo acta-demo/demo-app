@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import LIST_OF_SPEAKERS from './list.of.speakers';
+import { GlobalVariables } from '../common/global.varibles';
 
 interface Lsp {
     datatype: string;
@@ -22,7 +23,9 @@ export class LspSidebarComponent {
         } else {
             myElement = html_doc.querySelector('p');
         }
+        myElement.setAttribute('class', 'lsp');
         myElement.setAttribute('data-id', Math.floor(Math.random() * 1000));
+        myElement.setAttribute('data-language', GlobalVariables.docLanguage);
         myElement.setAttribute('data-content', 'UNRESOLVED');
         myElement.textContent = 'UNRESOLVED';
 

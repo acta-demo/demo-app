@@ -1,7 +1,8 @@
 <div class="row">
     <div class="col-12">
-        <div class="paddingbottomactions input-group justify-content-end">
-            <button type="button" class="btn btn-light mr-1"
+        <div class="paddingbottomactions input-group justify-content-end"
+            style="padding-right: -5px;">
+            <!--button type="button" class="btn btn-light mr-1"
                 *ngIf="showHeaderFooter === false; else hideHeaderFooter"
                 (click)="onHeaderFooter($event)"><img
                     style="width:22px;height: 28px;"
@@ -11,51 +12,51 @@
                     (click)="onHeaderFooter($event)"><img
                         style="width:22px;height: 28px;"
                         src="./assets/images/headerfooter.png" />
-                </button></ng-template>
-            <button type="button" class="btn btn-warning  mr-1"
-                (click)="showDiff('word')" style="width:40px;height: 38px;margin-top: 2px;">
+                </button></ng-template-->
+            <!--button type="button" class="btn btn-warning  mr-1"
+                (click)="showDiff('word')"
+                style="width:42px;height: 38px;margin-top: 2px;">
                 <fa-icon [icon]="faNotEqual"></fa-icon>
             </button>
             <button type="button" class="btn btn-info mr-1"
-                (click)="showDiff('efficiency')" style="width:40px;height: 38px;margin-top: 2px;">
+                (click)="showDiff('efficiency')"
+                style="width:44px;height: 38px;margin-top: 2px;">
                 <fa-icon [icon]="faNotEqual"></fa-icon>
-            </button>
-            <button type="button" class="btn btn-info mr-1"
-                (click)="mergeHeaderAndFooter()" style="width:40px;height: 38px;margin-top: 2px;">
+            </button-->
+            <!--button type="button" class="btn btn-info "
+                (click)="mergeHeaderAndFooter()"
+                style="width:44px;height: 38px;margin-top: 2px;">
                 <fa-icon [icon]="faObjectGroup"></fa-icon>
-            </button>
+            </button-->
             <!--button type="button" class="btn btn-info mr-1" (click)="getDocData()">GetData
                 </button-->
         </div>
         <div class="panel panel-info">
             <!--div class="p-3 mb-2 bg-info text-white">{{documentInfoMetadata}}</div-->
             <div class="panel-body">
+                <div style="padding-top: 3px;"></div>
                 <div #toolbar id="toolbar"></div>
                 <div class="paddingbottom"></div>
 
-                <div class="header" #header id="header"
-                    [hidden]="showHeaderFooter === false"
+                <div [hidden]="!showHeader">
+                    <div class="header" #header id="header"
                     [contextMenu]="basicMenu">
                 </div>
-                <div *ngIf="showHeaderFooter" class="paddingbottom"></div>
+                </div>
+                <div *ngIf="showHeader" class="paddingbottom"></div>
                 <div class="maincontentparent"
                     [style.height.px]="contentParentHeight">
                     <div #content id="content" class="maincontent"
                         [contextMenu]="basicMenu">
                     </div>
                 </div>
-                <div #tooltip id="tooltip" role="tooltip">
-                    My tooltip
-                    <ngb-datepicker #d></ngb-datepicker>
-                    <div id="arrow" data-popper-arrow></div>
-                </div>
-                <div class="paddingbottom"></div>
+                <div *ngIf="showFooter" class="paddingbottom"></div>
 
-                <div class="footer" #footer id="footer"
-                    [hidden]="showHeaderFooter === false"
-                    [contextMenu]="basicMenu">
+                <div [hidden]="showFooter === false">
+                    <div class="footer" #footer id="footer" 
+                        [contextMenu]="basicMenu">
+                    </div>
                 </div>
-                <div class="paddingbottom"></div>
 
             </div>
         </div>

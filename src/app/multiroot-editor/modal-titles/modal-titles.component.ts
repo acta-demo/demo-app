@@ -27,7 +27,8 @@ export interface TitleToEditor {
 export class ModalTitlesComponent implements AfterViewInit {
     @ViewChild('resultstring', { static: false }) resultstringE: ElementRef;
     @Input() fromParent: TitleToEditor;
-    availableTitles: Title[] = [...TITLES];
+    //availableTitles: Title[] = [...TITLES];
+    availableTitles: Title[] = TITLES.slice();
     selectedTitleText = '';
     isOverridden = false;
     titleToEditor: TitleToEditor = {

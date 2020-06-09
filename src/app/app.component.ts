@@ -22,8 +22,8 @@ export class AppComponent {
 
     toggleStatus = false;
     menuFile: string[] = ['Open document', 'Open template'];
-    menuBB: string[] = ['List of speakers', 'Snippets', 'Strings', 'Variables'];
-    searchMenuElements: string[] = ['Strings', 'Snippets', 'Variables', 'List of speakers'];
+    menuBB: string[] = ['References', 'Snippets', 'Strings', 'Variables'];
+    searchMenuElements: string[] = ['Strings', 'Snippets', 'Variables', 'References'];
     selectedMenuElement = '';
     faFile = faFile;
     faCubes = faCubes;
@@ -35,7 +35,8 @@ export class AppComponent {
     receivedStwordMessage: string;
     docLanguage: string = 'en';
 
-    documents: any[] = [...DOCUMENT_DATA];
+    //documents: any[] = [...DOCUMENT_DATA];
+    documents: any[] = DOCUMENT_DATA.slice();
     documentInfoMetadata: string = '';
 
     constructor(
@@ -45,12 +46,13 @@ export class AppComponent {
         private changeLanguageService: ChangeLanguageService
     ) {}
 
-    loadData(type: string): void {
+    loadData(doctype: string): void {
         const document = this.documents.find(
-            doc => doc.language == GlobalVariables.docLanguage && doc.type == type
+            doc => doc.language == GlobalVariables.docLanguage && doc.doctype == doctype
         );
         this.documentInfoMetadata = document.metadata;
-        const data: LoadData = { language: GlobalVariables.docLanguage, type: type };
+        const data: LoadData = { language: GlobalVariables.docLanguage, doctype: doctype };
+        GlobalVariables.docType = doctype;
         this.loaddataService.clearMessages();
         this.loaddataService.loadData(data);
     }

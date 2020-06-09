@@ -3,7 +3,7 @@ import { Observable, Subject } from 'rxjs';
 
 export interface LoadData {
     language: string;
-    type: string;
+    doctype: string;
 }
 @Injectable({ providedIn: 'root' })
 export class LoadDataService {

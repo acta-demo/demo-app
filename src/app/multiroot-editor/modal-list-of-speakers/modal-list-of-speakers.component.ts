@@ -9,6 +9,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import LIST_OF_SPEAKERS from './list.of.speakers';
+import { GlobalVariables } from '../../common/global.varibles';
 
 interface ListOfSpeakers {
     id: number;
@@ -19,6 +20,7 @@ interface ListOfSpeakers {
     blueCardStatus: string;
     blueCardName: string;
     behalfOfGroup: string;
+    gender: string;
 }
 
 export interface LspDataToEditor {
@@ -35,7 +37,8 @@ export interface LspDataToEditor {
 export class ModalListOfSpeakersComponent implements AfterViewInit {
     @ViewChild('resultstring', { static: false }) resultstringE: ElementRef;
 
-    availableLsp: ListOfSpeakers[] = [...LIST_OF_SPEAKERS];
+    //availableLsp: ListOfSpeakers[] = [...LIST_OF_SPEAKERS];
+    availableLsp: ListOfSpeakers[] = LIST_OF_SPEAKERS.slice();
     searchText: string;
 
     selectedLsp: ListOfSpeakers[] = [];
@@ -68,7 +71,8 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
                 this.andChecked = dataFromEditor.isAndChecked;
                 this.resultstringE.nativeElement.innerHTML = dataFromEditor.textValue;
                 //set initial values for modal to editor as well
-                this.lspDataToEditor.listOfSpeakers = [...this.selectedLsp];
+                //this.lspDataToEditor.listOfSpeakers = [...this.selectedLsp];
+                this.lspDataToEditor.listOfSpeakers = this.selectedLsp.slice();
                 this.lspDataToEditor.isAndChecked = this.andChecked;
                 this.lspDataToEditor.textValue = dataFromEditor.textValue;
                 console.log('#### this.availableLsp:', this.availableLsp);
@@ -128,6 +132,9 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
     }
 
     calculateText() {
+        GlobalVariables.docLanguage == 'de' ? this.calculateTextDE() : this.calculateTextEN();
+    }
+    calculateTextEN() {
         console.log('#### calculateText selectedLsp:', this.selectedLsp);
         console.log('#### calculateText this.andChecked:', this.andChecked);
         this.fullString = '';
@@ -192,7 +199,81 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
             }
             console.log('#### current fullString:', this.fullString);
         }
-        this.lspDataToEditor.listOfSpeakers = [...this.selectedLsp];
+        //this.lspDataToEditor.listOfSpeakers = [...this.selectedLsp];
+        this.lspDataToEditor.listOfSpeakers = this.selectedLsp.slice();
+        this.lspDataToEditor.isAndChecked = this.andChecked;
+        this.lspDataToEditor.textValue = this.fullString;
+
+        this.resultstringE.nativeElement.innerHTML = this.fullString;
+    }
+
+    calculateTextDE() {
+        console.log('#### calculateText selectedLsp:', this.selectedLsp);
+        console.log('#### calculateText this.andChecked:', this.andChecked);
+        this.fullString = '';
+        const size = this.selectedLsp.length;
+        for (const [index, value] of this.selectedLsp.entries()) {
+            //const finalAnd = (index === size - 1) ? ' and ' : '';
+            if (index === size - 1 && this.andChecked) {
+                if (value.hasOnBehalfOfGroup) {
+                    this.fullString =
+                        this.fullString +
+                        (this.fullString
+                            ? ' und ' +
+                              value.fullName +
+                              ', Vorsitzende der ' +
+                              value.behalfOfGroup +
+                              ' Fraktion,'
+                            : value.fullName +
+                              ', Vorsitzende der ' +
+                              value.behalfOfGroup +
+                              ' Fraktion');
+                } else {
+                    this.fullString =
+                        this.fullString +
+                        (this.fullString ? ' und ' + value.fullName : value.fullName);
+                }
+            } else {
+                if (value.hasOnBehalfOfGroup) {
+                    this.fullString =
+                        this.fullString +
+                        (this.fullString
+                            ? ',' +
+                              value.fullName +
+                              ', Vorsitzende der ' +
+                              value.behalfOfGroup +
+                              ' Fraktion'
+                            : value.fullName +
+                              ', Vorsitzende der ' +
+                              value.behalfOfGroup +
+                              ' Fraktion');
+                } else {
+                    this.fullString =
+                        this.fullString + (this.fullString ? ',' + value.fullName : value.fullName);
+                }
+            }
+            if (value.blueCardStatus === 'accepted') {
+                this.fullString =
+                    this.fullString + ((value.gender == 'male') ? ', der ': ', die ') +
+                    unescape('auch eine nach dem Verfahren der &bdquo;blauen Karte&ldquo; gestellte Frage von ') +
+                    value.blueCardName + ' beantwortet';
+            } else if (value.blueCardStatus === 'declined') {
+                this.fullString =
+                    this.fullString + ((value.gender == 'male') ? ', der ': ', die ') +
+                    unescape('auch eine nach dem Verfahren der &bdquo;blauen Karte&ldquo; gestellte Frage von ') +
+                    value.blueCardName + ' ablehnt';
+            } else if (value.blueCardStatus === 'accepted-two') {
+                this.fullString =
+                    this.fullString + ((value.gender == 'male') ? ', der ': ', die ') +
+                    unescape('auch eine nach dem Verfahren der &bdquo;blauen Karte&ldquo; gestellte Frage von ') +
+                    value.blueCardName + ' beantwortet';
+            } else if (value.blueCardStatus === '') {
+                this.fullString = this.fullString;
+            }
+            console.log('#### current fullString:', this.fullString);
+        }
+        //this.lspDataToEditor.listOfSpeakers = [...this.selectedLsp];
+        this.lspDataToEditor.listOfSpeakers = this.selectedLsp.slice();
         this.lspDataToEditor.isAndChecked = this.andChecked;
         this.lspDataToEditor.textValue = this.fullString;
 

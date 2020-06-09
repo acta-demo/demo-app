@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import VARIABLES from './variables';
+import { GlobalVariables } from '../common/global.varibles';
 
 interface Variable {
     datatype: string;
@@ -22,6 +23,8 @@ export class VariableSidebarComponent {
         } else {
             myElement = html_doc.querySelector('p');
         }
+        myElement.setAttribute('class', 'variable');
+        myElement.setAttribute('data-language', GlobalVariables.docLanguage);
         myElement.setAttribute('data-id', Math.floor(Math.random() * 1000));
         myElement.textContent = 'UNRESOLVED';
 

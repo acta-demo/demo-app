@@ -1,9 +1,10 @@
-<div class="border border-light rounded-lg searchsubmenu">
+<div class="border border-light rounded-lg searchsubmenu"
+    style="margin-left: 13px;">
     <div class="list-group listscroll">
         <div class="list-group-item list-group-item-action list-group-item-light listitem py-2"
             draggable="true" (dragstart)="drag($event, 'span')"
             *ngFor="let lsp of lsps">
-            <span class="lsp" [attr.data-id]="" [attr.data-type]="lsp.datatype"
+            <span class="" [attr.data-id]="" [attr.data-type]="lsp.datatype"
                 cdkDrag>{{lsp.datadesc}}</span>
         </div>
     </div>

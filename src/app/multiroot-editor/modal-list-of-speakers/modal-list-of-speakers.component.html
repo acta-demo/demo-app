@@ -123,7 +123,7 @@
                                 </td>
 
                                 <td>
-                                    <select class="form-control-sm"
+                                    <select class="form-control-sm" (change)="calculateText()"
                                         [(ngModel)]="lsp.blueCardStatus">
                                         <option
                                             *ngFor="let c of blueCardStatuses"
@@ -132,7 +132,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <select class="form-control-sm"
+                                    <select class="form-control-sm" (change)="calculateText()"
                                         [(ngModel)]="lsp.blueCardName">
                                         <option *ngFor="let c of blueCardLsp"
                                             [ngValue]="c.fullName">

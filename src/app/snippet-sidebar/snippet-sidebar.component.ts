@@ -54,7 +54,8 @@ export class SnippetSidebarComponent implements OnInit {
             dataContent =
                 '<span class="snippet" data-id="' +
                 snpElement[0].dataid +
-                '" data-type="snp">' +
+                '" data-type="snp" ' + 
+                'data-language="' +GlobalVariables.docLanguage + '">'
                 snpElement[0].datacontent +
                 '</span>';
         }

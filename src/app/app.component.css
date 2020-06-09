@@ -2,6 +2,9 @@ body {
     overflow-x: hidden;
 }
 
+.infocolor {
+    background-color: #17a2b8;
+}
 #toggled-sidebar {
     min-height: 100vh;
     -webkit-transition: margin 0.25s ease-out;
@@ -56,14 +59,14 @@ body {
 }
 
 .group-menu::after {
-    content: '\f107';
+    content: '+';
     right: 5px;
     position: absolute;
-    font-family: 'FontAwesome';
+    font-weight: bold;
 }
 
 .group-menu[aria-expanded='true']::after {
-    content: '\f106';
+    content: '-';
 }
 
 .subitem:hover {

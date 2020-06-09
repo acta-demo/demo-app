@@ -89,3 +89,7 @@
 #tooltip[data-popper-placement^='right'] > #arrow {
     left: -4px;
 }
+
+[hidden] {
+  display: none !important;
+}
