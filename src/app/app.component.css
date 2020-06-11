@@ -69,6 +69,22 @@ body {
     content: '-';
 }
 
+.group-menu-small::after {
+    content: '+';
+    right: 5px;
+    position: absolute;
+    font-weight: bold;
+    font-size: small;
+}
+
+.group-menu-small[aria-expanded='true']::after {
+    content: '-';
+    font-weight: bold;
+    font-size: small;
+    position: absolute;
+    vertical-align: middle;
+}
+
 .subitem:hover {
     text-decoration: underline;
 }

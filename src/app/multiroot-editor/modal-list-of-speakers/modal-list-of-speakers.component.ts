@@ -255,17 +255,17 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
             if (value.blueCardStatus === 'accepted') {
                 this.fullString =
                     this.fullString + ((value.gender == 'male') ? ', der ': ', die ') +
-                    unescape('auch eine nach dem Verfahren der &bdquo;blauen Karte&ldquo; gestellte Frage von ') +
+                    unescape('auch eine nach dem Verfahren der \„blauen Karte\“ gestellte Frage von ') +
                     value.blueCardName + ' beantwortet';
             } else if (value.blueCardStatus === 'declined') {
                 this.fullString =
                     this.fullString + ((value.gender == 'male') ? ', der ': ', die ') +
-                    unescape('auch eine nach dem Verfahren der &bdquo;blauen Karte&ldquo; gestellte Frage von ') +
+                    unescape('auch eine nach dem Verfahren der \„blauen Karte\“ gestellte Frage von ') +
                     value.blueCardName + ' ablehnt';
             } else if (value.blueCardStatus === 'accepted-two') {
                 this.fullString =
                     this.fullString + ((value.gender == 'male') ? ', der ': ', die ') +
-                    unescape('auch eine nach dem Verfahren der &bdquo;blauen Karte&ldquo; gestellte Frage von ') +
+                    unescape('auch eine nach dem Verfahren der \„blauen Karte\“ gestellte Frage von ') +
                     value.blueCardName + ' beantwortet';
             } else if (value.blueCardStatus === '') {
                 this.fullString = this.fullString;
