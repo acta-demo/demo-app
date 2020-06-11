@@ -1,7 +1,11 @@
-const LIST_OF_SPEAKERS = [
+const REFERENCES = [
     {
         datatype: 'var_sp',
         datadesc: 'List of speakers',
     },
+    {
+        datatype: 'title',
+        datadesc: 'Title',
+    },
 ];
-export default LIST_OF_SPEAKERS;
+export default REFERENCES;

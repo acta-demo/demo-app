@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import LIST_OF_SPEAKERS from './list.of.speakers';
+import REFERENCES from './list.of.speakers';
 import { GlobalVariables } from '../common/global.varibles';
 
 interface Lsp {
@@ -12,7 +12,7 @@ interface Lsp {
     styleUrls: ['./lsp-sidebar.component.css'],
 })
 export class LspSidebarComponent {
-    lsps: Lsp[] = LIST_OF_SPEAKERS;
+    lsps: Lsp[] = REFERENCES;
 
     drag(ev, type) {
         const parser = new DOMParser();
@@ -23,10 +23,17 @@ export class LspSidebarComponent {
         } else {
             myElement = html_doc.querySelector('p');
         }
-        myElement.setAttribute('class', 'lsp');
+        console.log('#### myElement.getAttribute(data-type):', myElement.getAttribute('data-type'));
+        if(myElement.getAttribute('data-type') == 'var_sp') {
+            myElement.setAttribute('class', 'lsp');
+        } else if(myElement.getAttribute('data-type') == 'title') {
+            myElement.setAttribute('class', 'title');
+            myElement.setAttribute('data-json', '');
+        }
+        //myElement.setAttribute('class', 'lsp');
         myElement.setAttribute('data-id', Math.floor(Math.random() * 1000));
         myElement.setAttribute('data-language', GlobalVariables.docLanguage);
-        myElement.setAttribute('data-content', 'UNRESOLVED');
+        //myElement.setAttribute('data-content', 'UNRESOLVED');
         myElement.textContent = 'UNRESOLVED';
 
         ev.dataTransfer.setData('text/html', myElement.outerHTML);

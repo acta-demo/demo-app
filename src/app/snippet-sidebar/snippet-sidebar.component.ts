@@ -50,12 +50,13 @@ export class SnippetSidebarComponent implements OnInit {
                 snp.dataid == myElement.getAttribute('data-id') &&
                 snp.language == GlobalVariables.docLanguage
         );
+
         if (snpElement && snpElement.length > 0) {
             dataContent =
                 '<span class="snippet" data-id="' +
                 snpElement[0].dataid +
                 '" data-type="snp" ' + 
-                'data-language="' +GlobalVariables.docLanguage + '">'
+                'data-language="' +GlobalVariables.docLanguage + '">' +
                 snpElement[0].datacontent +
                 '</span>';
         }

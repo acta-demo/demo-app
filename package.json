@@ -77,11 +77,7 @@
     "tslint": "~5.18.0",
     "typescript": "~3.5.3"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "node_modules/.bin/lint-staged"
-    }
-  },
+
   "lint-staged": {
     "src/**/*.html": [
       "bin/html-beautify-check"

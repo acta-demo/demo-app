@@ -2,6 +2,7 @@ import { Component, Input, Renderer2, ViewChild, ElementRef, AfterViewInit } fro
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
 import TITLES from './titles';
+import { GlobalVariables } from '../../common/global.varibles';
 
 interface Title {
     id: number;
@@ -28,7 +29,9 @@ export class ModalTitlesComponent implements AfterViewInit {
     @ViewChild('resultstring', { static: false }) resultstringE: ElementRef;
     @Input() fromParent: TitleToEditor;
     //availableTitles: Title[] = [...TITLES];
-    availableTitles: Title[] = TITLES.slice();
+    availableTitles: Title[] = (GlobalVariables.docLanguage == 'de')
+                    ? TITLES.de.slice()
+                    : TITLES.en.slice();
     selectedTitleText = '';
     isOverridden = false;
     titleToEditor: TitleToEditor = {

@@ -59,5 +59,7 @@ const STANDARD_WORDS = [
     { dataid: '196', datacontent: 'Rapporteur', language: 'en' },
     { dataid: '196', datacontent: 'Berichterstatterin', language: 'de' },
     { dataid: '197', datacontent: 'and', language: 'en' },
+    { dataid: '197', datacontent: 'und', language: 'de' },
+    { dataid: '198', datacontent: 'konsultieren', language: 'de' },
 ];
 export default STANDARD_WORDS;

@@ -160,5 +160,12 @@ const SNIPPETS = [
         datadesc: 'President consult',
         language: 'en',
     },
+    {
+        dataid: '190',
+        datacontent:
+            '<span class="standardword" data-id="193" data-type="str" data-language="de">Gemäß</span> <span class="standardword" data-id="145" data-type="str" data-language="de">Rule145(1)</span> <span class="standardword" data-id="197" data-type="str" data-language="de">und</span> <span class="standardword" data-id="1465" data-type="str" data-language="de">Rule146(1)</span> <span class="variable" data-id="1771" data-type="var_str" data-language="de">UNRESOLVED</span> <span class="standardword" data-id="194" data-type="str" data-language="de">und den</span> <span class="variable" data-id="1772" data-type="var_str" data-language="de">UNRESOLVED</span> <span class="standardword" data-id="198" data-type="str" data-language="de">konsultieren</span>.',
+        datadesc: 'President consult',
+        language: 'de',
+    },
 ];
 export default SNIPPETS;

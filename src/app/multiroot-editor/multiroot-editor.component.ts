@@ -647,8 +647,11 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                     console.log('#### EDITOR MODAL result:', result);
                     console.log('#### EDITOR MODAL result string:', result.textValue);
                     this.Editor.model.change(writer => {
+                        console.log('#### 1');
                         writer.setAttribute('data-content', result.textValue, modelElement);
+                        console.log('#### 2');
                         writer.setAttribute('data-json', JSON.stringify(result), modelElement);
+                        console.log('#### 3');
                     });
                 }
             });

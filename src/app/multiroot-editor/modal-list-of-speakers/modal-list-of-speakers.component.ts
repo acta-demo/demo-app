@@ -38,7 +38,7 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
     @ViewChild('resultstring', { static: false }) resultstringE: ElementRef;
 
     //availableLsp: ListOfSpeakers[] = [...LIST_OF_SPEAKERS];
-    availableLsp: ListOfSpeakers[] = LIST_OF_SPEAKERS.slice();
+    availableLsp: ListOfSpeakers[] = (GlobalVariables.docLanguage == 'de') ? LIST_OF_SPEAKERS.de.slice():LIST_OF_SPEAKERS.en.slice();
     searchText: string;
 
     selectedLsp: ListOfSpeakers[] = [];
