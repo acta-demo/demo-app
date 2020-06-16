@@ -165,7 +165,7 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
                     this.fullString =
                         this.fullString +
                         (this.fullString
-                            ? ',' +
+                            ? ', ' +
                               value.fullName +
                               ', on behalf of the ' +
                               value.behalfOfGroup +
@@ -182,12 +182,12 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
             if (value.blueCardStatus === 'accepted') {
                 this.fullString =
                     this.fullString +
-                    ',  who also replied to a blue-card question by ' +
+                    ', who also replied to a blue-card question by ' +
                     value.blueCardName;
             } else if (value.blueCardStatus === 'declined') {
                 this.fullString =
                     this.fullString +
-                    ',  who also declined to take a blue-card question by ' +
+                    ', who also declined to take a blue-card question by ' +
                     value.blueCardName;
             } else if (value.blueCardStatus === 'accepted-two') {
                 this.fullString =
@@ -238,7 +238,7 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
                     this.fullString =
                         this.fullString +
                         (this.fullString
-                            ? ',' +
+                            ? ', ' +
                               value.fullName +
                               ', Vorsitzende der ' +
                               value.behalfOfGroup +

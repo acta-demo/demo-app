@@ -34,7 +34,7 @@ export class ModalShowDiffComponent implements OnInit {
                 console.log('#### diffs:', diffs);
                 this.html_diffs = this.dmp.diff_prettyHtml(diffs);
 
-                const diffs_reverse = this.diffByWord(valueHeader, valueFooter);
+                const diffs_reverse = this.diffByWord(valueFooter, valueFooter);
                 this.html_diffs_reverse = this.dmp.diff_prettyHtml(diffs_reverse);
             } else if (diffType === 'efficiency') {
                 const diffs = this.dmp.diff_main(valueFooter, valueHeader);
@@ -42,7 +42,7 @@ export class ModalShowDiffComponent implements OnInit {
                 console.log('#### diffs:', diffs);
                 this.html_diffs = this.dmp.diff_prettyHtml(diffs);
 
-                const diffs_reverse = this.dmp.diff_main(valueHeader, valueFooter);
+                const diffs_reverse = this.dmp.diff_main(valueFooter, valueFooter);
                 this.dmp.diff_cleanupEfficiency(diffs_reverse);
                 this.html_diffs_reverse = this.dmp.diff_prettyHtml(diffs_reverse);
             }

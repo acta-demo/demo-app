@@ -18,6 +18,7 @@ import { Subscription } from 'rxjs';
 import { faNotEqual, faObjectGroup } from '@fortawesome/free-solid-svg-icons';
 import DOCUMENT_DATA from '../document.data';
 import { GlobalVariables } from '../common/global.varibles';
+import { HostListener } from "@angular/core";
 
 @Component({
     selector: 'app-multiroot-editor',
@@ -36,7 +37,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
     public Editor = MultirootEditor;
     showHeader: boolean = false;
     showFooter: boolean = false;
-    contentParentHeight = '630';
+    contentParentHeight: number = 630;
     closeResult = '';
     selectedEditorModelElement: any;
     getDataHtml: string;
@@ -50,6 +51,9 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
     documents: any[] = DOCUMENT_DATA.slice();
     faNotEqual = faNotEqual;
     faObjectGroup = faObjectGroup;
+
+    scrHeight: number;
+    scrWidth: number;
 
     constructor(
         private modalService: NgbModal,
@@ -78,6 +82,16 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                 this.messages = [];
             }
         });
+
+        this.getScreenSize();
+    }
+
+    @HostListener('window:resize', ['$event'])
+    getScreenSize(event?) {
+        this.scrHeight = window.innerHeight;
+        this.scrWidth = window.innerWidth;
+        console.log('#### scrHeight:', this.scrHeight);
+        this.contentParentHeight = this.scrHeight - 110;
     }
 
     loadData(loaddata: LoadData): void {
@@ -144,15 +158,31 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                     }
                 }
                 /// ///////////////////////
+                newEditor.editing.view.document.on( 'keydown', ( evt, data ) => {
+                    console.log( '#### keydown data:', data );
+                    if (
+                        data.keyCode == 88 &&
+                        this.selectedEditorModelElement &&
+                        this.selectedEditorModelElement &&
+                        this.selectedEditorModelElement.parent.name &&
+                        this.selectedEditorModelElement.parent.name === 'snp'
+                    ) {
+                        //console.log( 'X KEY PRESSED' );
+                        data.preventDefault();
+                        evt.stop();
+                    } 
+                    
+                } );
+
                 newEditor.listenTo(newEditor.editing.view.document, 'mousedown', (evt, data) => {
                     const modelElement = newEditor.editing.mapper.toModelElement(data.target);
                     this.selectedEditorModelElement = modelElement;
-                    console.log('contextmenu data:', data);
-                    console.log('contextmenu data.target:', data.target);
-                    console.log('contextmenu modelElement:', modelElement);
+                    console.log('mousedown data:', data);
+                    console.log('mousedown data.target:', data.target);
+                    console.log('mousedown modelElement:', modelElement);
                 });
 
-                newEditor.listenTo(newEditor.editing.view.document, 'dblclick', (evt, data) => {
+                /*newEditor.listenTo(newEditor.editing.view.document, 'dblclick', (evt, data) => {
                     const modelElement = newEditor.editing.mapper.toModelElement(data.target);
                     this.selectedEditorModelElement = modelElement;
                     console.log('dblclick data:', data);
@@ -170,7 +200,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                         console.log('#### dblclick else');
                         MultirootEditor.enableAllKeyboard(this.Editor);
                     }
-                });
+                });*/
 
                 newEditor.listenTo(newEditor.editing.view.document, 'click', (evt, data) => {
                     const modelElement = newEditor.editing.mapper.toModelElement(data.target);
@@ -231,9 +261,9 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                         this.showHeader = !this.showHeader;
                         this.showFooter = !this.showFooter;
                         if (this.showHeader) {
-                            this.contentParentHeight = '430';
+                            this.contentParentHeight = this.contentParentHeight - 200;
                         } else {
-                            this.contentParentHeight = '630';
+                            this.contentParentHeight = this.contentParentHeight + 200;
                         }
                         //newEditor.set('docLanguage', newValue);
                     }
@@ -249,7 +279,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                     }
                 );
 
-                //console.log('#### newEditor.commands:', newEditor.commands);
+                console.log('#### newEditor.commands:', newEditor.commands);
                 //CKEditorInspector.attach(newEditor);
             })
             .catch(err => {
@@ -468,13 +498,13 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
         console.log('#### doc:', doc);
         const document = new DOMParser().parseFromString(unescape(doc.datacontent), 'text/html');
         console.log('#### document:', document);
-        const originalParagraphs = document.documentElement.querySelectorAll('p');
+        const originalParagraphs = document.documentElement.querySelectorAll('p, h3');
         console.log('#### originalParagraphs:', originalParagraphs);
         const updatedDocument = new DOMParser().parseFromString(
             this.Editor.getData({ rootName: 'content' }),
             'text/html'
         );
-        const updatedParagraphs = updatedDocument.documentElement.querySelectorAll('p, td');
+        const updatedParagraphs = updatedDocument.documentElement.querySelectorAll('p, td, h3');
         //const updatedParagraphs = this.contentE.nativeElement.querySelectorAll('p');
         /*for (const p of originalParagraphs) {
             dataToModal.original += p.textContent.concat('\r\n');
@@ -793,7 +823,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
             console.log('#### makeFreeText node:', node);
             console.log('#### makeFreeText node.textContent:', node.textContent);
             const finalText = textContent.replace(
-                /(({var_time:[^:]*:)|(})|({var_date:[^:]*:)|(})|({var_str:[^:]*:)|(})|({str:[^:]*:)|(}))/g,
+                /(({var_time:[^:]*:)|(})|({var_date:[^:]*:)|(})|({var_str:[^:]*:)|(})|({str:[^:]*:)|(})|({var_sp:[^:]*:)|(})|({title:[^:]*:)|(}))/g,
                 ''
             );
             console.log('#### makeFreeText finalText:', finalText);
@@ -808,6 +838,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
     ondragstart($event) {
         console.log('#### ondragstart $event:', $event);
     }
+
     makeTextWithVariables() {
         const modelElement = this.selectedEditorModelElement;
         if (
@@ -840,6 +871,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
             }
         }
     }
+    
     getDocData() {
         console.log('#### getDocData:', escape(this.Editor.getData({ rootName: 'content' })));
         console.log('#### getDocData:', this.Editor.getData({ rootName: 'content' }));
