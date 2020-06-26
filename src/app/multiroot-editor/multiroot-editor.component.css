@@ -20,6 +20,11 @@
     height: 95px;
 }
 
+#sidebar {
+    min-width: 65px;
+    padding: 0 10px;
+}
+
 .paddingbottom {
     padding-bottom: 5px;
 }

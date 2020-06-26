@@ -14,6 +14,9 @@ import { GlobalVariables } from '../../common/global.varibles';
 interface ListOfSpeakers {
     id: number;
     fullName: string;
+    additionalDescription: string;
+    additionalDescriptionDisplay: string;
+    title: boolean;
     hasDisplayFunction: boolean;
     hasOnBehalfOfGroup: boolean;
     isBlueCardSpeaker: boolean;
@@ -21,6 +24,7 @@ interface ListOfSpeakers {
     blueCardName: string;
     behalfOfGroup: string;
     gender: string;
+    time: string;
 }
 
 export interface LspDataToEditor {
@@ -147,7 +151,9 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
                         this.fullString +
                         (this.fullString
                             ? ' and ' +
-                              value.fullName +
+                              (value.title && value.gender == 'male') ? 'Mr ' : '' +
+                              (value.title && value.gender == 'female') ? 'Mrs ' : '' +
+                              value.fullName + value.additionalDescription +
                               ', on behalf of the ' +
                               value.behalfOfGroup +
                               ' Group'
@@ -158,7 +164,11 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
                 } else {
                     this.fullString =
                         this.fullString +
-                        (this.fullString ? ' and ' + value.fullName : value.fullName);
+                        (this.fullString ? ' and ' + 
+                                            ((value.title && value.gender == 'male') ? 'Mr ' : '') +
+                                            ((value.title && value.gender == 'female') ? 'Mrs ' : '') + 
+                                            value.fullName + value.additionalDescription
+                                         : value.fullName + value.additionalDescription);
                 }
             } else {
                 if (value.hasOnBehalfOfGroup) {
@@ -166,7 +176,9 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
                         this.fullString +
                         (this.fullString
                             ? ', ' +
-                              value.fullName +
+                              (value.title && value.gender == 'male') ? 'Mr ' : '' +
+                              (value.title && value.gender == 'female') ? 'Mrs ' : '' +
+                              value.fullName + value.additionalDescription +
                               ', on behalf of the ' +
                               value.behalfOfGroup +
                               ' Group'
@@ -176,7 +188,12 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
                               ' Group');
                 } else {
                     this.fullString =
-                        this.fullString + (this.fullString ? ',' + value.fullName : value.fullName);
+                        this.fullString + (this.fullString ? 
+                                ', ' +
+                                ((value.title && value.gender == 'male') ? 'Mr ' : '') +
+                                ((value.title && value.gender == 'female') ? 'Mrs ' : '') + 
+                                value.fullName + value.additionalDescription
+                                                           : value.fullName + value.additionalDescription);
                 }
             }
             if (value.blueCardStatus === 'accepted') {
@@ -220,18 +237,25 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
                         this.fullString +
                         (this.fullString
                             ? ' und ' +
-                              value.fullName +
+                              (value.title && value.gender == 'male') ? 'Hr. ' : '' +
+                              (value.title && value.gender == 'female') ? 'Fr. ' : '' +
+                              value.fullName + value.additionalDescription +
                               ', Vorsitzende der ' +
                               value.behalfOfGroup +
                               ' Fraktion,'
-                            : value.fullName +
+                            : value.fullName + value.additionalDescription +
                               ', Vorsitzende der ' +
                               value.behalfOfGroup +
                               ' Fraktion');
                 } else {
                     this.fullString =
                         this.fullString +
-                        (this.fullString ? ' und ' + value.fullName : value.fullName);
+                        (this.fullString ? 
+                                ' und ' + 
+                                (value.title && value.gender == 'male') ? 'Hr. ' : '' +
+                                (value.title && value.gender == 'female') ? 'Fr. ' : '' +
+                                value.fullName + value.additionalDescription
+                                         : value.fullName + value.additionalDescription);
                 }
             } else {
                 if (value.hasOnBehalfOfGroup) {
@@ -239,17 +263,24 @@ export class ModalListOfSpeakersComponent implements AfterViewInit {
                         this.fullString +
                         (this.fullString
                             ? ', ' +
-                              value.fullName +
+                              (value.title && value.gender == 'male') ? 'Hr. ' : '' +
+                              (value.title && value.gender == 'female') ? 'Fr. ' : '' +
+                              value.fullName + value.additionalDescription +
                               ', Vorsitzende der ' +
                               value.behalfOfGroup +
                               ' Fraktion'
-                            : value.fullName +
+                            : value.fullName + value.additionalDescription +
                               ', Vorsitzende der ' +
                               value.behalfOfGroup +
                               ' Fraktion');
                 } else {
                     this.fullString =
-                        this.fullString + (this.fullString ? ',' + value.fullName : value.fullName);
+                        this.fullString + (this.fullString ? 
+                                    ', ' +
+                                    (value.title && value.gender == 'male') ? 'Hr. ' : '' +
+                                    (value.title && value.gender == 'female') ? 'Fr. ' : '' + 
+                                    value.fullName + value.additionalDescription
+                                                           : value.fullName + value.additionalDescription);
                 }
             }
             if (value.blueCardStatus === 'accepted') {

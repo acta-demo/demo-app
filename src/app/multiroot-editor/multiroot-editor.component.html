@@ -31,9 +31,9 @@
             <!--button type="button" class="btn btn-info mr-1" (click)="getDocData()">GetData
                 </button-->
         </div>
-        <div class="panel panel-info">
+        <div class="panel panel-info row">
             <!--div class="p-3 mb-2 bg-info text-white">{{documentInfoMetadata}}</div-->
-            <div class="panel-body">
+            <div class="panel-body col">
                 <div style="padding-top: 3px;"></div>
                 <div #toolbar id="toolbar"></div>
                 <div class="paddingbottom"></div>
@@ -59,6 +59,7 @@
                 </div>
 
             </div>
+            <div #sidebar id="sidebar" class="col-md-auto"></div>
         </div>
     </div>
 </div>
@@ -68,7 +69,11 @@
     </ng-template-->
     <ng-template contextMenuItem let-item
         (execute)="onContextMenuResolve($event)">
-        <a href="#" class="list-group-item list-group-item-action">Resolve</a>
+        <a *ngIf="hasResolve()" href="#" class="list-group-item list-group-item-action">Resolve</a>
+    </ng-template>
+    <ng-template contextMenuItem let-item>
+        <span *ngIf="!hasResolve()" class="list-group-item list-group-item-action isLinkDisabled"
+            >Resolve</span>
     </ng-template>
     <ng-template contextMenuItem let-item *ngIf="hasMakeAllText()"
         (execute)="makeAllText()">

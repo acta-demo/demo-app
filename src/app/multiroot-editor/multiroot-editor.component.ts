@@ -19,6 +19,10 @@ import { faNotEqual, faObjectGroup } from '@fortawesome/free-solid-svg-icons';
 import DOCUMENT_DATA from '../document.data';
 import { GlobalVariables } from '../common/global.varibles';
 import { HostListener } from "@angular/core";
+//import { CKEditor5 } from '@ckeditor/ckeditor5-angular';
+import { getTrackChangesAdapter } from './track-changes-adapter';
+import * as suggestionTemplateDefinition  from './acta.suggestion.thread.view';
+import { SuggestionThreadView } from '../../assets/ckeditor.js';
 
 @Component({
     selector: 'app-multiroot-editor',
@@ -30,6 +34,10 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
     @ViewChild('header', { static: false }) headerE: ElementRef;
     @ViewChild('content', { static: false }) contentE: ElementRef;
     @ViewChild('footer', { static: false }) footerE: ElementRef;
+
+    @ViewChild('sidebar', { static: false }) sidebarContainer: ElementRef<HTMLDivElement>;
+    private sidebar = document.createElement('div');
+
     @ViewChild(ContextMenuComponent, { static: false })
     public basicMenu: ContextMenuComponent;
     @ViewChild('datepicker', { static: false }) datepickerE: ElementRef;
@@ -54,6 +62,121 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
 
     scrHeight: number;
     scrWidth: number;
+
+    trackChangesShow: boolean = false;
+    trackChangesPlugin: any;
+    trackChangesCommand: any;
+    private appData = {
+        // The ID of the current user.
+        userId: 'user-1',
+        // Users data.
+        users: [
+            {
+                id: 'user-1',
+                name: 'Dimitris',
+                // Note that the avatar is optional.
+                avatar: 'https://randomuser.me/api/portraits/thumb/men/26.jpg'
+            },
+            {
+                id: 'user-2',
+                name: 'Neven',
+                avatar: 'https://randomuser.me/api/portraits/thumb/women/65.jpg'
+            }
+        ],
+        // Suggestion threads data.
+        suggestions: [
+            {
+                id: 'suggestion-1',
+                type: 'insertion',
+                authorId: 'user-2',
+                createdAt: new Date(2019, 1, 13, 11, 20, 48),
+                hasComments: true
+            },
+            {
+                id: 'suggestion-2',
+                type: 'deletion',
+                authorId: 'user-1',
+                createdAt: new Date(2019, 1, 14, 12, 7, 20),
+                hasComments: false
+            },
+            {
+                id: 'suggestion-3',
+                type: 'insertion',
+                authorId: 'user-1',
+                createdAt: new Date(2019, 1, 14, 12, 7, 20),
+                hasComments: false
+            },
+            {
+                id: 'suggestion-4',
+                type: 'deletion',
+                authorId: 'user-1',
+                createdAt: new Date(2019, 1, 15, 8, 44, 1),
+                hasComments: true
+            },
+            {
+                id: 'suggestion-5',
+                type: 'formatInline:886cqig6g8rf',
+                authorId: 'user-2',
+                hasComments: false,
+                createdAt: new Date(2019, 2, 8, 10, 2, 7),
+                data: {
+                    commandName: 'bold',
+                    commandParams: [{ forceValue: true }]
+                }
+            },
+            {
+                id: 'suggestion-6',
+                type: 'formatBlock:698dn3otqzd6',
+                authorId: 'user-2',
+                hasComments: false,
+                createdAt: new Date(2019, 2, 8, 10, 2, 10),
+                data: {
+                    commandName: 'heading',
+                    commandParams: [{ value: 'heading2' }],
+                    formatGroupId: 'blockName',
+                    multipleBlocks: false
+                }
+            },
+            {
+                id: 'suggestion-7',
+                type: 'replace',
+                authorId: 'user-1',
+                createdAt: new Date(2019, 1, 15, 8, 44, 1),
+                hasComments: true
+            }
+        ],
+        // Comment threads data.
+        comments: [
+            {
+                threadId: 'suggestion-1',
+                comments: [
+                    {
+                        commentId: 'comment-1',
+                        content: 'Sounds good.',
+                        authorId: 'user-1',
+                        createdAt: new Date(2019, 1, 13, 11, 32, 57)
+                    }
+                ]
+            },
+            {
+                threadId: 'suggestion-4',
+                comments: [
+                    {
+                        commentId: 'comment-2',
+                        content: 'I think it\'s not relevant.',
+                        authorId: 'user-2',
+                        createdAt: new Date(2019, 1, 15, 9, 3, 1)
+                    },
+                    {
+                        commentId: 'comment-3',
+                        content: 'You are right. Thanks.',
+                        authorId: 'user-1',
+                        createdAt: new Date(2019, 1, 15, 9, 28, 1)
+                    },
+                ]
+            }
+        ]
+    };
 
     constructor(
         private modalService: NgbModal,
@@ -123,16 +246,35 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
         this.subscription.unsubscribe();
     }
     ngAfterViewInit() {
+        //SuggestionThreadView.setTemplate( suggestionTemplateDefinition );
+        console.log('#### SuggestionThreadView:', SuggestionThreadView);
+        console.log('#### MultirootEditor.defaultConfig.trackChanges:', MultirootEditor.defaultConfig.trackChanges);
+        if (!this.sidebarContainer) {
+            throw new Error('Div container for sidebar was not found');
+        }
+
+        this.sidebarContainer.nativeElement.appendChild(this.sidebar);
+
+        MultirootEditor.defaultConfig.sidebar = {
+            container: this.sidebar
+        };
+        MultirootEditor.defaultConfig.extraPlugins = [
+            getTrackChangesAdapter(this.appData)
+        ];
+        /*MultirootEditor.defaultConfig.trackChanges = {
+            SuggestionThreadView: SuggestionThreadView
+        };*/
         MultirootEditor.create(
             {
                 header: this.headerE.nativeElement,
                 content: this.contentE.nativeElement,
-                footer: this.footerE.nativeElement,
+                footer: this.footerE.nativeElement
             },
             MultirootEditor.defaultConfig
         )
             .then(newEditor => {
                 this.Editor = newEditor;
+                newEditor.plugins.get( 'Annotations' ).switchTo( 'narrowSidebar' );
                 //newEditor.model.schema.extend('$block', { allowIn: 'tableCell' });
                 newEditor.set('docLanguage', 'en');
                 //newEditor.model.schema.extend( 'tableCell', { allowContentOf: ['$root', '$block', '$text', 'paragraph', 'str', 'snp'] } );
@@ -147,10 +289,9 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                     content:
                         '<p><span class="title" data-id="34343" data-viewmode="infoview" data-type="title" data-json="">UNRESOLVED</span> gdgi</p>',
                 });*/
-
                 this.editorDrop(newEditor);
                 /// ///////////////////////
-                //console.log('newEditor.ui.view:', newEditor.ui.view);
+                //console.log('#### newEditor getTrackChangesAdapter:', getTrackChangesAdapter);
                 const containers = newEditor.ui.view.editables;
                 for (const container of containers) {
                     if (container && container.element) {
@@ -158,28 +299,28 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                     }
                 }
                 /// ///////////////////////
-                newEditor.editing.view.document.on( 'keydown', ( evt, data ) => {
-                    console.log( '#### keydown data:', data );
+                newEditor.editing.view.document.on('keydown', (evt, data) => {
+                    //console.log( '#### keydown data:', data );
                     if (
-                        data.keyCode == 88 &&
+                        (data.keyCode == 88 || data.keyCode == 86 || data.keyCode == 67) &&
                         this.selectedEditorModelElement &&
-                        this.selectedEditorModelElement &&
+                        this.selectedEditorModelElement.parent &&
                         this.selectedEditorModelElement.parent.name &&
                         this.selectedEditorModelElement.parent.name === 'snp'
                     ) {
                         //console.log( 'X KEY PRESSED' );
                         data.preventDefault();
                         evt.stop();
-                    } 
-                    
-                } );
+                    }
+
+                });
 
                 newEditor.listenTo(newEditor.editing.view.document, 'mousedown', (evt, data) => {
                     const modelElement = newEditor.editing.mapper.toModelElement(data.target);
                     this.selectedEditorModelElement = modelElement;
-                    console.log('mousedown data:', data);
-                    console.log('mousedown data.target:', data.target);
-                    console.log('mousedown modelElement:', modelElement);
+                    //console.log('mousedown data:', data);
+                    //console.log('mousedown data.target:', data.target);
+                    //console.log('mousedown modelElement:', modelElement);
                 });
 
                 /*newEditor.listenTo(newEditor.editing.view.document, 'dblclick', (evt, data) => {
@@ -205,19 +346,19 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                 newEditor.listenTo(newEditor.editing.view.document, 'click', (evt, data) => {
                     const modelElement = newEditor.editing.mapper.toModelElement(data.target);
                     this.selectedEditorModelElement = modelElement;
-                    console.log('click data:', data);
-                    console.log('click data.target:', data.target);
-                    console.log('click modelElement:', modelElement);
+                    //console.log('click data:', data);
+                    //console.log('click data.target:', data.target);
+                    //console.log('click modelElement:', modelElement);
                     if (
                         modelElement &&
                         modelElement.parent &&
                         modelElement.parent.name &&
                         modelElement.parent.name === 'snp'
                     ) {
-                        console.log('#### dblclick if snp');
+                        //console.log('#### dblclick if snp');
                         MultirootEditor.disableAllKeyboard(this.Editor);
                     } else {
-                        console.log('#### dblclick else');
+                        //console.log('#### dblclick else');
                         MultirootEditor.enableAllKeyboard(this.Editor);
                     }
                 });
@@ -280,11 +421,16 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                 );
 
                 console.log('#### newEditor.commands:', newEditor.commands);
+                console.log('#### newEditor.plugins:', newEditor.plugins);
+                console.log('#### newEditor.plugins.get(TrackChanges):', newEditor.plugins.get('TrackChanges'));
+                console.log('#### newEditor.plugins.get(TrackChangesEditing):', newEditor.plugins.get('TrackChangesEditing'));
+                //newEditor.execute('trackChanges');
                 //CKEditorInspector.attach(newEditor);
             })
             .catch(err => {
                 console.error(err.stack);
             });
+
         //this.showHeader= false;
         //this.showFooter= false;
     }
@@ -579,7 +725,9 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                         '#### EDITOR MODAL result string:',
                         result.year + '/' + result.month + '/' + result.day
                     );
-                    this.Editor.model.change(writer => {
+                    const variableUpdateCommand = this.Editor.commands.get('variableUpdate');
+                    variableUpdateCommand.execute( {value: result.year + '/' + result.month + '/' + result.day, modelElement} );
+                    /*this.Editor.model.change(writer => {
                         console.log(
                             '#### EDITOR MODAL result string:',
                             result.year + '/' + result.month + '/' + result.day
@@ -589,7 +737,9 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                             result.year + '/' + result.month + '/' + result.day,
                             modelElement
                         );
-                    });
+                    });*/
+                    //console.log('#### var_date this.trackChangesPlugin.getSuggestion:', this.trackChangesPlugin.adapter.getSuggestion('suggestion-1'));
+                    //this.trackChangesPlugin.adapter.addSuggestion( { id: 'suggestion-8', type: 'insertion', authorId: 'user-1', createdAt: new Date( 2020, 1, 14, 12, 7, 20 )} );
                 }
             });
         } else if (
@@ -602,8 +752,10 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
             modalRef.componentInstance.fromParent = dataToModal;
             modalRef.result.then(result => {
                 if (result) {
-                    console.log('#### EDITOR MODAL result:', result);
-                    this.Editor.model.change(writer => {
+                    const variableUpdateCommand = this.Editor.commands.get('variableUpdate');
+                    variableUpdateCommand.execute( {value: result.hour + ':' + result.minute, modelElement} );
+
+                    /*this.Editor.model.change(writer => {
                         console.log(
                             '#### EDITOR MODAL result string:',
                             '"' + result.hour + ':' + result.minute + '"'
@@ -613,7 +765,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                             result.hour + ':' + result.minute,
                             modelElement
                         );
-                    });
+                    });*/
                 }
             });
         } else if (
@@ -628,10 +780,14 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                 if (result) {
                     console.log('#### EDITOR MODAL result:', result);
                     console.log('#### EDITOR MODAL result string:', result);
-                    this.Editor.model.change(writer => {
+                    const variableUpdateCommand = this.Editor.commands.get('variableUpdate');
+                    console.log('#### EDITOR MODAL 1:');
+                    variableUpdateCommand.execute( {value: result, modelElement} );
+                    console.log('#### EDITOR MODAL 2:');
+                    /*this.Editor.model.change(writer => {
                         console.log('#### EDITOR MODAL result string:', result);
                         writer.setAttribute('data-content', result, modelElement);
-                    });
+                    });*/
                 }
             });
         } else if (
@@ -699,7 +855,20 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
             console.log('#### editorDrop _myDataExtraInfo:', _myDataExtraInfo);
             console.log('#### editorDrop dataTargetName:', dataTargetName);
             console.log('#### editorDrop data:', data);
+            console.log('#### editorDrop data.target:', data.target);
 
+            if(data.target && data.target.getAttribute('data-type') 
+            && (data.target.getAttribute('data-type') == 'snp'
+                 || data.target.getAttribute('data-type') == 'str'
+                 || data.target.getAttribute('data-type') == 'title'
+                 || data.target.getAttribute('data-type') == 'var_sp'
+                 || data.target.getAttribute('data-type') == 'var_date'
+                 || data.target.getAttribute('data-type') == 'var_str'
+                 || data.target.getAttribute('data-type') == 'var_time')
+            ) {
+                console.log('#### CANNOT DROP IN WIDGET');
+                return;
+            }
             editor.model.change(writer => {
                 let parentPosition;
                 if (dataTargetName === 'td' && !data.dropRange) {
@@ -768,6 +937,26 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
             this.contentParentHeight = '630';
         }
     }*/
+
+    hasResolve() {
+        const modelElement = this.selectedEditorModelElement;
+        const viewElement = this.Editor.editing.mapper.toViewElement(modelElement);
+        if(viewElement.hasClass('ck-suggestion-marker')
+        || viewElement.hasClass('ck-suggestion-marker-insertion')
+        || viewElement.hasClass('ck-suggestion-marker-deletion')) {
+            return false;
+        }
+        if (
+            modelElement &&
+            modelElement.name &&
+            (modelElement.name === 'variable'
+                || modelElement.name === 'lsp'
+                || modelElement.name === 'title')
+        ) {
+            return true;
+        }
+        return false;
+    }
 
     hasMakeAllText() {
         const modelElement = this.selectedEditorModelElement;
@@ -871,7 +1060,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
             }
         }
     }
-    
+
     getDocData() {
         console.log('#### getDocData:', escape(this.Editor.getData({ rootName: 'content' })));
         console.log('#### getDocData:', this.Editor.getData({ rootName: 'content' }));

@@ -16,16 +16,16 @@
                     style="max-height: 350px;min-width: 350px;">
                     <table class="table table-hover">
                         <thead>
-                            <tr>
-                                <th scope="col"><small><b>#</b></small></th>
+                            <tr class="text-secondary">
+                                <th scope="col"><small><b>Time</b></small></th>
                                 <th scope="col">
                                     <small><b>Name (PG / Function)</b></small>
                                 </th>
-                                <th scope="col">
+                                <!--th scope="col">
                                     <small><b>On behalf of group</b></small>
                                 </th>
                                 <th scope="col">
-                                    <small><b>Blue card speaker</b></small></th>
+                                    <small><b>Blue card speaker</b></small></th-->
                                 <th scope="col"><small><b>Action</b></small>
                                 </th>
                             </tr>
@@ -34,9 +34,15 @@
                             <tr
                                 *ngFor="let lsp of availableLsp | filter: searchText : 'fullName'; let i = index">
                                 <th style="text-align: center;">
-                                    <small>{{lsp.id}}</small></th>
-                                <td><small>{{lsp.fullName}}</small></td>
-                                <td style="text-align: center;">
+                                    <small>{{ lsp.time | date :'h:mm' }}</small></th>
+                                <td>
+                                    <small><b>{{lsp.fullName}}</b></small>
+                                    <div *ngIf="lsp.additionalDescription != ''" class="text-secondary" style="display: inline;">
+                                        <br/>
+                                        <small>{{lsp.additionalDescriptionDisplay}}</small>
+                                    </div>
+                                </td>
+                                <!--td style="text-align: center;">
                                     <fa-icon
                                         *ngIf="lsp.hasOnBehalfOfGroup;else hasOnBehalfOfGroupFalse"
                                         [icon]="faCheckSquare"></fa-icon>
@@ -53,7 +59,7 @@
                                         <fa-icon [icon]="faMinusSquare">
                                         </fa-icon>
                                     </ng-template>
-                                </td>
+                                </td-->
                                 <td>
                                     <a *ngIf="!lsp.isBlueCardSpeaker;else isBlueCardAction" href="#"
                                         class="table-row-column" (click)="moveToSelected(lsp.id)">
@@ -77,21 +83,24 @@
                     style="max-height: 350px;min-width: 350px;">
                     <table class="table table-hover">
                         <thead>
-                            <tr>
-                                <th style="width:5%" scope="col">
-                                    <small><b>#</b></small></th>
+                            <tr class="text-secondary">
+                                <!--th style="width:5%" scope="col">
+                                    <small><b>#</b></small></th-->
                                 <th style="width:30%" scope="col">
-                                    <small><b>Name (PG / Function)</b></small>
+                                    <small><b>Name</b></small>
+                                </th>
+                                <th style="width:10%" scope="col">
+                                    <small><b>Title</b></small>
+                                </th>
+                                <th style="width:10%" scope="col">
+                                    <small><b>Group</b></small>
                                 </th>
                                 <th style="width:5%" scope="col">
-                                    <small><b>Display function</b></small></th>
-                                <th style="width:10%" scope="col">
-                                    <small><b>On behalf of group</b></small>
-                                </th>
-                                <th style="width:20%" scope="col">
-                                    <small><b>Blue card status</b></small></th>
+                                    <small><b>Func</b></small></th>
                                 <th style="width:25%" scope="col">
-                                    <small><b>Blue card name</b></small></th>
+                                    <small><b>BC to</b></small></th>
+                                <th style="width:20%" scope="col">
+                                    <small><b>BC status</b></small></th>
                                 <th style="width:5%" scope="col">
                                     <small><b>Action</b></small>
                                 </th>
@@ -100,16 +109,17 @@
                         <tbody cdkDropList [cdkDropListData]="selectedLsp"
                             (cdkDropListDropped)="drop($event)">
                             <tr *ngFor="let lsp of selectedLsp" cdkDrag>
-                                <th><small>{{lsp.id}}</small></th>
+                                <!--th><small>{{lsp.id}}</small></th-->
                                 <td><small>{{lsp.fullName}}</small></td>
                                 <td>
                                     <fa-icon
-                                        *ngIf="lsp.hasDisplayFunction;else hasDisplayFunctionFalse"
+                                        *ngIf="lsp.title ;else hasTitleFalse"
                                         [icon]="faCheckSquare"></fa-icon>
-                                    <ng-template #hasDisplayFunctionFalse>
+                                    <ng-template #hasTitleFalse>
                                         <fa-icon [icon]="faMinusSquare">
                                         </fa-icon>
                                     </ng-template>
+
                                 </td>
                                 <td>
                                     <fa-icon
@@ -121,15 +131,14 @@
                                     </ng-template>
 
                                 </td>
-
                                 <td>
-                                    <select class="form-control-sm" (change)="calculateText()"
-                                        [(ngModel)]="lsp.blueCardStatus">
-                                        <option
-                                            *ngFor="let c of blueCardStatuses"
-                                            [ngValue]="c">
-                                            {{c}}</option>
-                                    </select>
+                                    <fa-icon
+                                        *ngIf="lsp.hasDisplayFunction;else hasDisplayFunctionFalse"
+                                        [icon]="faCheckSquare"></fa-icon>
+                                    <ng-template #hasDisplayFunctionFalse>
+                                        <fa-icon [icon]="faMinusSquare">
+                                        </fa-icon>
+                                    </ng-template>
                                 </td>
                                 <td>
                                     <select class="form-control-sm" (change)="calculateText()"
@@ -138,6 +147,15 @@
                                             [ngValue]="c.fullName">
                                             {{c.fullName}}
                                         </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control-sm" (change)="calculateText()"
+                                        [(ngModel)]="lsp.blueCardStatus">
+                                        <option
+                                            *ngFor="let c of blueCardStatuses"
+                                            [ngValue]="c">
+                                            {{c}}</option>
                                     </select>
                                 </td>
                                 <td><a href="#" (click)="moveToAvailable(lsp.id)">
