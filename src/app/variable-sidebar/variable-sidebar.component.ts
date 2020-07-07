@@ -26,6 +26,7 @@ export class VariableSidebarComponent {
         myElement.setAttribute('class', 'variable');
         myElement.setAttribute('data-language', GlobalVariables.docLanguage);
         myElement.setAttribute('data-id', Math.floor(Math.random() * 1000));
+        myElement.setAttribute('data-suggestion-new-value', '');
         myElement.textContent = 'UNRESOLVED';
 
         ev.dataTransfer.setData('text/html', myElement.outerHTML);

@@ -1,6 +1,6 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import * as MultirootEditor from '../../assets/ckeditor.js';
-//import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
+import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 import { ContextMenuComponent } from 'ngx-contextmenu';
 import { ModalDatePickerComponent } from './modal-date-picker/modal-date-picker.component';
 import { ModalTimePickerComponent } from './modal-time-picker/modal-time-picker.component';
@@ -21,7 +21,6 @@ import { GlobalVariables } from '../common/global.varibles';
 import { HostListener } from "@angular/core";
 //import { CKEditor5 } from '@ckeditor/ckeditor5-angular';
 import { getTrackChangesAdapter } from './track-changes-adapter';
-import * as suggestionTemplateDefinition  from './acta.suggestion.thread.view';
 import { SuggestionThreadView } from '../../assets/ckeditor.js';
 
 @Component({
@@ -91,58 +90,6 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                 authorId: 'user-2',
                 createdAt: new Date(2019, 1, 13, 11, 20, 48),
                 hasComments: true
-            },
-            {
-                id: 'suggestion-2',
-                type: 'deletion',
-                authorId: 'user-1',
-                createdAt: new Date(2019, 1, 14, 12, 7, 20),
-                hasComments: false
-            },
-            {
-                id: 'suggestion-3',
-                type: 'insertion',
-                authorId: 'user-1',
-                createdAt: new Date(2019, 1, 14, 12, 7, 20),
-                hasComments: false
-            },
-            {
-                id: 'suggestion-4',
-                type: 'deletion',
-                authorId: 'user-1',
-                createdAt: new Date(2019, 1, 15, 8, 44, 1),
-                hasComments: true
-            },
-            {
-                id: 'suggestion-5',
-                type: 'formatInline:886cqig6g8rf',
-                authorId: 'user-2',
-                hasComments: false,
-                createdAt: new Date(2019, 2, 8, 10, 2, 7),
-                data: {
-                    commandName: 'bold',
-                    commandParams: [{ forceValue: true }]
-                }
-            },
-            {
-                id: 'suggestion-6',
-                type: 'formatBlock:698dn3otqzd6',
-                authorId: 'user-2',
-                hasComments: false,
-                createdAt: new Date(2019, 2, 8, 10, 2, 10),
-                data: {
-                    commandName: 'heading',
-                    commandParams: [{ value: 'heading2' }],
-                    formatGroupId: 'blockName',
-                    multipleBlocks: false
-                }
-            },
-            {
-                id: 'suggestion-7',
-                type: 'replace',
-                authorId: 'user-1',
-                createdAt: new Date(2019, 1, 15, 8, 44, 1),
-                hasComments: true
             }
         ],
         // Comment threads data.
@@ -157,23 +104,6 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                         createdAt: new Date(2019, 1, 13, 11, 32, 57)
                     }
                 ]
-            },
-            {
-                threadId: 'suggestion-4',
-                comments: [
-                    {
-                        commentId: 'comment-2',
-                        content: 'I think it\'s not relevant.',
-                        authorId: 'user-2',
-                        createdAt: new Date(2019, 1, 15, 9, 3, 1)
-                    },
-                    {
-                        commentId: 'comment-3',
-                        content: 'You are right. Thanks.',
-                        authorId: 'user-1',
-                        createdAt: new Date(2019, 1, 15, 9, 28, 1)
-                    },
-                ]
             }
         ]
     };
@@ -186,7 +116,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
         // subscribe to home component messages
         this.subscription = this.loadDataService.getMessage().subscribe(message => {
             if (message) {
-                console.log('#### subscription message:', message);
+                //console.log('#### subscription message:', message);
                 this.loadData(message);
                 this.messages.push(message);
             } else {
@@ -197,7 +127,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
 
         this.subscriptionLanguage = this.changeLanguageService.getMessage().subscribe(message => {
             if (message) {
-                console.log('#### subscriptionLanguage message:', message);
+                //console.log('#### subscriptionLanguage message:', message);
                 this.changeLanguage(message);
                 this.messages.push(message);
             } else {
@@ -213,13 +143,13 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
     getScreenSize(event?) {
         this.scrHeight = window.innerHeight;
         this.scrWidth = window.innerWidth;
-        console.log('#### scrHeight:', this.scrHeight);
+        //console.log('#### scrHeight:', this.scrHeight);
         this.contentParentHeight = this.scrHeight - 110;
     }
 
     loadData(loaddata: LoadData): void {
-        console.log('#### documents:', this.documents);
-        console.log('#### loaddata:', loaddata);
+        //console.log('#### documents:', this.documents);
+        //console.log('#### loaddata:', loaddata);
         const document = this.documents.find(
             doc => doc.language == loaddata.language && doc.doctype == loaddata.doctype
         );
@@ -247,8 +177,8 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
     }
     ngAfterViewInit() {
         //SuggestionThreadView.setTemplate( suggestionTemplateDefinition );
-        console.log('#### SuggestionThreadView:', SuggestionThreadView);
-        console.log('#### MultirootEditor.defaultConfig.trackChanges:', MultirootEditor.defaultConfig.trackChanges);
+        //console.log('#### SuggestionThreadView:', SuggestionThreadView);
+        //console.log('#### MultirootEditor.defaultConfig.trackChanges:', MultirootEditor.defaultConfig.trackChanges);
         if (!this.sidebarContainer) {
             throw new Error('Div container for sidebar was not found');
         }
@@ -274,7 +204,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
         )
             .then(newEditor => {
                 this.Editor = newEditor;
-                newEditor.plugins.get( 'Annotations' ).switchTo( 'narrowSidebar' );
+                newEditor.plugins.get('Annotations').switchTo('narrowSidebar');
                 //newEditor.model.schema.extend('$block', { allowIn: 'tableCell' });
                 newEditor.set('docLanguage', 'en');
                 //newEditor.model.schema.extend( 'tableCell', { allowContentOf: ['$root', '$block', '$text', 'paragraph', 'str', 'snp'] } );
@@ -376,7 +306,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                     'change:diffbyword',
                     (evt, propertyName, newValue, oldValue) => {
                         // Do something when the data is changed.
-                        console.log('#### DIFFBYWORD FROM APP');
+                        //console.log('#### DIFFBYWORD FROM APP');
                         this.showDiff('word');
                         //newEditor.set('docLanguage', newValue);
                     }
@@ -386,7 +316,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                     'change:diffbyefficiency',
                     (evt, propertyName, newValue, oldValue) => {
                         // Do something when the data is changed.
-                        console.log('#### DIFFBYWORD FROM APP');
+                        //console.log('#### DIFFBYWORD FROM APP');
                         this.showDiff('efficiency');
                         //newEditor.set('docLanguage', newValue);
                     }
@@ -397,7 +327,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                     'change:showheaderfooter',
                     (evt, propertyName, newValue, oldValue) => {
                         // Do something when the data is changed.
-                        console.log('#### SHOWHEADERFOOTER FROM APP');
+                        //console.log('#### SHOWHEADERFOOTER FROM APP');
                         //this.onHeaderFooter();
                         this.showHeader = !this.showHeader;
                         this.showFooter = !this.showFooter;
@@ -414,18 +344,18 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                     'change:merge',
                     (evt, propertyName, newValue, oldValue) => {
                         // Do something when the data is changed.
-                        console.log('#### MERGE FROM APP');
+                        //console.log('#### MERGE FROM APP');
                         this.mergeHeaderAndFooter();
                         //newEditor.set('docLanguage', newValue);
                     }
                 );
 
-                console.log('#### newEditor.commands:', newEditor.commands);
-                console.log('#### newEditor.plugins:', newEditor.plugins);
-                console.log('#### newEditor.plugins.get(TrackChanges):', newEditor.plugins.get('TrackChanges'));
-                console.log('#### newEditor.plugins.get(TrackChangesEditing):', newEditor.plugins.get('TrackChangesEditing'));
+                //console.log('#### newEditor.commands:', newEditor.commands);
+                //console.log('#### newEditor.plugins:', newEditor.plugins);
+                //console.log('#### newEditor.plugins.get(TrackChanges):', newEditor.plugins.get('TrackChanges'));
+                //console.log('#### newEditor.plugins.get(TrackChangesEditing):', newEditor.plugins.get('TrackChangesEditing'));
                 //newEditor.execute('trackChanges');
-                //CKEditorInspector.attach(newEditor);
+                CKEditorInspector.attach(newEditor);
             })
             .catch(err => {
                 console.error(err.stack);
@@ -449,14 +379,14 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
         console.log('#### oMX.Get(2):', oMX.Get(2));
         console.log('#### oMX.count:', oMX.count);
         */
-        console.log(
+        /*console.log(
             '#### this.Editor.getData( { rootName: header } ):',
             this.Editor.getData({ rootName: 'header' })
         );
         console.log(
             '#### this.Editor.getData( { rootName: footer } ):',
             this.Editor.getData({ rootName: 'footer' })
-        );
+        );*/
         const docHeader = new DOMParser().parseFromString(
             '<div>' +
             this.Editor.getData({ rootName: 'header' }).replace(/&nbsp;/gi, ' ') +
@@ -476,9 +406,10 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
             const posFooter = indexFooter;
             console.log('#### mergeHeaderAndFooter footer value:', valueFooter);
             const childrenNodes: any = valueFooter.childNodes;
-            console.log('#### mergeHeaderAndFooter footer childrenNodes:', childrenNodes);
+            //console.log('#### mergeHeaderAndFooter footer childrenNodes:', childrenNodes);
             childrenNodes.forEach((node, index) => {
-                if (node.nodeType === Node.TEXT_NODE) {
+                if (node.nodeType === Node.TEXT_NODE && node.nodeName != 'suggestion') {
+                    console.log('#### mergeHeaderAndFooter inner node:TEXT');
                     //Text
                     const obj = {
                         paragraph: posFooter,
@@ -488,7 +419,8 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                         dataId: -1,
                     };
                     footerNodesByParagraph.push(obj);
-                } else if (node.nodeType === Node.ELEMENT_NODE) {
+                } else if (node.nodeType === Node.ELEMENT_NODE && node.nodeName != 'suggestion') {
+                    console.log('#### mergeHeaderAndFooter inner node:ELEMENT');
                     const obj = {
                         paragraph: posFooter,
                         index: index,
@@ -514,15 +446,16 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                 //paragraph footer elements
                 return elem.paragraph == posHeader;
             });
-            console.log('#### footerPNodes:', footerPNodes);
+            //console.log('#### footerPNodes:', footerPNodes);
             //remove current paragraph elements from footer list
             footerNodesByParagraph = footerNodesByParagraph.filter(function (elem) {
                 return elem.paragraph != posHeader;
             });
             finalHtmlString.push('<p>');
             const childenNodes: any = valueHeader.childNodes;
+            console.log('#### childenNodes:', childenNodes);
             childenNodes.forEach(node => {
-                if (node.nodeType == Node.TEXT_NODE) {
+                if (node.nodeType == Node.TEXT_NODE && node.nodeName != 'suggestion') {
                     //Text
                     finalHtmlString.push(node.textContent);
                     const nodeFromFooter = footerPNodes.length > 0 ? footerPNodes[0] : undefined;
@@ -530,9 +463,9 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                     if (nodeFromFooter && nodeFromFooter.type == Node.TEXT_NODE) {
                         footerPNodes.shift();
                     }
-                } else if (node.nodeType == Node.ELEMENT_NODE) {
+                } else if (node.nodeType == Node.ELEMENT_NODE && node.nodeName != 'suggestion') {
                     //Element
-                    console.log('#### HEADER ELEMENT_NODE node.outerHTML:', node.outerHTML);
+                    //console.log('#### HEADER ELEMENT_NODE node.outerHTML:', node.outerHTML);
                     finalHtmlString.push(node.outerHTML);
                     const nodeFromFooter = footerPNodes[0] ? footerPNodes[0] : undefined;
                     if (
@@ -551,8 +484,8 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                     }
                     //console.log('#### mergeHeaderAndFooter node.getAttribute(data-id):', node.getAttribute('data-id'));
                 }
-                console.log('#### mergeHeaderAndFooter finalHtmlString before:', finalHtmlString);
-                console.log('#### mergeHeaderAndFooter inner node:', node);
+                //console.log('#### mergeHeaderAndFooter finalHtmlString before:', finalHtmlString);
+                //console.log('#### mergeHeaderAndFooter inner node:', node);
             });
             console.log('#### mergeHeaderAndFooter footerPNodes:', footerPNodes);
             //if same paragraph in footer contains more nodes add them
@@ -595,7 +528,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                 });
             });
         }
-        console.log('#### mergeHeaderAndFooter finalHtmlString:', finalHtmlString);
+        //console.log('#### mergeHeaderAndFooter finalHtmlString:', finalHtmlString);
         this.Editor.setData({ content: finalHtmlString.join('') });
     }
 
@@ -609,7 +542,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
         }
     }
 
-    onEditorContextMenu($event) {
+    /*onEditorContextMenu($event) {
         console.log('#### onEditorContextMenu $event:', $event);
         const domElement = $event.target || $event.srcElement;
         console.log('#### onEditorContextMenu domElement:', domElement);
@@ -622,9 +555,9 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
         }
         // const modelElement = this.Editor.editing.mapper.toModelElement(domElement);
         // this.selectedEditorModelElement = modelElement;
-    }
+    }*/
     onContextMenuDelete($event) {
-        console.log('#### onContextMenuDelete $event:', $event);
+        //console.log('#### onContextMenuDelete $event:', $event);
         const keyEvent = new KeyboardEvent('keydown', { key: 'Backspace' });
         this.contentE.nativeElement.dispatchEvent(keyEvent);
     }
@@ -641,21 +574,25 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                 doc.language == GlobalVariables.docLanguage &&
                 doc.doctype == GlobalVariables.docType
         );
-        console.log('#### doc:', doc);
-        const document = new DOMParser().parseFromString(unescape(doc.datacontent), 'text/html');
-        console.log('#### document:', document);
+        //console.log('#### doc:', doc);
+        const document = (doc && doc.datacontent && doc.datacontent != '')
+            ? new DOMParser().parseFromString(unescape(doc.datacontent), 'text/html')
+            : new DOMParser().parseFromString('<p></p>', 'text/html');
+        //console.log('#### document:', document);
         const originalParagraphs = document.documentElement.querySelectorAll('p, h3');
-        console.log('#### originalParagraphs:', originalParagraphs);
-        const updatedDocument = new DOMParser().parseFromString(
-            this.Editor.getData({ rootName: 'content' }),
-            'text/html'
-        );
+        //console.log('#### originalParagraphs:', originalParagraphs);
+        const updatedDocument = (this.Editor.getData({ rootName: 'content' }) != '')
+            ? new DOMParser().parseFromString(
+                this.Editor.getData({ rootName: 'content' }),
+                'text/html'
+            )
+            : new DOMParser().parseFromString('<p></p>', 'text/html');
         const updatedParagraphs = updatedDocument.documentElement.querySelectorAll('p, td, h3');
         //const updatedParagraphs = this.contentE.nativeElement.querySelectorAll('p');
         /*for (const p of originalParagraphs) {
             dataToModal.original += p.textContent.concat('\r\n');
         }*/
-        console.log('#### updatedParagraphs:', updatedParagraphs);
+        //console.log('#### updatedParagraphs:', updatedParagraphs);
         for (let i = 0; i < originalParagraphs.length; ++i) {
             dataToModal.original += (originalParagraphs[i] && originalParagraphs[i].textContent)
                 ? originalParagraphs[i].textContent.concat('\r\n')
@@ -669,26 +606,26 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
         /*for (const p of updatedParagraphs) {
             dataToModal.updated += p.textContent.concat('\r\n');
         }*/
-        console.log('dataToModal:', dataToModal);
+        //console.log('dataToModal:', dataToModal);
         modalRef.componentInstance.fromParent = dataToModal;
         modalRef.result.then(result => {
             if (result) {
-                console.log('#### EDITOR MODAL result:', result);
+                /*console.log('#### EDITOR MODAL result:', result);
                 console.log(
                     '#### EDITOR MODAL result string:',
                     result.year + '/' + result.month + '/' + result.day
-                );
+                );*/
             }
         });
     }
 
     onContextMenuResolve($event) {
-        console.log('#### onContextMenuResolve $event:', $event);
+        /*console.log('#### onContextMenuResolve $event:', $event);
         console.log('#### onContextMenuResolve $event.data:', $event.data);
         console.log(
             '#### onContextMenuResolve this.Editor.model.document.selection:',
             this.Editor.model.document.selection
-        );
+        );*/
 
         let modelElement;
         if (this.Editor.model.document.selection.getSelectedElement()) {
@@ -697,7 +634,7 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
             modelElement = this.selectedEditorModelElement;
         }
         // let modelElement = this.Editor.model.document.selection.getSelectedElement();
-        console.log(
+        /*console.log(
             '#### newEditor.model.document.selection.getSelectedElement():',
             this.Editor.model.document.selection.getSelectedElement()
         );
@@ -708,36 +645,48 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
         console.log(
             '#### newEditor.model.document.selection.getFirstPosition():',
             this.Editor.model.document.selection.getFirstPosition()
-        );
+        );*/
 
         const viewElement = this.Editor.editing.mapper.toViewElement(modelElement);
-        console.log('#### onContextMenuResolve modelElement:', modelElement);
-        console.log('#### onContextMenuResolve viewElement:', viewElement);
+        //console.log('#### onContextMenuResolve modelElement:', modelElement);
+        //console.log('#### onContextMenuResolve viewElement:', viewElement);
         if (viewElement.name === 'span' && viewElement.getAttribute('data-type') === 'var_date') {
             const modalRef = this.modalService.open(ModalDatePickerComponent);
             const dataToModal = modelElement.getAttribute('data-content');
-            console.log('dataToModal:', dataToModal);
+            //console.log('dataToModal:', dataToModal);
             modalRef.componentInstance.fromParent = dataToModal;
             modalRef.result.then(result => {
                 if (result) {
-                    console.log('#### EDITOR MODAL result:', result);
+                    /*console.log('#### EDITOR MODAL result:', result);
                     console.log(
                         '#### EDITOR MODAL result string:',
                         result.year + '/' + result.month + '/' + result.day
-                    );
+                    );*/
+                    const currentValue = modelElement.getAttribute('data-content');
                     const variableUpdateCommand = this.Editor.commands.get('variableUpdate');
-                    variableUpdateCommand.execute( {value: result.year + '/' + result.month + '/' + result.day, modelElement} );
+
                     /*this.Editor.model.change(writer => {
                         console.log(
                             '#### EDITOR MODAL result string:',
                             result.year + '/' + result.month + '/' + result.day
                         );
                         writer.setAttribute(
-                            'data-content',
+                            'data-suggestion-new-value',
                             result.year + '/' + result.month + '/' + result.day,
                             modelElement
                         );
                     });*/
+                    this.Editor.editing.view.change(writer => {
+                        const viewElement = this.Editor.editing.mapper.toViewElement(modelElement);
+                        const dateValue = MultirootEditor.getDate(result.year + '/' + result.month + '/' + result.day,
+                            GlobalVariables.docLanguage);
+                        const suggestionText = GlobalVariables.docLanguage == 'de' ? '[Neuer Wert:' : '[New value:' +
+                            dateValue +
+                            ']';
+
+                        writer.setAttribute('data-suggestion-new-value', suggestionText, viewElement);
+                    });
+                    variableUpdateCommand.execute({ value: result.year + '/' + result.month + '/' + result.day, currentValue });
                     //console.log('#### var_date this.trackChangesPlugin.getSuggestion:', this.trackChangesPlugin.adapter.getSuggestion('suggestion-1'));
                     //this.trackChangesPlugin.adapter.addSuggestion( { id: 'suggestion-8', type: 'insertion', authorId: 'user-1', createdAt: new Date( 2020, 1, 14, 12, 7, 20 )} );
                 }
@@ -748,12 +697,22 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
         ) {
             const modalRef = this.modalService.open(ModalTimePickerComponent);
             const dataToModal = modelElement.getAttribute('data-content');
-            console.log('dataToModal:', dataToModal);
+            //console.log('dataToModal:', dataToModal);
             modalRef.componentInstance.fromParent = dataToModal;
             modalRef.result.then(result => {
                 if (result) {
                     const variableUpdateCommand = this.Editor.commands.get('variableUpdate');
-                    variableUpdateCommand.execute( {value: result.hour + ':' + result.minute, modelElement} );
+                    this.Editor.editing.view.change(writer => {
+                        const viewElement = this.Editor.editing.mapper.toViewElement(modelElement);
+                        const dateValue = MultirootEditor.getTime(result.hour + ':' + result.minute,
+                            GlobalVariables.docLanguage);
+                        const suggestionText = GlobalVariables.docLanguage == 'de' ? '[Neuer Wert:' : '[New value:' +
+                            dateValue +
+                            ']';
+
+                        writer.setAttribute('data-suggestion-new-value', suggestionText, viewElement);
+                    });
+                    variableUpdateCommand.execute({ value: result.hour + ':' + result.minute, modelElement });
 
                     /*this.Editor.model.change(writer => {
                         console.log(
@@ -774,16 +733,24 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
         ) {
             const modalRef = this.modalService.open(ModalStringPickerComponent);
             const dataToModal = modelElement.getAttribute('data-content');
-            console.log('dataToModal:', dataToModal);
+            //console.log('dataToModal:', dataToModal);
             modalRef.componentInstance.fromParent = dataToModal;
             modalRef.result.then(result => {
                 if (result) {
-                    console.log('#### EDITOR MODAL result:', result);
-                    console.log('#### EDITOR MODAL result string:', result);
+                    //console.log('#### EDITOR MODAL result:', result);
+                    //console.log('#### EDITOR MODAL result string:', result);
                     const variableUpdateCommand = this.Editor.commands.get('variableUpdate');
-                    console.log('#### EDITOR MODAL 1:');
-                    variableUpdateCommand.execute( {value: result, modelElement} );
-                    console.log('#### EDITOR MODAL 2:');
+                    //console.log('#### EDITOR MODAL 1:');
+                    this.Editor.editing.view.change(writer => {
+                        const viewElement = this.Editor.editing.mapper.toViewElement(modelElement);
+                        const suggestionText = GlobalVariables.docLanguage == 'de' ? '[Neuer Wert:' : '[New value:' +
+                            result +
+                            ']';
+
+                        writer.setAttribute('data-suggestion-new-value', suggestionText, viewElement);
+                    });
+                    variableUpdateCommand.execute({ value: result, dataToModal });
+                    //console.log('#### EDITOR MODAL 2:');
                     /*this.Editor.model.change(writer => {
                         console.log('#### EDITOR MODAL result string:', result);
                         writer.setAttribute('data-content', result, modelElement);
@@ -802,16 +769,30 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                     modelElement.getAttribute('data-json') !== ''
                     ? JSON.parse(modelElement.getAttribute('data-json'))
                     : { listOfSpeakers: [], isAndChecked: false, textValue: '' };
-            console.log('dataToModal:', dataToModal);
+            //console.log('dataToModal:', dataToModal);
             modalRef.componentInstance.fromParent = dataToModal;
             modalRef.result.then((result: LspDataToEditor) => {
                 if (result) {
-                    console.log('#### EDITOR MODAL result:', result);
-                    console.log('#### EDITOR MODAL result string:', result.textValue);
-                    this.Editor.model.change(writer => {
+                    //console.log('#### EDITOR MODAL result:', result);
+                    //console.log('#### EDITOR MODAL result string:', result.textValue);
+                    const lspUpdateCommand = this.Editor.commands.get('lspUpdate');
+                    //console.log('#### EDITOR MODAL 1:');
+                    this.Editor.editing.view.change(writer => {
+                        const viewElement = this.Editor.editing.mapper.toViewElement(modelElement);
+                        const suggestionText = GlobalVariables.docLanguage == 'de' ? '[Neuer Wert:' : '[New value:' +
+                            result.textValue +
+                            ']';
+
+                        writer.setAttribute('data-suggestion-new-value', suggestionText, viewElement);
+                    });
+                    const currentValue = (dataToModal.textValue && dataToModal.textValue != '')
+                        ? dataToModal.textValue
+                        : 'UNRESOLVED';
+                    lspUpdateCommand.execute({ value: result.textValue, currentValue, 'dataJson': JSON.stringify(result) });
+                    /*this.Editor.model.change(writer => {
                         writer.setAttribute('data-content', result.textValue, modelElement);
                         writer.setAttribute('data-json', JSON.stringify(result), modelElement);
-                    });
+                    });*/
                 }
             });
         } else if (
@@ -826,19 +807,34 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                     modelElement.getAttribute('data-json') !== ''
                     ? JSON.parse(modelElement.getAttribute('data-json'))
                     : { titleId: 0, isOverridden: false, templateId: 1, textValue: '' };
-            console.log('dataToModal:', dataToModal);
+            //console.log('dataToModal:', dataToModal);
             modalRef.componentInstance.fromParent = dataToModal;
             modalRef.result.then((result: TitleToEditor) => {
                 if (result) {
-                    console.log('#### EDITOR MODAL result:', result);
-                    console.log('#### EDITOR MODAL result string:', result.textValue);
-                    this.Editor.model.change(writer => {
+                    //console.log('#### EDITOR MODAL result:', result);
+                    //console.log('#### EDITOR MODAL result string:', result.textValue);
+                    const titleUpdateCommand = this.Editor.commands.get('titleUpdate');
+                    //console.log('#### EDITOR MODAL 1:');
+                    this.Editor.editing.view.change(writer => {
+                        const viewElement = this.Editor.editing.mapper.toViewElement(modelElement);
+                        const suggestionText = GlobalVariables.docLanguage == 'de' ? '[Neuer Wert:' : '[New value:' +
+                            result.textValue +
+                            ']';
+
+                        writer.setAttribute('data-suggestion-new-value', suggestionText, viewElement);
+                    });
+                    const currentValue = (dataToModal.textValue && dataToModal.textValue != '')
+                        ? dataToModal.textValue
+                        : 'UNRESOLVED';
+                    titleUpdateCommand.execute({ value: result.textValue, currentValue, 'dataJson': JSON.stringify(result) });
+
+                    /*this.Editor.model.change(writer => {
                         console.log('#### 1');
                         writer.setAttribute('data-content', result.textValue, modelElement);
                         console.log('#### 2');
                         writer.setAttribute('data-json', JSON.stringify(result), modelElement);
                         console.log('#### 3');
-                    });
+                    });*/
                 }
             });
         }
@@ -853,26 +849,26 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
             const _myDataExtraInfo = data.dataTransfer.getData('text/plain');
             const dataTargetName = data.target.name;
             console.log('#### editorDrop _myDataExtraInfo:', _myDataExtraInfo);
-            console.log('#### editorDrop dataTargetName:', dataTargetName);
-            console.log('#### editorDrop data:', data);
+            //console.log('#### editorDrop dataTargetName:', dataTargetName);
+            //console.log('#### editorDrop data:', data);
             console.log('#### editorDrop data.target:', data.target);
 
-            if(data.target && data.target.getAttribute('data-type') 
-            && (data.target.getAttribute('data-type') == 'snp'
-                 || data.target.getAttribute('data-type') == 'str'
-                 || data.target.getAttribute('data-type') == 'title'
-                 || data.target.getAttribute('data-type') == 'var_sp'
-                 || data.target.getAttribute('data-type') == 'var_date'
-                 || data.target.getAttribute('data-type') == 'var_str'
-                 || data.target.getAttribute('data-type') == 'var_time')
+            /*if (data.target && data.target.getAttribute('data-type')
+                && (data.target.getAttribute('data-type') == 'snp'
+                    || data.target.getAttribute('data-type') == 'str'
+                    || data.target.getAttribute('data-type') == 'title'
+                    || data.target.getAttribute('data-type') == 'var_sp'
+                    || data.target.getAttribute('data-type') == 'var_date'
+                    || data.target.getAttribute('data-type') == 'var_str'
+                    || data.target.getAttribute('data-type') == 'var_time')
             ) {
-                console.log('#### CANNOT DROP IN WIDGET');
+                //console.log('#### CANNOT DROP IN WIDGET');
                 return;
-            }
+            }*/
             editor.model.change(writer => {
                 let parentPosition;
                 if (dataTargetName === 'td' && !data.dropRange) {
-                    console.log('#### dataTargetName td');
+                    //console.log('#### dataTargetName td');
                     const tdElement = data.target;
                     const tdModelElement = editor.editing.mapper.toModelElement(tdElement);
                     parentPosition = writer.createPositionAt(tdModelElement, 0);
@@ -883,18 +879,31 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                 //console.log('#### editorDrop data.dropRange.start:', data.dropRange.start);
                 const insertPosition2 =
                     data.dropRange && data.dropRange.start ? data.dropRange.start : parentPosition;
-                console.log('#### editorDrop insertPosition2:', insertPosition2);
-                const modelPosition =
+                //console.log('#### editorDrop insertPosition2:', insertPosition2);
+                let modelPosition =
                     dataTargetName === 'td' && !data.dropRange
                         ? parentPosition
                         : editor.editing.mapper.toModelPosition(insertPosition2);
 
+                if (modelPosition && modelPosition.parent
+                    && (modelPosition.parent.name == 'snp'
+                        || modelPosition.parent.name == 'str'
+                        || modelPosition.parent.name == 'title'
+                        || modelPosition.parent.name == 'var_sp'
+                        || modelPosition.parent.name == 'var_date'
+                        || modelPosition.parent.name == 'var_str'
+                        || modelPosition.parent.name == 'var_time')
+                ) {
+                    modelPosition = editor.model.createPositionAfter(modelPosition.parent);
+                    //return;
+                }
                 //const selection = editor.model.document.selection;
 
                 // var currentAttributes = selection.getAttributes();
                 // var parent = selection.focus.parent;
                 // var insertPosition = selection.focus;
                 console.log('#### editorDrop modelPosition:', modelPosition);
+                console.log('#### editorDrop modelPosition.parent:', modelPosition.parent);
                 //const viewFragment = editor.data.processor.toView(_myData);
                 //console.log('drop viewFragment:', viewFragment);
 
@@ -903,28 +912,194 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                     console.log('#### IS TD');
                     viewFragment2 = editor.data.processor.toView('<p>' + _myData + '</p>');
                 } else if (_myDataExtraInfo === 'span') {
+                    console.log('#### IS SPAN');
                     viewFragment2 = editor.data.processor.toView('<p>' + _myData + '</p>');
                 } else {
+                    console.log('#### IS ELSE');
                     viewFragment2 = editor.data.processor.toView(_myData);
                 }
 
-                const modelFragment = editor.data.toModel(viewFragment2);
+                //////////////////////////////////
+                const viewElement = editor.data.processor.toView(_myData);
+                const doc = new DOMParser().parseFromString(_myData, 'text/html');
+                const node = this.Editor.editing.view.domConverter.viewToDom(
+                    viewElement,
+                    doc,
+                    false,
+                    true
+                );
+                const childNodesParent = node.childNodes;
+                const dataType = childNodesParent[0].getAttribute('data-type');
+                console.log('#### editorDrop dataType:', dataType);
+                if (dataType === 'var_str' || dataType === 'var_time' || dataType === 'var_date') {
+                    console.log('#### editorDrop IS VARIABLE');
+                    const dataIdhild = childNodesParent[0].getAttribute('data-id');
+                    const dataContenthild = childNodesParent[0].textContent;
+                    const dataLanguagehild = childNodesParent[0].getAttribute('data-language');
+                    const varElement = writer.createElement('variable', {
+                        'data-id': dataIdhild,
+                        'data-content': dataContenthild,
+                        'data-type': dataType,
+                        'data-language': dataLanguagehild,
+                    });
+                    editor.model.insertContent(
+                        varElement,
+                        modelPosition
+                    );
+                    writer.setSelection(varElement, 'on');
+                } else if (dataType === 'title') {
+                    console.log('#### editorDrop IS TITLE');
+                    const dataIdChild = childNodesParent[0].getAttribute('data-id');
+                    const dataContentChild = childNodesParent[0].textContent;
+                    const dataJsonChild = childNodesParent[0].getAttribute('data-json');
+                    const dataLanguageChild = childNodesParent[0].getAttribute('data-language');
+                    const titleElement = writer.createElement('title', {
+                        'data-id': dataIdChild,
+                        'data-content': dataContentChild,
+                        'data-type': dataType,
+                        'data-json': dataJsonChild,
+                        'data-language': dataLanguageChild,
+                    });
+                    editor.model.insertContent(
+                        titleElement,
+                        modelPosition
+                    );
+                     writer.setSelection(titleElement, 'on');
+                } else if (dataType === 'var_sp') {
+                    console.log('#### editorDrop IS LSP');
+                    const dataIdChild = childNodesParent[0].getAttribute('data-id');
+                    const dataContentChild = childNodesParent[0].textContent;
+                    const dataJsonChild = childNodesParent[0].getAttribute('data-json');
+                    const dataLanguageChild = childNodesParent[0].getAttribute('data-language');
+                    const lspElement = writer.createElement('lsp', {
+                        'data-id': dataIdChild,
+                        'data-content': dataContentChild,
+                        'data-type': dataType,
+                        'data-json': dataJsonChild,
+                        'data-language': dataLanguageChild,
+                    });
+                    editor.model.insertContent(
+                        lspElement,
+                        modelPosition
+                    );
+                    writer.setSelection(lspElement, 'on');
+                } else if (dataType === 'snp') {
+                    console.log('#### editorDrop IS SNIPPET');
+                    const dataId = childNodesParent[0].getAttribute('data-id');
+                    const dataLanguage = childNodesParent[0].getAttribute('data-language');
+                    const modelElement = writer.createElement('snp', {
+                        'data-id': dataId,
+                        'data-type': 'snp',
+                        'data-language': dataLanguage,
+                    });
+                    const childNodes = childNodesParent[0].childNodes;
+                    console.log('#### editorDrop childNodes:', childNodes);
+                    for (var i = 0, len = childNodes.length; i < len; i++) {
+                        console.log('#### childNodes[i]:', childNodes[i]);
+                        console.log('#### childNodes[i].nodeType:', childNodes[i].nodeType);
+                        if (childNodes[i].nodeType == Node.TEXT_NODE) {
+                            const _text = writer.createText(childNodes[i].data);
+                            writer.append(_text, modelElement);
+                        } else if (childNodes[i].nodeType == Node.ELEMENT_NODE) {
+                            const dataTypeChild = childNodes[i].getAttribute('data-type');
+                            if (dataTypeChild === 'var_str' || dataTypeChild === 'var_time' || dataTypeChild === 'var_date') {
+                                console.log('#### childNodes IS VARIABLE');
+                                const dataIdhild = childNodes[i].getAttribute('data-id');
+                                const dataContenthild = childNodes[i].textContent;
+                                const dataLanguagehild = childNodes[i].getAttribute('data-language');
+                                const varElement = writer.createElement('variable', {
+                                    'data-id': dataIdhild,
+                                    'data-content': dataContenthild,
+                                    'data-type': dataTypeChild,
+                                    'data-language': dataLanguagehild,
+                                });
+                                writer.append(varElement, modelElement);
+                            } else if (dataTypeChild === 'title') {
+                                console.log('#### childNodes IS TITLE');
+                                const dataIdChild = childNodes[i].getAttribute('data-id');
+                                const dataContentChild = childNodes[i].textContent;
+                                const dataJsonChild = childNodes[i].getAttribute('data-json');
+                                const dataLanguageChild = childNodes[i].getAttribute('data-language');
+                                const titleElement = writer.createElement('title', {
+                                    'data-id': dataIdChild,
+                                    'data-content': dataContentChild,
+                                    'data-type': dataTypeChild,
+                                    'data-json': dataJsonChild,
+                                    'data-language': dataLanguageChild,
+                                });
+                                writer.append(titleElement, modelElement);
+                            } else if (dataTypeChild === 'var_sp') {
+                                console.log('#### childNodes IS LSP');
+                                const dataIdChild = childNodes[i].getAttribute('data-id');
+                                const dataContentChild = childNodes[i].textContent;
+                                const dataJsonChild = childNodes[i].getAttribute('data-json');
+                                const dataLanguageChild = childNodes[i].getAttribute('data-language');
+                                const lspElement = writer.createElement('lsp', {
+                                    'data-id': dataIdChild,
+                                    'data-content': dataContentChild,
+                                    'data-type': dataTypeChild,
+                                    'data-json': dataJsonChild,
+                                    'data-language': dataLanguageChild,
+                                });
+                                writer.append(lspElement, modelElement);
+                            } else if (dataTypeChild === 'str') {
+                                console.log('#### childNodes IS STRING');
+                                const dataIdhild = childNodes[i].getAttribute('data-id');
+                                const dataContenthild = childNodes[i].textContent;
+                                console.log('#### childNodes IS STRING dataContenthild:', dataContenthild);
+                                const dataLanguagehild = childNodes[i].getAttribute('data-language');
+                                const strElement = writer.createElement('str', {
+                                    'data-id': dataIdhild,
+                                    'data-content': dataContenthild,
+                                    'data-type': 'str',
+                                    'data-language': dataLanguagehild
+                                });
+                                writer.append(strElement, modelElement);
+                            }
+                        }
+                        //console.log('#### childNodes[i].getAttribute(data-type)', childNodes[i].getAttribute('data-type'));
+                    }
+                    editor.model.insertContent(
+                        modelElement,
+                        modelPosition
+                    );
+                    editor.model.createPositionAfter(modelElement);
+                    //writer.setSelection(modelElement, 'on');
+                    writer.setSelectionFocus(modelElement, 'after');
+                } else if (dataType === 'str') {
+                    console.log('#### editorDrop IS STRING');
+                    const dataIdhild = childNodesParent[0].getAttribute('data-id');
+                    const dataContenthild = childNodesParent[0].textContent;
+                    console.log('#### childNodes IS STRING dataContenthild:', dataContenthild);
+                    const dataLanguagehild = childNodesParent[0].getAttribute('data-language');
+                    const strElement = writer.createElement('str', {
+                        'data-id': dataIdhild,
+                        'data-content': dataContenthild,
+                        'data-type': 'str',
+                        'data-language': dataLanguagehild
+                    });
+                    editor.model.insertContent(
+                        strElement,
+                        modelPosition
+                    );
+                    writer.setSelection(strElement, 'on');
+                }
+
+                //////////////////////////////////
+                /*const modelFragment = editor.data.toModel(viewFragment2);
                 console.log('#### editorDrop modelFragment:', modelFragment);
                 if (dataTargetName === 'td') {
-                    /*const paragraph = writer.createElement( 'paragraph' );
-                    const pos = writer.createPositionAt(paragraph, 0);
-
-                    writer.insert(modelFragment, pos);
-                    writer.insert(paragraph, modelPosition);*/
                     editor.model.insertContent(modelFragment, modelPosition);
                 } else if (_myDataExtraInfo === 'span') {
+                    console.log('#### editorDrop modelFragment.getChild(0).getChild(0):', modelFragment.getChild(0).getChild(0));
                     editor.model.insertContent(
                         modelFragment.getChild(0).getChild(0),
                         modelPosition
                     );
                 } else {
                     editor.model.insertContent(modelFragment, modelPosition);
-                }
+                }*/
+
             });
         });
     }
@@ -941,9 +1116,9 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
     hasResolve() {
         const modelElement = this.selectedEditorModelElement;
         const viewElement = this.Editor.editing.mapper.toViewElement(modelElement);
-        if(viewElement.hasClass('ck-suggestion-marker')
-        || viewElement.hasClass('ck-suggestion-marker-insertion')
-        || viewElement.hasClass('ck-suggestion-marker-deletion')) {
+        if (viewElement.hasClass('ck-suggestion-marker')
+            || viewElement.hasClass('ck-suggestion-marker-insertion')
+            || viewElement.hasClass('ck-suggestion-marker-deletion')) {
             return false;
         }
         if (
@@ -987,21 +1162,21 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
 
     makeAllText() {
         const modelElement = this.selectedEditorModelElement;
-        console.log(
+        /*console.log(
             '#### makeFreeText this.selectedEditorModelElement:',
             this.selectedEditorModelElement
-        );
-        console.log('#### makeFreeText modelElement:', modelElement);
+        );*/
+        //console.log('#### makeFreeText modelElement:', modelElement);
         if (
             modelElement &&
             modelElement.parent &&
             modelElement.parent.name &&
             modelElement.parent.name === 'paragraph'
         ) {
-            console.log('#### makeFreeText modelElement.parent.name:', modelElement.parent.name);
+            //console.log('#### makeFreeText modelElement.parent.name:', modelElement.parent.name);
             const viewElement = this.Editor.editing.mapper.toViewElement(modelElement);
             const doc = new DOMParser().parseFromString('', 'text/html');
-            console.log('#### makeFreeText doc:', doc);
+            //console.log('#### makeFreeText doc:', doc);
             const node = this.Editor.editing.view.domConverter.viewToDom(
                 viewElement,
                 doc,
@@ -1009,13 +1184,13 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
                 true
             );
             const textContent = node.textContent;
-            console.log('#### makeFreeText node:', node);
-            console.log('#### makeFreeText node.textContent:', node.textContent);
+            //console.log('#### makeFreeText node:', node);
+            //console.log('#### makeFreeText node.textContent:', node.textContent);
             const finalText = textContent.replace(
                 /(({var_time:[^:]*:)|(})|({var_date:[^:]*:)|(})|({var_str:[^:]*:)|(})|({str:[^:]*:)|(})|({var_sp:[^:]*:)|(})|({title:[^:]*:)|(}))/g,
                 ''
             );
-            console.log('#### makeFreeText finalText:', finalText);
+            //console.log('#### makeFreeText finalText:', finalText);
             this.Editor.model.change(writer => {
                 writer.remove(modelElement);
                 const insertPosition = this.Editor.model.document.selection.getFirstPosition();
@@ -1035,26 +1210,27 @@ export class MultirootEditorComponent implements AfterViewInit, OnDestroy {
             MultirootEditor.isElement(modelElement) &&
             modelElement.parent &&
             modelElement.parent.name &&
-            modelElement.parent.name === 'paragraph'
+            (modelElement.parent.name === 'paragraph'
+                || modelElement.parent.name === 'td')
         ) {
+
             this.Editor.model.change(writer => {
                 writer.remove(modelElement);
             });
 
-            const childs = modelElement.getChildren();
+            const childs = [...modelElement.getChildren()];
             for (const element of childs) {
-                console.log('#### makeFreeText modelElement child element:', element);
+                //console.log('#### makeFreeText modelElement child element:', element);
                 if (MultirootEditor.isElement(element)) {
-                    console.log('#### makeFreeText modelElement child is ELEMENT:');
+                    //console.log('#### makeFreeText modelElement child is ELEMENT:');
                     this.Editor.model.change(writer => {
                         const insertPosition = this.Editor.model.document.selection.getFirstPosition();
-                        writer.insert(element, insertPosition);
+                        this.Editor.model.insertContent(element, insertPosition);
                     });
                 } else if (MultirootEditor.isText(element)) {
-                    console.log('#### makeFreeText modelElement child is TEXT:');
+                    //console.log('#### makeFreeText modelElement child is TEXT:');
                     this.Editor.model.change(writer => {
-                        const insertPosition = this.Editor.model.document.selection.getFirstPosition();
-                        writer.insertText(element.data, {}, insertPosition);
+                        this.Editor.model.insertContent(writer.createText(element.data));
                     });
                 }
             }

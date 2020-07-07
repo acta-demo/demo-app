@@ -2,14 +2,14 @@ const SNIPPETS = [
     {
         dataid: '179',
         datacontent:
-            '<span class="standardword" data-id="153" data-type="str">Minutes</span> of the sitting of <span class="variable" data-id="197" data-type="var_date">UNRESOLVED</span>',
+            '<span class="standardword" data-id="153" data-type="str" data-language="en">Minutes</span> of the sitting of <span class="variable" data-id="197" data-type="var_date">UNRESOLVED</span>',
         datadesc: 'Minutes of',
         language: 'en',
     },
     {
         dataid: '179',
         datacontent:
-            '<span class="standardword" data-id="153" data-type="str">Protokoll</span> der Sitzung vom <span class="variable" data-id="197" data-type="var_date">UNRESOLVED</span>',
+            '<span class="standardword" data-id="153" data-type="str" data-language="de">Protokoll</span> der Sitzung vom <span class="variable" data-id="197" data-type="var_date">UNRESOLVED</span>',
         datadesc: 'Minutes of',
         language: 'de',
     },
